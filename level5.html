@@ -1,0 +1,1339 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Level 5 · 대화 Real Conversations</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@300;400;700&family=Bebas+Neue&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #080F0B;
+    --surface: #0E1810;
+    --surface2: #141F16;
+    --ink: #E4F0E8;
+    --ink2: #7A9C82;
+    --ink3: #3A5A40;
+    --border: #1A2E1E;
+    --green: #4CAF72;
+    --green-dim: #2A6B42;
+    --gold: #C8A84B;
+    --red: #C4523A;
+    --blue: #4A8FD4;
+    --green-bg: #071209;
+    --gold-bg: #1A1608;
+    --you-bg: #0A1F10;
+    --you-border: #1E4028;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--bg); color: var(--ink); font-family: 'DM Sans', sans-serif; min-height: 100vh; }
+
+  /* GRAIN */
+  body::before {
+    content: '';
+    position: fixed; inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+    pointer-events: none; z-index: 0; opacity: 0.5;
+  }
+
+  nav {
+    position: sticky; top: 0; z-index: 100;
+    background: var(--bg); border-bottom: 1px solid var(--border);
+    padding: 0 2rem; display: flex; align-items: center; justify-content: space-between; height: 52px;
+  }
+  .nav-logo { font-family: 'Bebas Neue', sans-serif; font-size: 1.2rem; letter-spacing: 0.06em; color: var(--ink); text-decoration: none; }
+  .nav-logo span { color: var(--red); }
+  .nav-links { display: flex; gap: 1.5rem; overflow-x: auto; scrollbar-width: none; }
+  .nav-links::-webkit-scrollbar { display: none; }
+  .nav-links a { font-size: 0.75rem; letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink3); text-decoration: none; transition: color 0.15s; white-space: nowrap; }
+  .nav-links a:hover { color: var(--ink); }
+  .nav-links a.active { color: var(--green); }
+
+  .hero {
+    position: relative; z-index: 1;
+    max-width: 900px; margin: 0 auto; padding: 5rem 2rem 3rem;
+    border-bottom: 1px solid var(--border);
+    display: grid; grid-template-columns: 1fr auto; gap: 2rem; align-items: end;
+  }
+  .eyebrow { font-size: 0.68rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--ink3); margin-bottom: 1rem; display: flex; align-items: center; gap: 10px; }
+  .eyebrow::before { content: ''; width: 24px; height: 1px; background: var(--ink3); }
+  h1 { font-family: 'Bebas Neue', sans-serif; font-size: clamp(3rem, 7vw, 5.5rem); line-height: 0.9; letter-spacing: 0.02em; }
+  h1 em { font-style: normal; color: var(--green); font-family: 'Noto Serif KR', serif; font-weight: 700; font-size: 0.7em; display: block; }
+  .hero-desc { margin-top: 1.5rem; font-size: 0.88rem; line-height: 1.8; color: var(--ink2); max-width: 520px; }
+  .hero-stat { text-align: right; flex-shrink: 0; }
+  .stat-num { font-family: 'Bebas Neue', sans-serif; font-size: 4rem; color: var(--green); line-height: 1; }
+  .stat-label { font-size: 0.68rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink3); }
+
+  .tab-nav { position: relative; z-index: 1; max-width: 900px; margin: 2rem auto 0; padding: 0 2rem; display: flex; gap: 0; overflow-x: auto; scrollbar-width: none; }
+  .tab-nav::-webkit-scrollbar { display: none; }
+  .tab-btn { padding: 10px 20px; border: none; background: none; font-family: 'DM Sans', sans-serif; font-size: 0.8rem; letter-spacing: 0.04em; color: var(--ink3); cursor: pointer; border-bottom: 2px solid transparent; transition: all 0.15s; white-space: nowrap; }
+  .tab-btn:hover { color: var(--ink); }
+  .tab-btn.active { color: var(--green); border-bottom-color: var(--green); font-weight: 500; }
+
+  main { position: relative; z-index: 1; max-width: 900px; margin: 0 auto; padding: 3rem 2rem 6rem; }
+  .topic { display: none; }
+  .topic.active { display: block; }
+
+  .intro-box { background: var(--surface); border: 1px solid var(--border); border-radius: 4px; padding: 1.5rem 2rem; margin-bottom: 2.5rem; font-size: 0.85rem; line-height: 1.8; color: var(--ink2); }
+  .intro-box strong { color: var(--ink); }
+
+  .section-label { font-size: 0.65rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--ink3); margin: 3rem 0 1.5rem; display: flex; align-items: center; gap: 12px; }
+  .section-label::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+
+  /* SCENE CARD */
+  .scene { background: var(--surface); border: 1px solid var(--border); border-radius: 4px; overflow: hidden; margin-bottom: 2rem; }
+  .scene-header { background: var(--surface2); padding: 1.2rem 1.5rem; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 1rem; }
+  .scene-icon { font-size: 1.6rem; flex-shrink: 0; }
+  .scene-info { flex: 1; }
+  .scene-title { font-family: 'Bebas Neue', sans-serif; font-size: 1.2rem; letter-spacing: 0.06em; color: var(--ink); }
+  .scene-sub { font-size: 0.72rem; color: var(--ink3); letter-spacing: 0.04em; margin-top: 2px; }
+  .scene-level { font-size: 0.62rem; letter-spacing: 0.1em; text-transform: uppercase; padding: 3px 10px; border-radius: 999px; border: 1px solid; flex-shrink: 0; }
+  .lvl-easy { color: var(--green); border-color: var(--green-dim); background: var(--green-bg); }
+  .lvl-med  { color: var(--gold);  border-color: #3A2A08;          background: var(--gold-bg); }
+  .lvl-hard { color: var(--red);   border-color: #3A1A10;          background: #110A08; }
+
+  /* DIALOGUE */
+  .dialogue { padding: 1.5rem; display: flex; flex-direction: column; gap: 14px; }
+  .line { display: flex; gap: 12px; align-items: flex-start; }
+  .line.you { flex-direction: row-reverse; }
+  .speaker-label { font-size: 0.6rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink3); flex-shrink: 0; padding-top: 6px; min-width: 44px; text-align: right; line-height: 1.4; }
+  .line.you .speaker-label { text-align: left; color: var(--green); }
+  .bubble { border-radius: 4px; padding: 0.9rem 1.1rem; max-width: 480px; }
+  .line:not(.you) .bubble { background: var(--surface2); border: 1px solid var(--border); }
+  .line.you .bubble { background: var(--you-bg); border: 1px solid var(--you-border); }
+  .bub-ko { font-family: 'Noto Serif KR', serif; font-size: 1rem; font-weight: 700; color: var(--ink); display: block; margin-bottom: 3px; line-height: 1.5; }
+  .bub-rom { font-family: 'DM Mono', monospace; font-size: 0.65rem; color: var(--green); display: block; margin-bottom: 3px; }
+  .bub-en { font-size: 0.75rem; color: var(--ink2); display: block; margin-bottom: 2px; }
+  .bub-fil { font-size: 0.72rem; color: var(--gold); display: block; }
+
+  /* HIGHLIGHT PHRASES */
+  .key-phrases { border-top: 1px solid var(--border); padding: 1.2rem 1.5rem; display: flex; flex-direction: column; gap: 8px; }
+  .key-phrases-title { font-size: 0.62rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--green); margin-bottom: 4px; }
+  .key-phrase { display: grid; grid-template-columns: auto 1fr; gap: 12px; align-items: center; background: var(--bg); border: 1px solid var(--border); border-radius: 3px; padding: 8px 12px; }
+  .kp-ko { font-family: 'Noto Serif KR', serif; font-size: 0.95rem; font-weight: 700; color: var(--green); white-space: nowrap; }
+  .kp-right { display: flex; flex-direction: column; gap: 1px; }
+  .kp-rom { font-family: 'DM Mono', monospace; font-size: 0.65rem; color: var(--ink2); }
+  .kp-en { font-size: 0.75rem; color: var(--ink); }
+
+  /* CULTURE NOTE */
+  .culture-note { border-top: 1px solid var(--border); padding: 1.2rem 1.5rem; font-size: 0.8rem; line-height: 1.7; color: var(--ink2); }
+  .culture-note::before { content: '🇰🇷 Culture Note'; display: block; font-size: 0.62rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--green); margin-bottom: 6px; font-weight: 500; }
+  .culture-note strong { color: var(--ink); }
+
+  /* VARIATION BOX */
+  .variation { border-top: 1px solid var(--border); padding: 1.2rem 1.5rem; }
+  .variation-title { font-size: 0.62rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--gold); margin-bottom: 10px; }
+  .var-row { display: flex; align-items: baseline; gap: 12px; padding: 6px 0; border-bottom: 1px solid var(--border); }
+  .var-row:last-child { border-bottom: none; }
+  .var-ko { font-family: 'Noto Serif KR', serif; font-size: 0.95rem; font-weight: 700; color: var(--ink); min-width: 140px; flex-shrink: 0; }
+  .var-rom { font-family: 'DM Mono', monospace; font-size: 0.65rem; color: var(--green); min-width: 160px; flex-shrink: 0; }
+  .var-en { font-size: 0.75rem; color: var(--ink2); }
+
+  /* TIP */
+  .tip { background: var(--gold-bg); border: 1px solid #2A2008; border-left: 3px solid var(--gold); border-radius: 3px; padding: 1rem 1.5rem; margin: 1.5rem 0; font-size: 0.82rem; line-height: 1.7; color: #C8B060; }
+  .tip::before { content: '💡 Filipino Learner Tip'; display: block; font-size: 0.68rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--gold); margin-bottom: 6px; font-weight: 500; }
+
+  @media (max-width: 640px) {
+    .hero { grid-template-columns: 1fr; }
+    .bubble { max-width: 100%; }
+    .key-phrase { grid-template-columns: 1fr; gap: 4px; }
+    .var-row { flex-direction: column; gap: 2px; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <a class="nav-logo" href="index.html">LEARN <span>한국어</span></a>
+  <div class="nav-links">
+    <a href="level1.html">Hangul</a>
+    <a href="level2.html">Phrases</a>
+    <a href="vocab.html">Vocab</a>
+    <a href="level3.html">Grammar</a>
+    <a href="level4.html">Numbers</a>
+    <a href="level5.html" class="active">Conversations</a>
+  </div>
+</nav>
+
+<div class="hero">
+  <div>
+    <div class="eyebrow">Level 5 · Conversations</div>
+    <h1><em>대화</em>REAL<br>KOREA</h1>
+    <p class="hero-desc">
+      You've learned the alphabet, phrases, grammar, and numbers.
+      Now put it all together — real conversations in real situations,
+      from the airport to a late-night pojangmacha.
+      Korean + romanization + English + Filipino, every line.
+    </p>
+  </div>
+  <div class="hero-stat">
+    <div class="stat-num">6</div>
+    <div class="stat-label">Real-life<br>situations</div>
+  </div>
+</div>
+
+<div class="tab-nav">
+  <button class="tab-btn active" onclick="showTab('airport')">✈️ 공항 Airport</button>
+  <button class="tab-btn" onclick="showTab('transit')">🚇 이동 Transit</button>
+  <button class="tab-btn" onclick="showTab('food')">🍜 식당 Food</button>
+  <button class="tab-btn" onclick="showTab('shopping')">🛍️ 쇼핑 Shopping</button>
+  <button class="tab-btn" onclick="showTab('people')">🤝 만남 Meeting</button>
+  <button class="tab-btn" onclick="showTab('emergency')">🆘 긴급 Emergency</button>
+</div>
+
+<main>
+
+<!-- ══════════════════════════════ AIRPORT ══════════════════════════════ -->
+<div id="airport" class="topic active">
+  <div class="intro-box">
+    Your first Korean conversations happen before you even leave the airport.
+    Immigration officers speak quickly and use formal language — but they're used to foreign visitors.
+    <strong>Stay calm, answer simply, and you'll be fine.</strong>
+  </div>
+
+  <!-- Scene 1 -->
+  <div class="scene">
+    <div class="scene-header">
+      <div class="scene-icon">🛂</div>
+      <div class="scene-info">
+        <div class="scene-title">Immigration 입국심사</div>
+        <div class="scene-sub">인천국제공항 · Incheon International Airport</div>
+      </div>
+      <span class="scene-level lvl-easy">Beginner</span>
+    </div>
+    <div class="dialogue">
+      <div class="line">
+        <div class="speaker-label">Officer</div>
+        <div class="bubble">
+          <span class="bub-ko">여권 주세요.</span>
+          <span class="bub-rom">Yeo-gwon ju-se-yo.</span>
+          <span class="bub-en">Passport please.</span>
+          <span class="bub-fil">Pasaporte po.</span>
+        </div>
+      </div>
+      <div class="line you">
+        <div class="speaker-label">You</div>
+        <div class="bubble">
+          <span class="bub-ko">네, 여기요.</span>
+          <span class="bub-rom">Ne, yeo-gi-yo.</span>
+          <span class="bub-en">Yes, here you go.</span>
+          <span class="bub-fil">Oo po, heto po.</span>
+        </div>
+      </div>
+      <div class="line">
+        <div class="speaker-label">Officer</div>
+        <div class="bubble">
+          <span class="bub-ko">방문 목적이 뭐예요?</span>
+          <span class="bub-rom">Bang-mun mok-jeok-i mwo-ye-yo?</span>
+          <span class="bub-en">What is the purpose of your visit?</span>
+          <span class="bub-fil">Ano ang layunin ng inyong pagbisita?</span>
+        </div>
+      </div>
+      <div class="line you">
+        <div class="speaker-label">You</div>
+        <div class="bubble">
+          <span class="bub-ko">관광이요.</span>
+          <span class="bub-rom">Gwan-gwang-i-yo.</span>
+          <span class="bub-en">Tourism / Sightseeing.</span>
+          <span class="bub-fil">Para sa turismo po.</span>
+        </div>
+      </div>
+      <div class="line">
+        <div class="speaker-label">Officer</div>
+        <div class="bubble">
+          <span class="bub-ko">얼마나 있을 거예요?</span>
+          <span class="bub-rom">Eol-ma-na i-sseul geo-ye-yo?</span>
+          <span class="bub-en">How long will you stay?</span>
+          <span class="bub-fil">Gaano po katagal kayo mananatili?</span>
+        </div>
+      </div>
+      <div class="line you">
+        <div class="speaker-label">You</div>
+        <div class="bubble">
+          <span class="bub-ko">일주일이요.</span>
+          <span class="bub-rom">Il-ju-il-i-yo.</span>
+          <span class="bub-en">One week.</span>
+          <span class="bub-fil">Isang linggo po.</span>
+        </div>
+      </div>
+      <div class="line">
+        <div class="speaker-label">Officer</div>
+        <div class="bubble">
+          <span class="bub-ko">네, 즐거운 여행 되세요!</span>
+          <span class="bub-rom">Ne, jeul-geo-un yeo-haeng doe-se-yo!</span>
+          <span class="bub-en">Okay, enjoy your trip!</span>
+          <span class="bub-fil">Sige po, masayang biyahe!</span>
+        </div>
+      </div>
+    </div>
+    <div class="key-phrases">
+      <div class="key-phrases-title">Key Phrases</div>
+      <div class="key-phrase">
+        <div class="kp-ko">관광이요</div>
+        <div class="kp-right"><span class="kp-rom">gwan-gwang-i-yo</span><span class="kp-en">Tourism — the safest one-word answer</span></div>
+      </div>
+      <div class="key-phrase">
+        <div class="kp-ko">일주일이요</div>
+        <div class="kp-right"><span class="kp-rom">il-ju-il-i-yo</span><span class="kp-en">One week — 이주일 (2 weeks), 사흘 (3 days)</span></div>
+      </div>
+      <div class="key-phrase">
+        <div class="kp-ko">여기 있어요</div>
+        <div class="kp-right"><span class="kp-rom">yeo-gi i-sseo-yo</span><span class="kp-en">"Here it is" — useful when handing anything over</span></div>
+      </div>
+    </div>
+    <div class="variation">
+      <div class="variation-title">Duration Variations</div>
+      <div class="var-row"><div class="var-ko">사흘이요</div><div class="var-rom">sa-heul-i-yo</div><div class="var-en">3 days (native Korean)</div></div>
+      <div class="var-row"><div class="var-ko">일주일이요</div><div class="var-rom">il-ju-il-i-yo</div><div class="var-en">1 week</div></div>
+      <div class="var-row"><div class="var-ko">이 주일이요</div><div class="var-rom">i ju-il-i-yo</div><div class="var-en">2 weeks</div></div>
+      <div class="var-row"><div class="var-ko">한 달이요</div><div class="var-rom">han dal-i-yo</div><div class="var-en">1 month</div></div>
+    </div>
+    <div class="culture-note">
+      Korean immigration officers are usually efficient and brief. You don't need to volunteer information — answer exactly what's asked, simply. If they switch to English, that's fine too. Having your hotel address written down (in Korean if possible) helps a lot.
+    </div>
+  </div>
+
+  <!-- Scene 2 -->
+  <div class="scene">
+    <div class="scene-header">
+      <div class="scene-icon">💵</div>
+      <div class="scene-info">
+        <div class="scene-title">Currency Exchange 환전</div>
+        <div class="scene-sub">공항 환전소 · Airport exchange booth</div>
+      </div>
+      <span class="scene-level lvl-easy">Beginner</span>
+    </div>
+    <div class="dialogue">
+      <div class="line you">
+        <div class="speaker-label">You</div>
+        <div class="bubble">
+          <span class="bub-ko">환전하고 싶어요. 달러를 원으로 바꿔 주세요.</span>
+          <span class="bub-rom">Hwan-jeon-ha-go si-peo-yo. Dal-leo-reul won-eu-ro bak-kwo ju-se-yo.</span>
+          <span class="bub-en">I'd like to exchange currency. Please change dollars to won.</span>
+          <span class="bub-fil">Gusto ko pong mag-palitan ng pera. Palitan po ang dolyar sa won.</span>
+        </div>
+      </div>
+      <div class="line">
+        <div class="speaker-label">Staff</div>
+        <div class="bubble">
+          <span class="bub-ko">얼마나 바꾸실 거예요?</span>
+          <span class="bub-rom">Eol-ma-na bak-ku-sil geo-ye-yo?</span>
+          <span class="bub-en">How much would you like to exchange?</span>
+          <span class="bub-fil">Magkano po ang palitan?</span>
+        </div>
+      </div>
+      <div class="line you">
+        <div class="speaker-label">You</div>
+        <div class="bubble">
+          <span class="bub-ko">이백 달러요.</span>
+          <span class="bub-rom">I-baek dal-leo-yo.</span>
+          <span class="bub-en">200 dollars.</span>
+          <span class="bub-fil">Dalawang daang dolyar po.</span>
+        </div>
+      </div>
+      <div class="line">
+        <div class="speaker-label">Staff</div>
+        <div class="bubble">
+          <span class="bub-ko">이십육만 원입니다.</span>
+          <span class="bub-rom">I-sim-nyung-man won-im-ni-da.</span>
+          <span class="bub-en">That's 260,000 won.</span>
+          <span class="bub-fil">Dalawang daan animnapung libong won po.</span>
+        </div>
+      </div>
+      <div class="line you">
+        <div class="speaker-label">You</div>
+        <div class="bubble">
+          <span class="bub-ko">감사합니다.</span>
+          <span class="bub-rom">Gam-sa-ham-ni-da.</span>
+          <span class="bub-en">Thank you.</span>
+          <span class="bub-fil">Salamat po.</span>
+        </div>
+      </div>
+    </div>
+    <div class="key-phrases">
+      <div class="key-phrases-title">Key Phrases</div>
+      <div class="key-phrase">
+        <div class="kp-ko">환전하고 싶어요</div>
+        <div class="kp-right"><span class="kp-rom">hwan-jeon-ha-go si-peo-yo</span><span class="kp-en">I'd like to exchange money</span></div>
+      </div>
+      <div class="key-phrase">
+        <div class="kp-ko">~을/를 ~으로 바꿔 주세요</div>
+        <div class="kp-right"><span class="kp-rom">~eul/reul ~eu-ro bak-kwo ju-se-yo</span><span class="kp-en">Please change [X] to [Y]</span></div>
+      </div>
+    </div>
+    <div class="culture-note">
+      Airport exchange rates are slightly worse than city rates. Myeongdong (명동) in central Seoul has some of the best exchange rates in Korea — look for the "환전" signs. Many booths will give better rates if you ask 더 좋은 환율 없어요? (Are there no better rates?).
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════ TRANSIT ══════════════════════════════ -->
+<div id="transit" class="topic">
+  <div class="intro-box">
+    Seoul's public transit is world-class — clean, cheap, and on time.
+    The subway (지하철) covers the entire city, and T-money cards work on buses too.
+    These conversations get you from A to B without getting lost.
+  </div>
+
+  <div class="scene">
+    <div class="scene-header">
+      <div class="scene-icon">🚇</div>
+      <div class="scene-info">
+        <div class="scene-title">Buying a T-money Card 교통카드</div>
+        <div class="scene-sub">편의점 · Convenience store</div>
+      </div>
+      <span class="scene-level lvl-easy">Beginner</span>
+    </div>
+    <div class="dialogue">
+      <div class="line you">
+        <div class="speaker-label">You</div>
+        <div class="bubble">
+          <span class="bub-ko">티머니 카드 있어요?</span>
+          <span class="bub-rom">Ti-meo-ni ka-deu i-sseo-yo?</span>
+          <span class="bub-en">Do you have a T-money card?</span>
+          <span class="bub-fil">Mayroon po ba kayong T-money card?</span>
+        </div>
+      </div>
+      <div class="line">
+        <div class="speaker-label">Staff</div>
+        <div class="bubble">
+          <span class="bub-ko">네, 있어요. 얼마 충전해 드릴까요?</span>
+          <span class="bub-rom">Ne, i-sseo-yo. Eol-ma chung-jeon-hae deu-ril-kka-yo?</span>
+          <span class="bub-en">Yes, we do. How much would you like to charge?</span>
+          <span class="bub-fil">Oo po, mayroon. Magkano po ang gustong i-load?</span>
+        </div>
+      </div>
+      <div class="line you">
+        <div class="speaker-label">You</div>
+        <div class="bubble">
+          <span class="bub-ko">오만 원 충전해 주세요.</span>
+          <span class="bub-rom">O-man won chung-jeon-hae ju-se-yo.</span>
+          <span class="bub-en">Please charge 50,000 won.</span>
+          <span class="bub-fil">Mag-load po ng limampung libong won.</span>
+        </div>
+      </div>
+      <div class="line">
+        <div class="speaker-label">Staff</div>
+        <div class="bubble">
+          <span class="bub-ko">카드값 삼천 원 포함해서 오만 삼천 원이에요.</span>
+          <span class="bub-rom">Ka-deu-gap sam-cheon won po-ham-hae-seo o-man sam-cheon won-i-e-yo.</span>
+          <span class="bub-en">Including the card fee of 3,000 won, that's 53,000 won total.</span>
+          <span class="bub-fil">Kasama ang bayad sa card na tatlong libong won, limampu't tatlong libong won po.</span>
+        </div>
+      </div>
+    </div>
+    <div class="key-phrases">
+      <div class="key-phrases-title">Key Phrases</div>
+      <div class="key-phrase">
+        <div class="kp-ko">충전해 주세요</div>
+        <div class="kp-right"><span class="kp-rom">chung-jeon-hae ju-se-yo</span><span class="kp-en">Please charge/load — same verb used for phone data!</span></div>
+      </div>
+      <div class="key-phrase">
+        <div class="kp-ko">포함해서</div>
+        <div class="kp-right"><span class="kp-rom">po-ham-hae-seo</span><span class="kp-en">Including — useful in any price context</span></div>
+      </div>
+    </div>
+    <div class="culture-note">
+      T-money cards work on subway, bus, and even some taxis. You can buy and charge them at any GS25, CU, or 7-Eleven convenience store. Always tap in AND tap out on the subway — you'll be charged extra if you forget to tap out!
+    </div>
+  </div>
+
+  <div class="scene">
+    <div class="scene-header">
+      <div class="scene-icon">🗺️</div>
+      <div class="scene-info">
+        <div class="scene-title">Asking for Directions 길 묻기</div>
+        <div class="scene-sub">거리에서 · On the street</div>
+      </div>
+      <span class="scene-level lvl-med">Intermediate</span>
+    </div>
+    <div class="dialogue">
+      <div class="line you">
+        <div class="speaker-label">You</div>
+        <div class="bubble">
+          <span class="bub-ko">저기요! 경복궁이 어디예요?</span>
+          <span class="bub-rom">Jeo-gi-yo! Gyeong-bok-gung-i eo-di-ye-yo?</span>
+          <span class="bub-en">Excuse me! Where is Gyeongbokgung Palace?</span>
+          <span class="bub-fil">Sandali lang! Nasaan po ang Gyeongbokgung?</span>
+        </div>
+      </div>
+      <div class="line">
+        <div class="speaker-label">Stranger</div>
+        <div class="bubble">
+          <span class="bub-ko">저쪽으로 쭉 가다가 사거리에서 왼쪽으로 꺾으면 돼요.</span>
+          <span class="bub-rom">Jeo-jjok-eu-ro jjuk ga-da-ga sa-geo-ri-e-seo oen-jjok-eu-ro kkeok-eu-myeon dwae-yo.</span>
+          <span class="bub-en">Go straight that way, then turn left at the intersection.</span>
+          <span class="bub-fil">Diretso lang po riyan, tapos kumaliwa sa intersection.</span>
+        </div>
+      </div>
+      <div class="line you">
+        <div class="speaker-label">You</div>
+        <div class="bubble">
+          <span class="bub-ko">걸어서 얼마나 걸려요?</span>
+          <span class="bub-rom">Geo-reo-seo eol-ma-na geol-lyeo-yo?</span>
+          <span class="bub-en">How long does it take on foot?</span>
+          <span class="bub-fil">Gaano po katagal kung lalakad?</span>
+        </div>
+      </div>
+      <div class="line">
+        <div class="speaker-label">Stranger</div>
+        <div class="bubble">
+          <span class="bub-ko">한 십 분쯤요.</span>
+          <span class="bub-rom">Han sip bun-jjeum-yo.</span>
+          <span class="bub-en">About ten minutes or so.</span>
+          <span class="bub-fil">Mga sampung minuto lang po.</span>
+        </div>
+      </div>
+      <div class="line you">
+        <div class="speaker-label">You</div>
+        <div class="bubble">
+          <span class="bub-ko">감사합니다!</span>
+          <span class="bub-rom">Gam-sa-ham-ni-da!</span>
+          <span class="bub-en">Thank you!</span>
+          <span class="bub-fil">Salamat po!</span>
+        </div>
+      </div>
+    </div>
+    <div class="key-phrases">
+      <div class="key-phrases-title">Key Phrases</div>
+      <div class="key-phrase">
+        <div class="kp-ko">쭉 가세요</div>
+        <div class="kp-right"><span class="kp-rom">jjuk ga-se-yo</span><span class="kp-en">Go straight</span></div>
+      </div>
+      <div class="key-phrase">
+        <div class="kp-ko">왼쪽 / 오른쪽</div>
+        <div class="kp-right"><span class="kp-rom">oen-jjok / o-reun-jjok</span><span class="kp-en">Left / Right</span></div>
+      </div>
+      <div class="key-phrase">
+        <div class="kp-ko">~쯤이요</div>
+        <div class="kp-right"><span class="kp-rom">~jjeum-i-yo</span><span class="kp-en">About ~, approximately ~ (very useful!)</span></div>
+      </div>
+    </div>
+    <div class="variation">
+      <div class="variation-title">Direction Words</div>
+      <div class="var-row"><div class="var-ko">왼쪽</div><div class="var-rom">oen-jjok</div><div class="var-en">Left</div></div>
+      <div class="var-row"><div class="var-ko">오른쪽</div><div class="var-rom">o-reun-jjok</div><div class="var-en">Right</div></div>
+      <div class="var-row"><div class="var-ko">직진</div><div class="var-rom">jik-jin</div><div class="var-en">Straight ahead</div></div>
+      <div class="var-row"><div class="var-ko">사거리</div><div class="var-rom">sa-geo-ri</div><div class="var-en">4-way intersection</div></div>
+      <div class="var-row"><div class="var-ko">신호등</div><div class="var-rom">sin-ho-deung</div><div class="var-en">Traffic light</div></div>
+      <div class="var-row"><div class="var-ko">횡단보도</div><div class="var-rom">hoeng-dan-bo-do</div><div class="var-en">Crosswalk / pedestrian crossing</div></div>
+    </div>
+  </div>
+
+  <div class="scene">
+    <div class="scene-header">
+      <div class="scene-icon">🚕</div>
+      <div class="scene-info">
+        <div class="scene-title">Taking a Taxi 택시</div>
+        <div class="scene-sub">카카오택시 · Kakao Taxi</div>
+      </div>
+      <span class="scene-level lvl-easy">Beginner</span>
+    </div>
+    <div class="dialogue">
+      <div class="line you">
+        <div class="speaker-label">You</div>
+        <div class="bubble">
+          <span class="bub-ko">명동으로 가 주세요.</span>
+          <span class="bub-rom">Myeong-dong-eu-ro ga ju-se-yo.</span>
+          <span class="bub-en">Please take me to Myeongdong.</span>
+          <span class="bub-fil">Pakihatid po ako sa Myeongdong.</span>
+        </div>
+      </div>
+      <div class="line">
+        <div class="speaker-label">Driver</div>
+        <div class="bubble">
+          <span class="bub-ko">네, 알겠습니다. 어디쪽 입구로 가 드릴까요?</span>
+          <span class="bub-rom">Ne, al-get-seum-ni-da. Eo-di-jjok ip-gu-ro ga deu-ril-kka-yo?</span>
+          <span class="bub-en">Yes, understood. Which entrance would you like?</span>
+          <span class="bub-fil">Opo, nauunawaan ko. Alin pong entrance ang gusto ninyo?</span>
+        </div>
+      </div>
+      <div class="line you">
+        <div class="speaker-label">You</div>
+        <div class="bubble">
+          <span class="bub-ko">명동역 근처면 돼요.</span>
+          <span class="bub-rom">Myeong-dong-yeok geun-cheo-myeon dwae-yo.</span>
+          <span class="bub-en">Near Myeongdong station is fine.</span>
+          <span class="bub-fil">Malapit lang po sa Myeongdong station, okay na.</span>
+        </div>
+      </div>
+      <div class="line">
+        <div class="speaker-label">Driver</div>
+        <div class="bubble">
+          <span class="bub-ko">다 왔어요. 여기서 내려 드릴게요.</span>
+          <span class="bub-rom">Da wa-sseo-yo. Yeo-gi-seo nae-ryeo deu-ril-ge-yo.</span>
+          <span class="bub-en">We're here. I'll drop you off here.</span>
+          <span class="bub-fil">Nandito na po tayo. Dito ko po kayo ibababa.</span>
+        </div>
+      </div>
+      <div class="line you">
+        <div class="speaker-label">You</div>
+        <div class="bubble">
+          <span class="bub-ko">카드 돼요?</span>
+          <span class="bub-rom">Ka-deu dwae-yo?</span>
+          <span class="bub-en">Can I pay by card?</span>
+          <span class="bub-fil">Pwede po bang mag-card?</span>
+        </div>
+      </div>
+      <div class="line">
+        <div class="speaker-label">Driver</div>
+        <div class="bubble">
+          <span class="bub-ko">네, 됩니다.</span>
+          <span class="bub-rom">Ne, doem-ni-da.</span>
+          <span class="bub-en">Yes, that's fine.</span>
+          <span class="bub-fil">Opo, pwede.</span>
+        </div>
+      </div>
+    </div>
+    <div class="key-phrases">
+      <div class="key-phrases-title">Key Phrases</div>
+      <div class="key-phrase">
+        <div class="kp-ko">[장소]로 가 주세요</div>
+        <div class="kp-right"><span class="kp-rom">[jang-so]-ro ga ju-se-yo</span><span class="kp-en">Please take me to [place] — the essential taxi phrase</span></div>
+      </div>
+      <div class="key-phrase">
+        <div class="kp-ko">근처면 돼요</div>
+        <div class="kp-right"><span class="kp-rom">geun-cheo-myeon dwae-yo</span><span class="kp-en">Nearby is fine — flexible and polite</span></div>
+      </div>
+    </div>
+    <div class="culture-note">
+      Kakao T app (카카오T) is the easiest way to hail taxis in Korea — just type your destination in English and it works. Most Korean taxis accept card payment. Tipping is not customary in Korea — don't feel obligated!
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════ FOOD ══════════════════════════════ -->
+<div id="food" class="topic">
+  <div class="intro-box">
+    Eating in Korea is one of the best parts of the trip. Restaurants are often loud, fast, and call-button or shout-to-order style.
+    Don't be shy — shouting <strong>"여기요!"</strong> is completely normal and expected.
+  </div>
+
+  <div class="scene">
+    <div class="scene-header">
+      <div class="scene-icon">🥩</div>
+      <div class="scene-info">
+        <div class="scene-title">Korean BBQ 삼겹살집</div>
+        <div class="scene-sub">고기집 · Meat restaurant</div>
+      </div>
+      <span class="scene-level lvl-med">Intermediate</span>
+    </div>
+    <div class="dialogue">
+      <div class="line">
+        <div class="speaker-label">Staff</div>
+        <div class="bubble">
+          <span class="bub-ko">어서 오세요! 몇 분이세요?</span>
+          <span class="bub-rom">Eo-seo o-se-yo! Myeot bun-i-se-yo?</span>
+          <span class="bub-en">Welcome! How many people?</span>
+          <span class="bub-fil">Maligayang pagdating! Ilang tao po kayo?</span>
+        </div>
+      </div>
+      <div class="line you">
+        <div class="speaker-label">You</div>
+        <div class="bubble">
+          <span class="bub-ko">두 명이요.</span>
+          <span class="bub-rom">Du myeong-i-yo.</span>
+          <span class="bub-en">Two people.</span>
+          <span class="bub-fil">Dalawa po kami.</span>
+        </div>
+      </div>
+      <div class="line">
+        <div class="speaker-label">Staff</div>
+        <div class="bubble">
+          <span class="bub-ko">이쪽으로 앉으세요. 주문은 준비되시면 불러 주세요!</span>
+          <span class="bub-rom">I-jjok-eu-ro an-jeu-se-yo. Ju-mun-eun jun-bi-doe-si-myeon bul-leo ju-se-yo!</span>
+          <span class="bub-en">Please sit this way. Call us when you're ready to order!</span>
+          <span class="bub-fil">Dito po kayo umupo. Tawagan po ninyo kami kapag handa na kayong mag-order!</span>
+        </div>
+      </div>
+      <div class="line you">
+        <div class="speaker-label">You</div>
+        <div class="bubble">
+          <span class="bub-ko">여기요! 삼겹살 이 인분이랑 된장찌개 하나 주세요.</span>
+          <span class="bub-rom">Yeo-gi-yo! Sam-gyeop-sal i in-bun-i-rang doen-jang-jji-gae ha-na ju-se-yo.</span>
+          <span class="bub-en">Excuse me! Two portions of samgyeopsal and one doenjang jjigae please.</span>
+          <span class="bub-fil">Hoy! Dalawang serving ng samgyeopsal at isang doenjang jjigae po.</span>
+        </div>
+      </div>
+      <div class="line">
+        <div class="speaker-label">Staff</div>
+        <div class="bubble">
+          <span class="bub-ko">네! 고기는 직접 구우실 건가요?</span>
+          <span class="bub-rom">Ne! Go-gi-neun jik-jeop gu-u-sil geon-ga-yo?</span>
+          <span class="bub-en">Sure! Will you grill the meat yourselves?</span>
+          <span class="bub-fil">Opo! Kayo po ba ang mag-iihaw ng karne?</span>
+        </div>
+      </div>
+      <div class="line you">
+        <div class="speaker-label">You</div>
+        <div class="bubble">
+          <span class="bub-ko">구워 주세요!</span>
+          <span class="bub-rom">Gu-wo ju-se-yo!</span>
+          <span class="bub-en">Please grill it for us!</span>
+          <span class="bub-fil">Ikaw na po ang mag-ihaw!</span>
+        </div>
+      </div>
+      <div class="line you">
+        <div class="speaker-label">You</div>
+        <div class="bubble">
+          <span class="bub-ko">여기요! 소주 한 병이랑 맥주 한 병 더 주세요.</span>
+          <span class="bub-rom">Yeo-gi-yo! So-ju han byeong-i-rang maek-ju han byeong deo ju-se-yo.</span>
+          <span class="bub-en">Excuse me! One more bottle of soju and one bottle of beer please.</span>
+          <span class="bub-fil">Hoy! Isa pang bote ng soju at isang bote ng beer po.</span>
+        </div>
+      </div>
+    </div>
+    <div class="key-phrases">
+      <div class="key-phrases-title">Key Phrases</div>
+      <div class="key-phrase">
+        <div class="kp-ko">여기요!</div>
+        <div class="kp-right"><span class="kp-rom">yeo-gi-yo!</span><span class="kp-en">Hey! / Excuse me! — shout this to call a server, it's normal</span></div>
+      </div>
+      <div class="key-phrase">
+        <div class="kp-ko">~인분</div>
+        <div class="kp-right"><span class="kp-rom">~in-bun</span><span class="kp-en">~ serving(s) — 일 인분(1), 이 인분(2), 삼 인분(3)</span></div>
+      </div>
+      <div class="key-phrase">
+        <div class="kp-ko">더 주세요</div>
+        <div class="kp-right"><span class="kp-rom">deo ju-se-yo</span><span class="kp-en">More please — add to any order</span></div>
+      </div>
+    </div>
+    <div class="culture-note">
+      In Korean BBQ restaurants, <strong>shouting "여기요!"</strong> is the standard way to call a server — not rude at all. Many restaurants now have call buttons on the table (벨을 눌러 주세요 = please press the bell). Side dishes (반찬) are free and refillable — just ask 반찬 더 주세요!
+    </div>
+  </div>
+
+  <div class="scene">
+    <div class="scene-header">
+      <div class="scene-icon">☕</div>
+      <div class="scene-info">
+        <div class="scene-title">Café Order 카페에서</div>
+        <div class="scene-sub">카페 · Coffee shop</div>
+      </div>
+      <span class="scene-level lvl-easy">Beginner</span>
+    </div>
+    <div class="dialogue">
+      <div class="line">
+        <div class="speaker-label">Staff</div>
+        <div class="bubble">
+          <span class="bub-ko">안녕하세요! 주문 도와드릴까요?</span>
+          <span class="bub-rom">An-nyeong-ha-se-yo! Ju-mun do-wa-deu-ril-kka-yo?</span>
+          <span class="bub-en">Hello! May I take your order?</span>
+          <span class="bub-fil">Magandang araw! Pwede ko po bang kunin ang inyong order?</span>
+        </div>
+      </div>
+      <div class="line you">
+        <div class="speaker-label">You</div>
+        <div class="bubble">
+          <span class="bub-ko">아이스 아메리카노 하나, 카페라떼 하나 주세요.</span>
+          <span class="bub-rom">A-i-seu a-me-ri-ka-no ha-na, ka-pe-ra-tte ha-na ju-se-yo.</span>
+          <span class="bub-en">One iced americano and one café latte please.</span>
+          <span class="bub-fil">Isa pong iced americano at isang café latte po.</span>
+        </div>
+      </div>
+      <div class="line">
+        <div class="speaker-label">Staff</div>
+        <div class="bubble">
+          <span class="bub-ko">라떼는 따뜻하게요, 아이스요?</span>
+          <span class="bub-rom">Ra-tte-neun tta-tteu-ta-ge-yo, a-i-seu-yo?</span>
+          <span class="bub-en">Is the latte hot or iced?</span>
+          <span class="bub-fil">Ang latte po, mainit o malamig?</span>
+        </div>
+      </div>
+      <div class="line you">
+        <div class="speaker-label">You</div>
+        <div class="bubble">
+          <span class="bub-ko">따뜻하게요.</span>
+          <span class="bub-rom">Tta-tteu-ta-ge-yo.</span>
+          <span class="bub-en">Hot please.</span>
+          <span class="bub-fil">Mainit po.</span>
+        </div>
+      </div>
+      <div class="line">
+        <div class="speaker-label">Staff</div>
+        <div class="bubble">
+          <span class="bub-ko">여기서 드실 건가요, 가져가실 건가요?</span>
+          <span class="bub-rom">Yeo-gi-seo deu-sil geon-ga-yo, ga-jyeo-ga-sil geon-ga-yo?</span>
+          <span class="bub-en">For here or to go?</span>
+          <span class="bub-fil">Dito po ba kayo kakain o dala-dala?</span>
+        </div>
+      </div>
+      <div class="line you">
+        <div class="speaker-label">You</div>
+        <div class="bubble">
+          <span class="bub-ko">여기서 마실게요.</span>
+          <span class="bub-rom">Yeo-gi-seo ma-sil-ge-yo.</span>
+          <span class="bub-en">We'll have it here.</span>
+          <span class="bub-fil">Dito na lang po kami iinom.</span>
+        </div>
+      </div>
+    </div>
+    <div class="key-phrases">
+      <div class="key-phrases-title">Key Phrases</div>
+      <div class="key-phrase">
+        <div class="kp-ko">따뜻하게요 / 아이스로요</div>
+        <div class="kp-right"><span class="kp-rom">tta-tteu-ta-ge-yo / a-i-seu-ro-yo</span><span class="kp-en">Hot / Iced — most used café words</span></div>
+      </div>
+      <div class="key-phrase">
+        <div class="kp-ko">가져가다 / 먹고 가다</div>
+        <div class="kp-right"><span class="kp-rom">ga-jyeo-ga-da / meok-go ga-da</span><span class="kp-en">To go / To eat here</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════ SHOPPING ══════════════════════════════ -->
+<div id="shopping" class="topic">
+  <div class="intro-box">
+    Korean shopping is an experience — from sleek mall department stores to chaotic street markets.
+    Prices in most stores are fixed, but traditional markets (시장) welcome bargaining.
+    Knowing a few key phrases unlocks the full experience.
+  </div>
+
+  <div class="scene">
+    <div class="scene-header">
+      <div class="scene-icon">👗</div>
+      <div class="scene-info">
+        <div class="scene-title">Clothes Shopping 옷가게</div>
+        <div class="scene-sub">홍대 쇼핑 거리 · Hongdae shopping street</div>
+      </div>
+      <span class="scene-level lvl-med">Intermediate</span>
+    </div>
+    <div class="dialogue">
+      <div class="line">
+        <div class="speaker-label">Staff</div>
+        <div class="bubble">
+          <span class="bub-ko">어서 오세요! 찾으시는 거 있으세요?</span>
+          <span class="bub-rom">Eo-seo o-se-yo! Cha-jeu-si-neun geo i-seu-se-yo?</span>
+          <span class="bub-en">Welcome! Are you looking for something?</span>
+          <span class="bub-fil">Maligayang pagdating! May hinahanap po ba kayo?</span>
+        </div>
+      </div>
+      <div class="line you">
+        <div class="speaker-label">You</div>
+        <div class="bubble">
+          <span class="bub-ko">그냥 볼게요.</span>
+          <span class="bub-rom">Geu-nyang bol-ge-yo.</span>
+          <span class="bub-en">Just browsing, thanks.</span>
+          <span class="bub-fil">Titingnan ko lang po.</span>
+        </div>
+      </div>
+      <div class="line you">
+        <div class="speaker-label">You</div>
+        <div class="bubble">
+          <span class="bub-ko">저기요, 이거 다른 사이즈 있어요?</span>
+          <span class="bub-rom">Jeo-gi-yo, i-geo da-reun sa-i-jeu i-sseo-yo?</span>
+          <span class="bub-en">Excuse me, do you have this in another size?</span>
+          <span class="bub-fil">Hoy, mayroon po ba itong ibang sukat?</span>
+        </div>
+      </div>
+      <div class="line">
+        <div class="speaker-label">Staff</div>
+        <div class="bubble">
+          <span class="bub-ko">어떤 사이즈 찾으세요?</span>
+          <span class="bub-rom">Eo-tteon sa-i-jeu cha-jeu-se-yo?</span>
+          <span class="bub-en">What size are you looking for?</span>
+          <span class="bub-fil">Anong sukat po ang hinahanap ninyo?</span>
+        </div>
+      </div>
+      <div class="line you">
+        <div class="speaker-label">You</div>
+        <div class="bubble">
+          <span class="bub-ko">라지 있어요?</span>
+          <span class="bub-rom">Ra-ji i-sseo-yo?</span>
+          <span class="bub-en">Do you have a large?</span>
+          <span class="bub-fil">Mayroon po bang large?</span>
+        </div>
+      </div>
+      <div class="line">
+        <div class="speaker-label">Staff</div>
+        <div class="bubble">
+          <span class="bub-ko">잠깐만요, 확인해 볼게요.</span>
+          <span class="bub-rom">Jam-kkan-man-yo, hwak-in-hae bol-ge-yo.</span>
+          <span class="bub-en">One moment, let me check.</span>
+          <span class="bub-fil">Sandali lang po, titingnan ko.</span>
+        </div>
+      </div>
+      <div class="line you">
+        <div class="speaker-label">You</div>
+        <div class="bubble">
+          <span class="bub-ko">입어봐도 돼요?</span>
+          <span class="bub-rom">I-beo-bwa-do dwae-yo?</span>
+          <span class="bub-en">May I try it on?</span>
+          <span class="bub-fil">Pwede ko po bang suokin?</span>
+        </div>
+      </div>
+      <div class="line">
+        <div class="speaker-label">Staff</div>
+        <div class="bubble">
+          <span class="bub-ko">네, 탈의실은 저쪽이에요.</span>
+          <span class="bub-rom">Ne, ta-ri-sil-eun jeo-jjok-i-e-yo.</span>
+          <span class="bub-en">Yes, the fitting room is over there.</span>
+          <span class="bub-fil">Opo, ang fitting room po ay naroon.</span>
+        </div>
+      </div>
+    </div>
+    <div class="key-phrases">
+      <div class="key-phrases-title">Key Phrases</div>
+      <div class="key-phrase">
+        <div class="kp-ko">그냥 볼게요</div>
+        <div class="kp-right"><span class="kp-rom">geu-nyang bol-ge-yo</span><span class="kp-en">Just browsing — say immediately to avoid pushy staff</span></div>
+      </div>
+      <div class="key-phrase">
+        <div class="kp-ko">입어봐도 돼요?</div>
+        <div class="kp-right"><span class="kp-rom">i-beo-bwa-do dwae-yo?</span><span class="kp-en">May I try it on? — ~봐도 돼요 = may I try doing ~?</span></div>
+      </div>
+      <div class="key-phrase">
+        <div class="kp-ko">다른 색 있어요?</div>
+        <div class="kp-right"><span class="kp-rom">da-reun saek i-sseo-yo?</span><span class="kp-en">Do you have another color?</span></div>
+      </div>
+    </div>
+    <div class="culture-note">
+      Korean sizing runs smaller than Western sizes. Most clothes use free size (프리사이즈) or S/M/L. For shoes, sizes use the European millimeter system — 260 = roughly US men's 8 / women's 9.5. Don't be offended if staff suggest a larger size — it's meant to be helpful, not an insult!
+    </div>
+  </div>
+
+  <div class="scene">
+    <div class="scene-header">
+      <div class="scene-icon">🏪</div>
+      <div class="scene-info">
+        <div class="scene-title">Traditional Market 전통시장</div>
+        <div class="scene-sub">광장시장 / 남대문시장 · Traditional markets</div>
+      </div>
+      <span class="scene-level lvl-hard">Advanced</span>
+    </div>
+    <div class="dialogue">
+      <div class="line you">
+        <div class="speaker-label">You</div>
+        <div class="bubble">
+          <span class="bub-ko">이거 얼마예요?</span>
+          <span class="bub-rom">I-geo eol-ma-ye-yo?</span>
+          <span class="bub-en">How much is this?</span>
+          <span class="bub-fil">Magkano po ito?</span>
+        </div>
+      </div>
+      <div class="line">
+        <div class="speaker-label">Vendor</div>
+        <div class="bubble">
+          <span class="bub-ko">만 오천 원이요.</span>
+          <span class="bub-rom">Man o-cheon won-i-yo.</span>
+          <span class="bub-en">15,000 won.</span>
+          <span class="bub-fil">Labinlimang libong won po.</span>
+        </div>
+      </div>
+      <div class="line you">
+        <div class="speaker-label">You</div>
+        <div class="bubble">
+          <span class="bub-ko">좀 깎아 주세요. 만 원에 안 돼요?</span>
+          <span class="bub-rom">Jom kka-kka ju-se-yo. Man won-e an dwae-yo?</span>
+          <span class="bub-en">Please give me a discount. Can't you do 10,000 won?</span>
+          <span class="bub-fil">Pwede po bang magpababa? Sampung libo na lang?</span>
+        </div>
+      </div>
+      <div class="line">
+        <div class="speaker-label">Vendor</div>
+        <div class="bubble">
+          <span class="bub-ko">아이고, 그건 너무 싸요. 만 이천 원만 해 드릴게요.</span>
+          <span class="bub-rom">A-i-go, geu-geon neo-mu ssa-yo. Man i-cheon won-man hae deu-ril-ge-yo.</span>
+          <span class="bub-en">Oh my, that's too cheap. I'll do 12,000 won for you.</span>
+          <span class="bub-fil">Ay nako, masyadong mura iyon. Labindalawang libo na lang.</span>
+        </div>
+      </div>
+      <div class="line you">
+        <div class="speaker-label">You</div>
+        <div class="bubble">
+          <span class="bub-ko">두 개 사면 얼마예요?</span>
+          <span class="bub-rom">Du gae sa-myeon eol-ma-ye-yo?</span>
+          <span class="bub-en">How much if I buy two?</span>
+          <span class="bub-fil">Magkano po kung dalawa ang bibilhin ko?</span>
+        </div>
+      </div>
+      <div class="line">
+        <div class="speaker-label">Vendor</div>
+        <div class="bubble">
+          <span class="bub-ko">두 개에 이만 원이요. 특별히 깎아 드리는 거예요!</span>
+          <span class="bub-rom">Du gae-e i-man won-i-yo. Teuk-byeol-hi kka-kka deu-ri-neun geo-ye-yo!</span>
+          <span class="bub-en">Two for 20,000 won. I'm giving you a special deal!</span>
+          <span class="bub-fil">Dalawa para sa dalawampung libo. Espesyal na diskwento iyan!</span>
+        </div>
+      </div>
+    </div>
+    <div class="key-phrases">
+      <div class="key-phrases-title">Key Phrases</div>
+      <div class="key-phrase">
+        <div class="kp-ko">좀 깎아 주세요</div>
+        <div class="kp-right"><span class="kp-rom">jom kka-kka ju-se-yo</span><span class="kp-en">Please give me a discount — only in traditional markets!</span></div>
+      </div>
+      <div class="key-phrase">
+        <div class="kp-ko">~에 안 돼요?</div>
+        <div class="kp-right"><span class="kp-rom">~e an dwae-yo?</span><span class="kp-en">Can't you do it for ~? — polite negotiation</span></div>
+      </div>
+      <div class="key-phrase">
+        <div class="kp-ko">두 개 사면 얼마예요?</div>
+        <div class="kp-right"><span class="kp-rom">du gae sa-myeon eol-ma-ye-yo?</span><span class="kp-en">If I buy two, how much? — great negotiation tactic</span></div>
+      </div>
+    </div>
+    <div class="culture-note">
+      Bargaining (흥정) is expected and welcomed in traditional markets but <strong>never</strong> in department stores, convenience stores, or regular shops. Famous markets: 광장시장 (Gwangjang, fabric & street food), 남대문시장 (Namdaemun, everything), 동대문 (Dongdaemun, fashion).
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════ PEOPLE ══════════════════════════════ -->
+<div id="people" class="topic">
+  <div class="intro-box">
+    Koreans are curious and friendly — especially when you try to speak Korean.
+    Don't be surprised if someone asks your age early on, or compliments your Korean after only two sentences.
+    These conversations open real friendships.
+  </div>
+
+  <div class="scene">
+    <div class="scene-header">
+      <div class="scene-icon">🤝</div>
+      <div class="scene-info">
+        <div class="scene-title">Meeting at a Language Exchange 언어 교환</div>
+        <div class="scene-sub">홍대 카페 · Hongdae café</div>
+      </div>
+      <span class="scene-level lvl-med">Intermediate</span>
+    </div>
+    <div class="dialogue">
+      <div class="line">
+        <div class="speaker-label">Korean</div>
+        <div class="bubble">
+          <span class="bub-ko">안녕하세요! 저는 지수예요. 처음 뵙겠습니다.</span>
+          <span class="bub-rom">An-nyeong-ha-se-yo! Jeo-neun Ji-su-ye-yo. Cheo-eum boep-get-seum-ni-da.</span>
+          <span class="bub-en">Hello! I'm Jisu. Nice to meet you for the first time.</span>
+          <span class="bub-fil">Kumusta! Ako si Jisu. Ikinagagalak kong makilala kayo.</span>
+        </div>
+      </div>
+      <div class="line you">
+        <div class="speaker-label">You</div>
+        <div class="bubble">
+          <span class="bub-ko">저도 반가워요! 저는 [이름]이에요. 필리핀에서 왔어요.</span>
+          <span class="bub-rom">Jeo-do ban-ga-wo-yo! Jeo-neun [i-reum]-i-e-yo. Pil-li-pin-e-seo wa-sseo-yo.</span>
+          <span class="bub-en">Nice to meet you too! I'm [name]. I'm from the Philippines.</span>
+          <span class="bub-fil">Nagagalak din akong makilala kayo! Ako si [pangalan]. Taga-Pilipinas ako.</span>
+        </div>
+      </div>
+      <div class="line">
+        <div class="speaker-label">Korean</div>
+        <div class="bubble">
+          <span class="bub-ko">와, 한국어 잘 하시네요! 얼마나 공부했어요?</span>
+          <span class="bub-rom">Wa, han-guk-eo jal ha-si-ne-yo! Eol-ma-na gong-bu-hae-sseo-yo?</span>
+          <span class="bub-en">Wow, your Korean is great! How long have you studied?</span>
+          <span class="bub-fil">Wow, magaling ka pong mag-Korean! Gaano na po katagal kang nag-aaral?</span>
+        </div>
+      </div>
+      <div class="line you">
+        <div class="speaker-label">You</div>
+        <div class="bubble">
+          <span class="bub-ko">아직 많이 부족해요. 열심히 공부하고 있어요!</span>
+          <span class="bub-rom">A-jik man-i bu-jo-kae-yo. Yeol-sim-hi gong-bu-ha-go i-sseo-yo!</span>
+          <span class="bub-en">I'm still lacking a lot. But I'm studying hard!</span>
+          <span class="bub-fil">Kulang pa po ako ng marami. Pero masipag akong nag-aaral!</span>
+        </div>
+      </div>
+      <div class="line">
+        <div class="speaker-label">Korean</div>
+        <div class="bubble">
+          <span class="bub-ko">실례지만, 나이가 어떻게 돼요?</span>
+          <span class="bub-rom">Sil-lye-ji-man, na-i-ga eo-tteo-ke dwae-yo?</span>
+          <span class="bub-en">Excuse me for asking, but how old are you?</span>
+          <span class="bub-fil">Pasensya na po, pero ilang taon na po kayo?</span>
+        </div>
+      </div>
+      <div class="line you">
+        <div class="speaker-label">You</div>
+        <div class="bubble">
+          <span class="bub-ko">스물다섯 살이에요. 지수 씨는요?</span>
+          <span class="bub-rom">Seu-mul-da-seot sal-i-e-yo. Ji-su ssi-neun-yo?</span>
+          <span class="bub-en">I'm 25. What about you, Jisu?</span>
+          <span class="bub-fil">Dalawampu't limang taon na po ako. Ikaw naman, Jisu?</span>
+        </div>
+      </div>
+      <div class="line">
+        <div class="speaker-label">Korean</div>
+        <div class="bubble">
+          <span class="bub-ko">저도 스물다섯이에요! 동갑이네요. 말 편하게 해요!</span>
+          <span class="bub-rom">Jeo-do seu-mul-da-seot-i-e-yo! Dong-gap-i-ne-yo. Mal pyeon-ha-ge hae-yo!</span>
+          <span class="bub-en">I'm 25 too! We're the same age. Let's speak casually!</span>
+          <span class="bub-fil">Ako rin ay dalawampu't lima! Magkapantay tayo. Makipag-usap na lang tayo nang walang pormal!</span>
+        </div>
+      </div>
+    </div>
+    <div class="key-phrases">
+      <div class="key-phrases-title">Key Phrases</div>
+      <div class="key-phrase">
+        <div class="kp-ko">아직 많이 부족해요</div>
+        <div class="kp-right"><span class="kp-rom">a-jik man-i bu-jo-kae-yo</span><span class="kp-en">I'm still lacking — the humble response to compliments, Koreans love this!</span></div>
+      </div>
+      <div class="key-phrase">
+        <div class="kp-ko">동갑이에요</div>
+        <div class="kp-right"><span class="kp-rom">dong-gap-i-e-yo</span><span class="kp-en">We're the same age — triggers an instant switch to casual speech!</span></div>
+      </div>
+      <div class="key-phrase">
+        <div class="kp-ko">말 편하게 해요</div>
+        <div class="kp-right"><span class="kp-rom">mal pyeon-ha-ge hae-yo</span><span class="kp-en">Let's speak casually / drop the formalities</span></div>
+      </div>
+    </div>
+    <div class="culture-note">
+      Koreans ask age early because it determines how to speak to each other — whether to use formal or casual speech (반말 vs 존댓말). It's not rude, it's practical! If you're the same age (동갑), expect an immediate shift to informal speech. Use <strong>씨 (ssi)</strong> after someone's name as a polite honorific — 지수 씨, 민준 씨.
+    </div>
+  </div>
+
+  <div class="scene">
+    <div class="scene-header">
+      <div class="scene-icon">📱</div>
+      <div class="scene-info">
+        <div class="scene-title">Exchanging Contact Info 연락처 교환</div>
+        <div class="scene-sub">카카오톡 · KakaoTalk</div>
+      </div>
+      <span class="scene-level lvl-easy">Beginner</span>
+    </div>
+    <div class="dialogue">
+      <div class="line">
+        <div class="speaker-label">Korean</div>
+        <div class="bubble">
+          <span class="bub-ko">카카오톡 있어요?</span>
+          <span class="bub-rom">Ka-ka-o-tok i-sseo-yo?</span>
+          <span class="bub-en">Do you have KakaoTalk?</span>
+          <span class="bub-fil">Mayroon po ba kayong KakaoTalk?</span>
+        </div>
+      </div>
+      <div class="line you">
+        <div class="speaker-label">You</div>
+        <div class="bubble">
+          <span class="bub-ko">네, 있어요! 아이디 알려 드릴게요.</span>
+          <span class="bub-rom">Ne, i-sseo-yo! A-i-di al-lyeo deu-ril-ge-yo.</span>
+          <span class="bub-en">Yes! I'll tell you my ID.</span>
+          <span class="bub-fil">Opo, mayroon! Sasabihin ko po sa inyo ang aking ID.</span>
+        </div>
+      </div>
+      <div class="line">
+        <div class="speaker-label">Korean</div>
+        <div class="bubble">
+          <span class="bub-ko">나중에 또 만나요!</span>
+          <span class="bub-rom">Na-jung-e tto man-na-yo!</span>
+          <span class="bub-en">Let's meet again sometime!</span>
+          <span class="bub-fil">Magkita-kita ulit tayo!</span>
+        </div>
+      </div>
+      <div class="line you">
+        <div class="speaker-label">You</div>
+        <div class="bubble">
+          <span class="bub-ko">그래요! 연락해요!</span>
+          <span class="bub-rom">Geu-rae-yo! Yeol-lak-hae-yo!</span>
+          <span class="bub-en">Sure! Let's keep in touch!</span>
+          <span class="bub-fil">Sige! Mag-uusap tayo!</span>
+        </div>
+      </div>
+    </div>
+    <div class="culture-note">
+      KakaoTalk (카카오톡) is the dominant messaging app in Korea — essentially everyone uses it. If you're in Korea, download it before you go. Sharing your KakaoTalk ID is more common than phone numbers for new acquaintances.
+    </div>
+    <div class="tip">
+      Filipinos and Koreans share a natural warmth that makes meeting new people easy. The phrase <strong>우리</strong> (uri = we/our) is used very generously in Korean — Koreans say "우리 나라" (our country), "우리 엄마" (our mom, even meaning MY mom), creating an instant sense of togetherness. You'll feel right at home!
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════ EMERGENCY ══════════════════════════════ -->
+<div id="emergency" class="topic">
+  <div class="intro-box">
+    Korea is one of the safest countries in the world, but things can go wrong anywhere.
+    Knowing these phrases gives you confidence — and could make a real difference.
+    <strong>Emergency numbers: 119 (ambulance/fire) · 112 (police) · 1330 (tourist hotline, English available)</strong>
+  </div>
+
+  <div class="scene">
+    <div class="scene-header">
+      <div class="scene-icon">🤒</div>
+      <div class="scene-info">
+        <div class="scene-title">Feeling Sick 몸이 아플 때</div>
+        <div class="scene-sub">편의점 / 약국 · Pharmacy</div>
+      </div>
+      <span class="scene-level lvl-med">Intermediate</span>
+    </div>
+    <div class="dialogue">
+      <div class="line you">
+        <div class="speaker-label">You</div>
+        <div class="bubble">
+          <span class="bub-ko">두통약 있어요?</span>
+          <span class="bub-rom">Du-tong-yak i-sseo-yo?</span>
+          <span class="bub-en">Do you have headache medicine?</span>
+          <span class="bub-fil">Mayroon po ba kayong gamot sa sakit ng ulo?</span>
+        </div>
+      </div>
+      <div class="line">
+        <div class="speaker-label">Pharmacist</div>
+        <div class="bubble">
+          <span class="bub-ko">네, 있어요. 얼마나 심하게 아프세요?</span>
+          <span class="bub-rom">Ne, i-sseo-yo. Eol-ma-na sim-ha-ge a-peu-se-yo?</span>
+          <span class="bub-en">Yes. How severe is the pain?</span>
+          <span class="bub-fil">Opo, mayroon. Gaano po katindi ang sakit?</span>
+        </div>
+      </div>
+      <div class="line you">
+        <div class="speaker-label">You</div>
+        <div class="bubble">
+          <span class="bub-ko">어제부터 계속 아프고, 열도 좀 있어요.</span>
+          <span class="bub-rom">Eo-je-bu-teo ge-sok a-peu-go, yeol-do jom i-sseo-yo.</span>
+          <span class="bub-en">It's been hurting since yesterday, and I have a slight fever too.</span>
+          <span class="bub-fil">Masakit po ito mula kahapon, at may konting lagnat din po ako.</span>
+        </div>
+      </div>
+      <div class="line">
+        <div class="speaker-label">Pharmacist</div>
+        <div class="bubble">
+          <span class="bub-ko">이 약 드세요. 하루에 세 번, 식후에 드시면 돼요.</span>
+          <span class="bub-rom">I yak deu-se-yo. Ha-ru-e se beon, sik-hu-e deu-si-myeon dwae-yo.</span>
+          <span class="bub-en">Take this medicine. Three times a day, after meals.</span>
+          <span class="bub-fil">Uminom po kayo nito. Tatlong beses sa isang araw, pagkatapos kumain.</span>
+        </div>
+      </div>
+      <div class="line you">
+        <div class="speaker-label">You</div>
+        <div class="bubble">
+          <span class="bub-ko">증상이 심해지면 병원에 가야 하나요?</span>
+          <span class="bub-rom">Jeung-sang-i sim-hae-ji-myeon byeong-won-e ga-ya ha-na-yo?</span>
+          <span class="bub-en">If the symptoms get worse, should I go to the hospital?</span>
+          <span class="bub-fil">Kung lumala ang sintomas, dapat po ba akong pumunta sa ospital?</span>
+        </div>
+      </div>
+      <div class="line">
+        <div class="speaker-label">Pharmacist</div>
+        <div class="bubble">
+          <span class="bub-ko">네, 이틀이 지나도 안 나으면 병원에 가 보세요.</span>
+          <span class="bub-rom">Ne, i-teul-i ji-na-do an na-eu-myeon byeong-won-e ga bo-se-yo.</span>
+          <span class="bub-en">Yes, if it doesn't improve after two days, please go to the hospital.</span>
+          <span class="bub-fil">Opo, kung hindi gumaling pagkatapos ng dalawang araw, pumunta na po kayo sa ospital.</span>
+        </div>
+      </div>
+    </div>
+    <div class="key-phrases">
+      <div class="key-phrases-title">Key Phrases — Body Parts & Symptoms</div>
+      <div class="key-phrase">
+        <div class="kp-ko">머리가 아파요</div>
+        <div class="kp-right"><span class="kp-rom">meo-ri-ga a-pa-yo</span><span class="kp-en">My head hurts (headache)</span></div>
+      </div>
+      <div class="key-phrase">
+        <div class="kp-ko">배가 아파요</div>
+        <div class="kp-right"><span class="kp-rom">bae-ga a-pa-yo</span><span class="kp-en">My stomach hurts</span></div>
+      </div>
+      <div class="key-phrase">
+        <div class="kp-ko">열이 있어요</div>
+        <div class="kp-right"><span class="kp-rom">yeol-i i-sseo-yo</span><span class="kp-en">I have a fever</span></div>
+      </div>
+      <div class="key-phrase">
+        <div class="kp-ko">하루에 세 번, 식후에</div>
+        <div class="kp-right"><span class="kp-rom">ha-ru-e se beon, sik-hu-e</span><span class="kp-en">Three times a day, after meals — medicine instruction!</span></div>
+      </div>
+    </div>
+    <div class="variation">
+      <div class="variation-title">Body Parts that Hurt</div>
+      <div class="var-row"><div class="var-ko">머리</div><div class="var-rom">meo-ri</div><div class="var-en">Head</div></div>
+      <div class="var-row"><div class="var-ko">배</div><div class="var-rom">bae</div><div class="var-en">Stomach / belly</div></div>
+      <div class="var-row"><div class="var-ko">목</div><div class="var-rom">mok</div><div class="var-en">Throat / neck</div></div>
+      <div class="var-row"><div class="var-ko">다리</div><div class="var-rom">da-ri</div><div class="var-en">Leg</div></div>
+      <div class="var-row"><div class="var-ko">팔</div><div class="var-rom">pal</div><div class="var-en">Arm</div></div>
+      <div class="var-row"><div class="var-ko">등</div><div class="var-rom">deung</div><div class="var-en">Back</div></div>
+    </div>
+    <div class="culture-note">
+      Korean pharmacies (약국) are excellent and pharmacists are very knowledgeable. Many common medicines are available over the counter. For more serious issues, go to a clinic (의원) or hospital (병원). The tourist helpline <strong>1330</strong> has English-speaking staff available 24/7 — save this number!
+    </div>
+  </div>
+
+  <div class="scene">
+    <div class="scene-header">
+      <div class="scene-icon">🔍</div>
+      <div class="scene-info">
+        <div class="scene-title">Lost Item 분실물</div>
+        <div class="scene-sub">지하철 안내소 · Subway information desk</div>
+      </div>
+      <span class="scene-level lvl-hard">Advanced</span>
+    </div>
+    <div class="dialogue">
+      <div class="line you">
+        <div class="speaker-label">You</div>
+        <div class="bubble">
+          <span class="bub-ko">지갑을 잃어버렸어요.</span>
+          <span class="bub-rom">Ji-gap-eul i-reo-beo-ryeo-sseo-yo.</span>
+          <span class="bub-en">I've lost my wallet.</span>
+          <span class="bub-fil">Nawala po ang aking pitaka.</span>
+        </div>
+      </div>
+      <div class="line">
+        <div class="speaker-label">Staff</div>
+        <div class="bubble">
+          <span class="bub-ko">어디서 잃어버리셨어요?</span>
+          <span class="bub-rom">Eo-di-seo i-reo-beo-ri-syeo-sseo-yo?</span>
+          <span class="bub-en">Where did you lose it?</span>
+          <span class="bub-fil">Saan po ninyo nawala?</span>
+        </div>
+      </div>
+      <div class="line you">
+        <div class="speaker-label">You</div>
+        <div class="bubble">
+          <span class="bub-ko">아까 지하철 안에서 잃어버린 것 같아요.</span>
+          <span class="bub-rom">A-kka ji-ha-cheol a-ne-seo i-reo-beo-rin geot ga-ta-yo.</span>
+          <span class="bub-en">I think I lost it on the subway a little while ago.</span>
+          <span class="bub-fil">Sa palagay ko ay nawala ko sa loob ng subway kanina.</span>
+        </div>
+      </div>
+      <div class="line">
+        <div class="speaker-label">Staff</div>
+        <div class="bubble">
+          <span class="bub-ko">몇 호선이었어요? 어떻게 생겼어요?</span>
+          <span class="bub-rom">Myeot ho-seon-i-eo-sseo-yo? Eo-tteo-ke saeng-gyeo-sseo-yo?</span>
+          <span class="bub-en">Which line was it? What does it look like?</span>
+          <span class="bub-fil">Anong linya po? Ano po ang hitsura nito?</span>
+        </div>
+      </div>
+      <div class="line you">
+        <div class="speaker-label">You</div>
+        <div class="bubble">
+          <span class="bub-ko">이 호선이었어요. 검은색 가죽 지갑이에요.</span>
+          <span class="bub-rom">I ho-seon-i-eo-sseo-yo. Geo-meun-saek ga-juk ji-gap-i-e-yo.</span>
+          <span class="bub-en">It was line 2. It's a black leather wallet.</span>
+          <span class="bub-fil">Line 2 po. Itim na katad na pitaka po.</span>
+        </div>
+      </div>
+      <div class="line">
+        <div class="speaker-label">Staff</div>
+        <div class="bubble">
+          <span class="bub-ko">분실물 센터에 확인해 볼게요. 잠깐만 기다려 주세요.</span>
+          <span class="bub-rom">Bun-sil-mul sen-teo-e hwak-in-hae bol-ge-yo. Jam-kkan-man gi-da-ryeo ju-se-yo.</span>
+          <span class="bub-en">Let me check with the lost and found center. Please wait a moment.</span>
+          <span class="bub-fil">Titingnan ko sa lost and found center. Sandali lang po kayo maghintay.</span>
+        </div>
+      </div>
+    </div>
+    <div class="key-phrases">
+      <div class="key-phrases-title">Key Phrases</div>
+      <div class="key-phrase">
+        <div class="kp-ko">~을/를 잃어버렸어요</div>
+        <div class="kp-right"><span class="kp-rom">~eul/reul i-reo-beo-ryeo-sseo-yo</span><span class="kp-en">I lost my ~ — replace with any item</span></div>
+      </div>
+      <div class="key-phrase">
+        <div class="kp-ko">어떻게 생겼어요?</div>
+        <div class="kp-right"><span class="kp-rom">eo-tteo-ke saeng-gyeo-sseo-yo?</span><span class="kp-en">What does it look like? — used to describe people and objects</span></div>
+      </div>
+    </div>
+    <div class="culture-note">
+      Korea has an impressively high rate of lost items being returned. If you lose something on the subway, go to the station's 분실물 센터 (lost and found). Many wallets and phones are turned in by strangers. The national tourist helpline 1330 can help you file a report in English.
+    </div>
+  </div>
+</div>
+
+</main>
+
+<script>
+function showTab(id) {
+  document.querySelectorAll('.topic').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  event.target.classList.add('active');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,1086 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>문법 비교 · Grammar Comparison</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@300;400;700&family=Bebas+Neue&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #F5F1E8;
+    --surface: #EDEAE0;
+    --ink: #1A1714;
+    --ink2: #5A5248;
+    --ink3: #9A9088;
+    --border: #D8D2C4;
+    --ko: #C4523A;
+    --en: #2A5F8F;
+    --fil: #2D7A5A;
+    --ko-bg: #FBF0ED;
+    --en-bg: #EBF2F9;
+    --fil-bg: #E8F5EE;
+    --ko-border: #EAC4BB;
+    --en-border: #B8D4EA;
+    --fil-border: #A8D8BF;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: 'DM Sans', sans-serif;
+    min-height: 100vh;
+  }
+
+  /* NAV */
+  nav {
+    position: sticky; top: 0; z-index: 100;
+    background: var(--bg);
+    border-bottom: 1px solid var(--border);
+    padding: 0 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 52px;
+  }
+  .nav-logo {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.2rem;
+    letter-spacing: 0.06em;
+    color: var(--ink);
+    text-decoration: none;
+  }
+  .nav-logo span { color: var(--ko); }
+  .nav-links { display: flex; gap: 1.5rem; align-items: center; }
+  .nav-links a {
+    font-size: 0.75rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--ink3);
+    text-decoration: none;
+    transition: color 0.15s;
+  }
+  .nav-links a:hover { color: var(--ink); }
+  .nav-links a.active { color: var(--ko); }
+
+  /* HERO */
+  .hero {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 5rem 2rem 3rem;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 2rem;
+    align-items: end;
+    border-bottom: 1px solid var(--border);
+  }
+  .hero-eyebrow {
+    font-size: 0.68rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--ink3);
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .hero-eyebrow::before {
+    content: '';
+    width: 24px; height: 1px;
+    background: var(--ink3);
+  }
+  h1 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(3rem, 7vw, 5.5rem);
+    line-height: 0.9;
+    letter-spacing: 0.02em;
+  }
+  h1 em {
+    font-style: normal;
+    color: var(--ko);
+    font-family: 'Noto Serif KR', serif;
+    font-weight: 700;
+    font-size: 0.7em;
+  }
+  .hero-desc {
+    margin-top: 1.5rem;
+    font-size: 0.88rem;
+    line-height: 1.8;
+    color: var(--ink2);
+    max-width: 520px;
+  }
+  .lang-pills {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    align-items: flex-end;
+    flex-shrink: 0;
+  }
+  .lang-pill {
+    padding: 6px 16px;
+    border-radius: 999px;
+    font-size: 0.72rem;
+    font-weight: 500;
+    letter-spacing: 0.05em;
+    white-space: nowrap;
+  }
+  .lang-pill.ko { background: var(--ko-bg); color: var(--ko); border: 1px solid var(--ko-border); }
+  .lang-pill.en { background: var(--en-bg); color: var(--en); border: 1px solid var(--en-border); }
+  .lang-pill.fil { background: var(--fil-bg); color: var(--fil); border: 1px solid var(--fil-border); }
+
+  /* TAB NAV */
+  .tab-nav {
+    max-width: 900px;
+    margin: 2rem auto 0;
+    padding: 0 2rem;
+    display: flex;
+    gap: 0;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+  .tab-nav::-webkit-scrollbar { display: none; }
+  .tab-btn {
+    padding: 10px 20px;
+    border: none;
+    background: none;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.8rem;
+    letter-spacing: 0.04em;
+    color: var(--ink3);
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+    transition: all 0.15s;
+    white-space: nowrap;
+  }
+  .tab-btn:hover { color: var(--ink); }
+  .tab-btn.active { color: var(--ko); border-bottom-color: var(--ko); font-weight: 500; }
+
+  /* MAIN */
+  main {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 3rem 2rem 6rem;
+  }
+
+  .topic { display: none; }
+  .topic.active { display: block; }
+
+  /* INTRO BOX */
+  .intro-box {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 1.5rem 2rem;
+    margin-bottom: 2.5rem;
+    font-size: 0.85rem;
+    line-height: 1.8;
+    color: var(--ink2);
+  }
+  .intro-box strong { color: var(--ink); }
+
+  /* COMPARISON CARD */
+  .compare-card {
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    overflow: hidden;
+    margin-bottom: 1.5rem;
+  }
+  .compare-header {
+    background: var(--ink);
+    color: var(--bg);
+    padding: 1rem 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .compare-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.3rem;
+    letter-spacing: 0.06em;
+  }
+  .compare-subtitle {
+    font-size: 0.72rem;
+    color: #A09880;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    font-family: 'DM Mono', monospace;
+  }
+  .compare-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+  }
+  .lang-col {
+    padding: 1.5rem;
+    border-right: 1px solid var(--border);
+  }
+  .lang-col:last-child { border-right: none; }
+  .lang-label {
+    font-size: 0.65rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    font-weight: 500;
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .lang-label::before {
+    content: '';
+    width: 12px; height: 3px;
+    border-radius: 999px;
+  }
+  .ko .lang-label { color: var(--ko); }
+  .ko .lang-label::before { background: var(--ko); }
+  .en .lang-label { color: var(--en); }
+  .en .lang-label::before { background: var(--en); }
+  .fil .lang-label { color: var(--fil); }
+  .fil .lang-label::before { background: var(--fil); }
+
+  .ko { background: var(--ko-bg); }
+  .en { background: var(--en-bg); }
+  .fil { background: var(--fil-bg); }
+
+  /* EXAMPLE SENTENCE */
+  .example {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.82rem;
+    padding: 10px 12px;
+    border-radius: 3px;
+    margin-bottom: 8px;
+    line-height: 1.6;
+  }
+  .ko .example { background: var(--ko-border); color: #6A2010; }
+  .en .example { background: var(--en-border); color: #0C2F50; }
+  .fil .example { background: var(--fil-border); color: #0A3D20; }
+
+  .example-label {
+    font-size: 0.65rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ink3);
+    margin-bottom: 4px;
+  }
+  .example-ko {
+    font-family: 'Noto Serif KR', serif;
+    font-size: 1rem;
+    font-weight: 700;
+    display: block;
+    margin-bottom: 2px;
+  }
+  .example-rom {
+    font-size: 0.72rem;
+    color: var(--ko);
+    display: block;
+    margin-bottom: 2px;
+  }
+
+  .note {
+    font-size: 0.78rem;
+    line-height: 1.7;
+    color: var(--ink2);
+    margin-top: 0.8rem;
+  }
+  .note strong { color: var(--ink); font-size: 0.82rem; }
+
+  /* STRUCTURE DIAGRAM */
+  .structure-diagram {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    flex-wrap: wrap;
+    margin: 0.8rem 0;
+  }
+  .struct-block {
+    padding: 4px 10px;
+    border-radius: 3px;
+    font-size: 0.72rem;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    font-family: 'DM Mono', monospace;
+  }
+  .struct-arrow {
+    color: var(--ink3);
+    font-size: 0.8rem;
+  }
+  .s-subj { background: #FFE8B2; color: #6B4A00; }
+  .s-obj  { background: #B2E8D4; color: #004A30; }
+  .s-verb { background: #B2C8E8; color: #001A4A; }
+  .s-adj  { background: #E8B2C8; color: #4A0020; }
+  .s-part { background: #E8E0B2; color: #4A3A00; }
+  .s-top  { background: #D4B2E8; color: #2A0050; }
+  .s-neg  { background: #E8C4B2; color: #4A1A00; }
+  .s-aux  { background: #C4E8B2; color: #0A4A00; }
+
+  /* TIP BOX */
+  .tip {
+    background: #FFFBF0;
+    border: 1px solid #E8D88A;
+    border-left: 3px solid #C8A84B;
+    border-radius: 3px;
+    padding: 1rem 1.5rem;
+    margin: 1.5rem 0;
+    font-size: 0.82rem;
+    line-height: 1.7;
+    color: #5A4A10;
+  }
+  .tip::before {
+    content: '💡 Filipino Learner Tip';
+    display: block;
+    font-size: 0.68rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: #8A6A10;
+    margin-bottom: 6px;
+    font-weight: 500;
+  }
+
+  /* SECTION HEADER */
+  .section-label {
+    font-size: 0.65rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--ink3);
+    margin: 3rem 0 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .section-label::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+
+  /* PARTICLE TABLE */
+  .particle-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.82rem;
+    margin: 1rem 0 1.5rem;
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    overflow: hidden;
+  }
+  .particle-table th {
+    background: var(--surface);
+    padding: 8px 14px;
+    text-align: left;
+    font-size: 0.65rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--ink3);
+    border-bottom: 1px solid var(--border);
+    font-weight: 400;
+  }
+  .particle-table td {
+    padding: 10px 14px;
+    border-bottom: 1px solid var(--border);
+    vertical-align: top;
+    line-height: 1.6;
+  }
+  .particle-table tr:last-child td { border-bottom: none; }
+  .particle-table tr:hover td { background: var(--surface); }
+  .p-tag {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: var(--ko);
+    background: var(--ko-bg);
+    padding: 1px 8px;
+    border-radius: 3px;
+    white-space: nowrap;
+  }
+  .p-ko { font-family: 'Noto Serif KR', serif; font-weight: 700; font-size: 0.95rem; }
+
+  @media (max-width: 640px) {
+    .compare-grid { grid-template-columns: 1fr; }
+    .lang-col { border-right: none; border-bottom: 1px solid var(--border); }
+    .lang-col:last-child { border-bottom: none; }
+    .hero { grid-template-columns: 1fr; }
+    .lang-pills { flex-direction: row; align-items: flex-start; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <a class="nav-logo" href="index.html">LEARN <span>한국어</span></a>
+  <div class="nav-links">
+    <a href="level1.html">Hangul</a>
+    <a href="level2.html">Phrases</a>
+    <a href="vocab.html">Vocab</a>
+    <a href="level3.html" class="active">Grammar</a>
+  </div>
+</nav>
+
+<div class="hero">
+  <div>
+    <div class="hero-eyebrow">Level 3 · Grammar</div>
+    <h1><em>문법</em><br>GRAMMAR<br>COMPARISON</h1>
+    <p class="hero-desc">
+      How Korean grammar works — compared side by side with English and Filipino (Tagalog).
+      Understanding the differences is the fastest way to stop making mistakes.
+    </p>
+  </div>
+  <div class="lang-pills">
+    <div class="lang-pill ko">🇰🇷 한국어 Korean</div>
+    <div class="lang-pill en">🇺🇸 English</div>
+    <div class="lang-pill fil">🇵🇭 Filipino / Tagalog</div>
+  </div>
+</div>
+
+<div class="tab-nav">
+  <button class="tab-btn active" onclick="showTab('word-order')">Word Order</button>
+  <button class="tab-btn" onclick="showTab('particles')">Particles</button>
+  <button class="tab-btn" onclick="showTab('verbs')">Verbs</button>
+  <button class="tab-btn" onclick="showTab('negation')">Negation</button>
+  <button class="tab-btn" onclick="showTab('questions')">Questions</button>
+  <button class="tab-btn" onclick="showTab('honorifics')">Honorifics</button>
+</div>
+
+<main>
+
+<!-- ═══ WORD ORDER ═══ -->
+<div id="word-order" class="topic active">
+  <div class="intro-box">
+    This is the <strong>most important difference</strong> between Korean and English/Filipino.
+    Korean puts the verb at the END of the sentence — always. Everything else comes before it.
+    Once you internalize this, Korean sentences will start to feel natural.
+  </div>
+
+  <div class="compare-card">
+    <div class="compare-header">
+      <div class="compare-title">Basic Sentence Structure</div>
+      <div class="compare-subtitle">Subject · Object · Verb</div>
+    </div>
+    <div class="compare-grid">
+      <div class="lang-col ko">
+        <div class="lang-label">한국어 Korean</div>
+        <div class="structure-diagram">
+          <span class="struct-block s-subj">Subject</span>
+          <span class="struct-arrow">+</span>
+          <span class="struct-block s-obj">Object</span>
+          <span class="struct-arrow">+</span>
+          <span class="struct-block s-verb">Verb</span>
+        </div>
+        <div class="example">
+          <span class="example-label">Example</span>
+          <span class="example-ko">나는 밥을 먹어요.</span>
+          <span class="example-rom">Na-neun bab-eul meo-geo-yo.</span>
+        </div>
+        <p class="note">
+          <strong>SOV order.</strong> The verb always comes last. Even in long sentences with many clauses, the main verb is at the very end.
+        </p>
+      </div>
+      <div class="lang-col en">
+        <div class="lang-label">English</div>
+        <div class="structure-diagram">
+          <span class="struct-block s-subj">Subject</span>
+          <span class="struct-arrow">+</span>
+          <span class="struct-block s-verb">Verb</span>
+          <span class="struct-arrow">+</span>
+          <span class="struct-block s-obj">Object</span>
+        </div>
+        <div class="example">I eat rice.</div>
+        <p class="note">
+          <strong>SVO order.</strong> The verb always follows the subject directly. This is what makes English feel so different from Korean.
+        </p>
+      </div>
+      <div class="lang-col fil">
+        <div class="lang-label">Filipino / Tagalog</div>
+        <div class="structure-diagram">
+          <span class="struct-block s-verb">Verb</span>
+          <span class="struct-arrow">+</span>
+          <span class="struct-block s-subj">Subject</span>
+          <span class="struct-arrow">+</span>
+          <span class="struct-block s-obj">Object</span>
+        </div>
+        <div class="example">Kumakain ako ng kanin.</div>
+        <p class="note">
+          <strong>VSO order.</strong> Filipino puts the verb FIRST — the exact opposite of Korean. This is actually the biggest adjustment for Filipino learners.
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <div class="tip">
+    For Filipino speakers, the jump to Korean word order is <strong>the hardest part</strong> — not Hangul.
+    In Tagalog you say "Kumain ako ng mansanas" (Ate I apple), but in Korean you'd say "나는 사과를 먹었어요" (I apple ate).
+    Practice by mentally flipping your Tagalog sentences: move the verb from front to back.
+  </div>
+
+  <div class="compare-card">
+    <div class="compare-header">
+      <div class="compare-title">Adjectives Come BEFORE Nouns</div>
+      <div class="compare-subtitle">All three languages agree here</div>
+    </div>
+    <div class="compare-grid">
+      <div class="lang-col ko">
+        <div class="lang-label">한국어 Korean</div>
+        <div class="structure-diagram">
+          <span class="struct-block s-adj">Adjective</span>
+          <span class="struct-arrow">+</span>
+          <span class="struct-block s-subj">Noun</span>
+        </div>
+        <div class="example">
+          <span class="example-ko">예쁜 꽃</span>
+          <span class="example-rom">Ye-ppeun kkot</span>
+        </div>
+        <p class="note">Pretty flower. Adjectives precede the noun, same as English.</p>
+      </div>
+      <div class="lang-col en">
+        <div class="lang-label">English</div>
+        <div class="structure-diagram">
+          <span class="struct-block s-adj">Adjective</span>
+          <span class="struct-arrow">+</span>
+          <span class="struct-block s-subj">Noun</span>
+        </div>
+        <div class="example">Pretty flower.</div>
+        <p class="note">Same as Korean — adjective before noun.</p>
+      </div>
+      <div class="lang-col fil">
+        <div class="lang-label">Filipino / Tagalog</div>
+        <div class="structure-diagram">
+          <span class="struct-block s-adj">Adjective</span>
+          <span class="struct-arrow">na /</span>
+          <span class="struct-block s-subj">Noun</span>
+        </div>
+        <div class="example">Magandang bulaklak.</div>
+        <p class="note">Filipino also puts adjectives before nouns, but uses a linker <strong>na / -ng</strong> to connect them.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ PARTICLES ═══ -->
+<div id="particles" class="topic">
+  <div class="intro-box">
+    Korean uses <strong>particles</strong> — small grammatical markers attached to nouns — to show the role of each word in a sentence.
+    English does this through word order. Filipino uses prepositions (sa, ng, si) which are somewhat similar to Korean particles.
+  </div>
+
+  <div class="tip">
+    Filipino learners have an advantage here! Tagalog particles like <strong>si, ang, ng, sa</strong> work similarly to Korean particles.
+    "Si Maria" (subject marker) → like Korean 이/가. "Ng" (object marker) → like Korean 을/를.
+  </div>
+
+  <div class="section-label">Core Particles</div>
+
+  <table class="particle-table">
+    <thead>
+      <tr>
+        <th>Korean Particle</th>
+        <th>Role</th>
+        <th>Korean Example</th>
+        <th>English Equivalent</th>
+        <th>Filipino Equivalent</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="p-tag">은 / 는</span></td>
+        <td>Topic marker<br><span style="font-size:0.72rem;color:var(--ink3)">은 after consonant, 는 after vowel</span></td>
+        <td><span class="p-ko">나<strong>는</strong> 학생이에요</span><br><span style="font-size:0.72rem;color:var(--ink3)">I (topic) am a student</span></td>
+        <td>Word order shows subject<br><em>"I am a student"</em></td>
+        <td><strong>Ang</strong> / <strong>Si</strong> (topic marker)<br><em>"Si Maria ay estudyante"</em></td>
+      </tr>
+      <tr>
+        <td><span class="p-tag">이 / 가</span></td>
+        <td>Subject marker<br><span style="font-size:0.72rem;color:var(--ink3)">이 after consonant, 가 after vowel</span></td>
+        <td><span class="p-ko">비<strong>가</strong> 와요</span><br><span style="font-size:0.72rem;color:var(--ink3)">Rain (subject) comes = It's raining</span></td>
+        <td>Word order / "It" subject<br><em>"It is raining"</em></td>
+        <td><strong>Ang</strong> (subject marker)<br><em>"Ang ulan ay bumabagsak"</em></td>
+      </tr>
+      <tr>
+        <td><span class="p-tag">을 / 를</span></td>
+        <td>Object marker<br><span style="font-size:0.72rem;color:var(--ink3)">을 after consonant, 를 after vowel</span></td>
+        <td><span class="p-ko">밥<strong>을</strong> 먹어요</span><br><span style="font-size:0.72rem;color:var(--ink3)">Rice (object) eat</span></td>
+        <td>Word order shows object<br><em>"(I) eat rice"</em></td>
+        <td><strong>Ng</strong> (object marker)<br><em>"Kumain ng kanin"</em></td>
+      </tr>
+      <tr>
+        <td><span class="p-tag">에</span></td>
+        <td>Location / Direction<br><span style="font-size:0.72rem;color:var(--ink3)">"at", "to", "in"</span></td>
+        <td><span class="p-ko">학교<strong>에</strong> 가요</span><br><span style="font-size:0.72rem;color:var(--ink3)">Go to school</span></td>
+        <td>"at / to / in"<br><em>"(I) go to school"</em></td>
+        <td><strong>Sa</strong> (location marker)<br><em>"Pumunta sa paaralan"</em></td>
+      </tr>
+      <tr>
+        <td><span class="p-tag">에서</span></td>
+        <td>Location of action<br><span style="font-size:0.72rem;color:var(--ink3)">"at/in" where action happens</span></td>
+        <td><span class="p-ko">학교<strong>에서</strong> 공부해요</span><br><span style="font-size:0.72rem;color:var(--ink3)">Study at school</span></td>
+        <td>"at / in"<br><em>"(I) study at school"</em></td>
+        <td><strong>Sa</strong><br><em>"Nag-aaral sa paaralan"</em></td>
+      </tr>
+      <tr>
+        <td><span class="p-tag">의</span></td>
+        <td>Possession<br><span style="font-size:0.72rem;color:var(--ink3)">"'s" / "of"</span></td>
+        <td><span class="p-ko">나<strong>의</strong> 책</span><br><span style="font-size:0.72rem;color:var(--ink3)">My book (I's book)</span></td>
+        <td>"my / his / her / 's"<br><em>"My book"</em></td>
+        <td><strong>Ng / Ni</strong> (possessive)<br><em>"Aklat ko / Aklat ni Maria"</em></td>
+      </tr>
+      <tr>
+        <td><span class="p-tag">도</span></td>
+        <td>Also / Too</td>
+        <td><span class="p-ko">나<strong>도</strong> 좋아요</span><br><span style="font-size:0.72rem;color:var(--ink3)">I also like it</span></td>
+        <td>"too / also / as well"<br><em>"I like it too"</em></td>
+        <td><strong>Rin / Rin naman</strong><br><em>"Gusto ko rin"</em></td>
+      </tr>
+      <tr>
+        <td><span class="p-tag">와 / 과</span><br><span class="p-tag">랑 / 이랑</span></td>
+        <td>And / With<br><span style="font-size:0.72rem;color:var(--ink3)">와/랑 after vowel, 과/이랑 after consonant</span></td>
+        <td><span class="p-ko">엄마<strong>랑</strong> 아빠</span><br><span style="font-size:0.72rem;color:var(--ink3)">Mom and Dad</span></td>
+        <td>"and / with"<br><em>"Mom and Dad"</em></td>
+        <td><strong>At</strong> (and)<br><em>"Nanay at Tatay"</em></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- ═══ VERBS ═══ -->
+<div id="verbs" class="topic">
+  <div class="intro-box">
+    Korean verbs always come at the <strong>end</strong> of the sentence and change form based on tense, formality, and mood.
+    Unlike English, Korean verbs don't change based on the subject (no "he goes" vs "I go").
+    Unlike Filipino, Korean verbs don't encode who the focus of action is.
+  </div>
+
+  <div class="section-label">Present / Past / Future</div>
+
+  <div class="compare-card">
+    <div class="compare-header">
+      <div class="compare-title">Verb Tense</div>
+      <div class="compare-subtitle">먹다 · To eat · Kumain</div>
+    </div>
+    <div class="compare-grid">
+      <div class="lang-col ko">
+        <div class="lang-label">한국어 Korean</div>
+        <div class="example">
+          <span class="example-label">Present</span>
+          <span class="example-ko">먹어요</span>
+          <span class="example-rom">Meo-geo-yo</span>
+        </div>
+        <div class="example">
+          <span class="example-label">Past</span>
+          <span class="example-ko">먹었어요</span>
+          <span class="example-rom">Meo-geo-sseo-yo</span>
+        </div>
+        <div class="example">
+          <span class="example-label">Future</span>
+          <span class="example-ko">먹을 거예요</span>
+          <span class="example-rom">Meo-geul geo-ye-yo</span>
+        </div>
+        <p class="note">Verb endings change. The <strong>-았/었-</strong> infix marks past tense. <strong>-ㄹ 거예요</strong> marks future.</p>
+      </div>
+      <div class="lang-col en">
+        <div class="lang-label">English</div>
+        <div class="example">
+          <span class="example-label">Present</span>
+          I eat / I am eating
+        </div>
+        <div class="example">
+          <span class="example-label">Past</span>
+          I ate / I was eating
+        </div>
+        <div class="example">
+          <span class="example-label">Future</span>
+          I will eat
+        </div>
+        <p class="note">Irregular past forms ("eat → ate"). Auxiliary verbs used for future ("will"). Continuous forms with "-ing".</p>
+      </div>
+      <div class="lang-col fil">
+        <div class="lang-label">Filipino / Tagalog</div>
+        <div class="example">
+          <span class="example-label">Present</span>
+          Kumakain ako
+        </div>
+        <div class="example">
+          <span class="example-label">Past</span>
+          Kumain ako
+        </div>
+        <div class="example">
+          <span class="example-label">Future</span>
+          Kakain ako
+        </div>
+        <p class="note">Aspect (not tense) is marked by reduplication and infixes. "Kumakain" (ongoing) vs "kumain" (completed).</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-label">Formal vs Casual Speech</div>
+
+  <div class="compare-card">
+    <div class="compare-header">
+      <div class="compare-title">Speech Levels</div>
+      <div class="compare-subtitle">Korean has multiple formality levels built into verbs</div>
+    </div>
+    <div class="compare-grid">
+      <div class="lang-col ko">
+        <div class="lang-label">한국어 Korean</div>
+        <div class="example">
+          <span class="example-label">Formal (to elders/strangers)</span>
+          <span class="example-ko">먹습니다</span>
+          <span class="example-rom">Meok-seum-ni-da</span>
+        </div>
+        <div class="example">
+          <span class="example-label">Polite (everyday)</span>
+          <span class="example-ko">먹어요</span>
+          <span class="example-rom">Meo-geo-yo</span>
+        </div>
+        <div class="example">
+          <span class="example-label">Casual (friends)</span>
+          <span class="example-ko">먹어</span>
+          <span class="example-rom">Meo-geo</span>
+        </div>
+        <p class="note">Using the wrong level is a social mistake. Start with <strong>-아/어요</strong> (polite) — it works in most situations.</p>
+      </div>
+      <div class="lang-col en">
+        <div class="lang-label">English</div>
+        <div class="example">
+          <span class="example-label">Formal</span>
+          One eats / I consume
+        </div>
+        <div class="example">
+          <span class="example-label">Polite</span>
+          I eat (please / thank you)
+        </div>
+        <div class="example">
+          <span class="example-label">Casual</span>
+          I eat / I'm eating
+        </div>
+        <p class="note">English handles formality through vocabulary choice and politeness words ("please", "would you mind"), not verb forms.</p>
+      </div>
+      <div class="lang-col fil">
+        <div class="lang-label">Filipino / Tagalog</div>
+        <div class="example">
+          <span class="example-label">Formal / Polite</span>
+          Kumakain po ako
+        </div>
+        <div class="example">
+          <span class="example-label">Polite</span>
+          Kumakain ako
+        </div>
+        <div class="example">
+          <span class="example-label">Casual</span>
+          Kumakain ako / Kumakain lang
+        </div>
+        <p class="note">Filipino uses the particle <strong>po/ho</strong> to add respect — similar in spirit to Korean formality levels. This will feel familiar!</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="tip">
+    The Filipino <strong>po / ho</strong> system is very close to how Korean speech levels work — both are ways of showing respect to elders and strangers through language. In Korean, this respect is baked into the verb ending itself rather than a separate particle.
+  </div>
+</div>
+
+<!-- ═══ NEGATION ═══ -->
+<div id="negation" class="topic">
+  <div class="intro-box">
+    Making sentences negative works very differently across the three languages.
+    Korean has two ways to negate — a short form and a long form — and both go at the <strong>end</strong> of the sentence (because everything does in Korean).
+  </div>
+
+  <div class="compare-card">
+    <div class="compare-header">
+      <div class="compare-title">Negation</div>
+      <div class="compare-subtitle">"I don't eat" / "Hindi kumakain"</div>
+    </div>
+    <div class="compare-grid">
+      <div class="lang-col ko">
+        <div class="lang-label">한국어 Korean</div>
+        <div class="example">
+          <span class="example-label">Short form — 안 (before verb)</span>
+          <span class="example-ko">안 먹어요</span>
+          <span class="example-rom">An meo-geo-yo</span>
+        </div>
+        <div class="example">
+          <span class="example-label">Long form — -지 않아요 (after verb stem)</span>
+          <span class="example-ko">먹지 않아요</span>
+          <span class="example-rom">Meok-ji a-na-yo</span>
+        </div>
+        <p class="note">
+          <strong>안</strong> goes directly before the verb (short, casual).<br>
+          <strong>-지 않아요</strong> attaches to the verb stem (longer, more formal).<br>
+          Both mean the same thing.
+        </p>
+      </div>
+      <div class="lang-col en">
+        <div class="lang-label">English</div>
+        <div class="example">
+          <span class="example-label">With auxiliary "do"</span>
+          I don't eat.
+        </div>
+        <div class="example">
+          <span class="example-label">With "not"</span>
+          I do not eat.
+        </div>
+        <p class="note">
+          English requires the auxiliary "do/does/did" to negate. "Not" goes after the auxiliary, before the main verb.
+          Past: "I didn't eat."
+        </p>
+      </div>
+      <div class="lang-col fil">
+        <div class="lang-label">Filipino / Tagalog</div>
+        <div class="example">
+          <span class="example-label">Hindi (general negation)</span>
+          Hindi ako kumakain.
+        </div>
+        <div class="example">
+          <span class="example-label">Wala (absence/none)</span>
+          Wala akong pagkain.
+        </div>
+        <p class="note">
+          <strong>Hindi</strong> is placed before the verb phrase — similar to Korean <strong>안</strong> in position.
+          <strong>Wala</strong> is used for "there is none" / "I have none".
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <div class="tip">
+    Filipino "Hindi" and Korean "안" work similarly — both are placed before the verb to negate it.
+    The big difference: in Korean the verb still goes to the END, so "안" sits just before the verb at the end: <strong>나는 밥을 안 먹어요</strong> (I rice not eat).
+  </div>
+</div>
+
+<!-- ═══ QUESTIONS ═══ -->
+<div id="questions" class="topic">
+  <div class="intro-box">
+    Forming questions in Korean is remarkably simple. You mostly just <strong>change the ending</strong> of the sentence — the word order stays exactly the same as a statement. No subject-verb inversion needed (unlike English).
+  </div>
+
+  <div class="compare-card">
+    <div class="compare-header">
+      <div class="compare-title">Yes/No Questions</div>
+      <div class="compare-subtitle">Statement → Question</div>
+    </div>
+    <div class="compare-grid">
+      <div class="lang-col ko">
+        <div class="lang-label">한국어 Korean</div>
+        <div class="example">
+          <span class="example-label">Statement</span>
+          <span class="example-ko">밥을 먹어요.</span>
+          <span class="example-rom">Bab-eul meo-geo-yo.</span>
+        </div>
+        <div class="example">
+          <span class="example-label">Question (rising intonation)</span>
+          <span class="example-ko">밥을 먹어요?</span>
+          <span class="example-rom">Bab-eul meo-geo-yo?</span>
+        </div>
+        <p class="note">Same words, same order! Just add <strong>?</strong> and raise your intonation. Easy.</p>
+      </div>
+      <div class="lang-col en">
+        <div class="lang-label">English</div>
+        <div class="example">
+          <span class="example-label">Statement</span>
+          You eat rice.
+        </div>
+        <div class="example">
+          <span class="example-label">Question (inverted)</span>
+          Do you eat rice?
+        </div>
+        <p class="note">English requires subject-verb inversion AND an auxiliary verb "do". More complex than Korean or Filipino.</p>
+      </div>
+      <div class="lang-col fil">
+        <div class="lang-label">Filipino / Tagalog</div>
+        <div class="example">
+          <span class="example-label">Statement</span>
+          Kumakain ka ng kanin.
+        </div>
+        <div class="example">
+          <span class="example-label">Question (ba marker)</span>
+          Kumakain ka ba ng kanin?
+        </div>
+        <p class="note">Filipino uses the question particle <strong>ba</strong> — placed after the first word of the sentence. Very clean system!</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="compare-card">
+    <div class="compare-header">
+      <div class="compare-title">Wh- Questions</div>
+      <div class="compare-subtitle">Who · What · Where · When · Why · How</div>
+    </div>
+    <div class="compare-grid">
+      <div class="lang-col ko">
+        <div class="lang-label">한국어 Korean</div>
+        <div class="example">
+          <span class="example-ko">뭐 먹어요?</span>
+          <span class="example-rom">Mwo meo-geo-yo?</span>
+        </div>
+        <p class="note" style="font-size:0.76rem;">
+          <strong>누구</strong> (nu-gu) — Who<br>
+          <strong>뭐 / 무엇</strong> (mwo) — What<br>
+          <strong>어디</strong> (eo-di) — Where<br>
+          <strong>언제</strong> (eon-je) — When<br>
+          <strong>왜</strong> (wae) — Why<br>
+          <strong>어떻게</strong> (eo-tteo-ke) — How
+        </p>
+        <p class="note">Question words go where the answer would go — not at the front like English.</p>
+      </div>
+      <div class="lang-col en">
+        <div class="lang-label">English</div>
+        <div class="example">What do you eat?</div>
+        <p class="note" style="font-size:0.76rem;">
+          <strong>Who</strong> — Who<br>
+          <strong>What</strong> — What<br>
+          <strong>Where</strong> — Where<br>
+          <strong>When</strong> — When<br>
+          <strong>Why</strong> — Why<br>
+          <strong>How</strong> — How
+        </p>
+        <p class="note">Question words go to the FRONT of the sentence, then verb inversion follows.</p>
+      </div>
+      <div class="lang-col fil">
+        <div class="lang-label">Filipino / Tagalog</div>
+        <div class="example">Ano ang kinakain mo?</div>
+        <p class="note" style="font-size:0.76rem;">
+          <strong>Sino</strong> — Who<br>
+          <strong>Ano</strong> — What<br>
+          <strong>Saan</strong> — Where<br>
+          <strong>Kailan</strong> — When<br>
+          <strong>Bakit</strong> — Why<br>
+          <strong>Paano</strong> — How
+        </p>
+        <p class="note">Question words go at the beginning, similar to English. The verb still comes first in the rest of the sentence.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ HONORIFICS ═══ -->
+<div id="honorifics" class="topic">
+  <div class="intro-box">
+    Korean has a built-in <strong>honorific system</strong> that affects vocabulary, verb endings, and even pronouns.
+    This isn't just politeness — it's a grammatical system. Using the wrong level with the wrong person is a real social faux pas.
+    Filipino and English handle respect very differently.
+  </div>
+
+  <div class="compare-card">
+    <div class="compare-header">
+      <div class="compare-title">How Respect Is Expressed</div>
+      <div class="compare-subtitle">Social hierarchy in language</div>
+    </div>
+    <div class="compare-grid">
+      <div class="lang-col ko">
+        <div class="lang-label">한국어 Korean</div>
+        <div class="example">
+          <span class="example-label">Casual (to friend)</span>
+          <span class="example-ko">밥 먹었어?</span>
+          <span class="example-rom">Bab meo-geo-sseo?</span>
+        </div>
+        <div class="example">
+          <span class="example-label">Polite (to adult/stranger)</span>
+          <span class="example-ko">밥 드셨어요?</span>
+          <span class="example-rom">Bab deu-syeo-sseo-yo?</span>
+        </div>
+        <p class="note">
+          The verb itself changes: <strong>먹다</strong> (eat, casual) → <strong>드시다</strong> (eat, honorific).
+          Even the noun "rice" can change: 밥 → 진지 in very formal contexts.
+        </p>
+      </div>
+      <div class="lang-col en">
+        <div class="lang-label">English</div>
+        <div class="example">
+          <span class="example-label">Casual</span>
+          Did you eat?
+        </div>
+        <div class="example">
+          <span class="example-label">Polite</span>
+          Have you had a chance to eat?
+        </div>
+        <p class="note">
+          English has no grammatical honorific system. Formality is shown through vocabulary choice, longer phrasing, and tone.
+          Words don't change their form based on social hierarchy.
+        </p>
+      </div>
+      <div class="lang-col fil">
+        <div class="lang-label">Filipino / Tagalog</div>
+        <div class="example">
+          <span class="example-label">Casual</span>
+          Kumain ka na ba?
+        </div>
+        <div class="example">
+          <span class="example-label">Polite (po/ho)</span>
+          Kumain na po kayo?
+        </div>
+        <p class="note">
+          Filipino uses <strong>po / ho</strong> (respect particle) and <strong>kayo</strong> (plural "you" used as formal singular) — both familiar concepts for understanding Korean honorifics.
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <div class="tip">
+    The Filipino <strong>kayo</strong> used as a respectful "you" is exactly like how Korean uses different pronouns for formality.
+    And just as Filipinos say "po" to elders, Koreans use verb endings like <strong>-요 / -습니다</strong> to signal respect.
+    This cultural instinct — adjusting language for social hierarchy — is shared by both cultures, which is a huge advantage!
+  </div>
+
+  <div class="section-label">Key Honorific Vocabulary Pairs</div>
+
+  <table class="particle-table">
+    <thead>
+      <tr>
+        <th>Meaning</th>
+        <th>Casual Korean</th>
+        <th>Honorific Korean</th>
+        <th>Filipino Parallel</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Eat</td>
+        <td><span class="p-ko">먹다</span> <span style="font-size:0.72rem;color:var(--ink3)">(meok-da)</span></td>
+        <td><span class="p-ko">드시다</span> <span style="font-size:0.72rem;color:var(--ink3)">(deu-si-da)</span></td>
+        <td>kumain → kumain po</td>
+      </tr>
+      <tr>
+        <td>Sleep</td>
+        <td><span class="p-ko">자다</span> <span style="font-size:0.72rem;color:var(--ink3)">(ja-da)</span></td>
+        <td><span class="p-ko">주무시다</span> <span style="font-size:0.72rem;color:var(--ink3)">(ju-mu-si-da)</span></td>
+        <td>matulog → matulog po</td>
+      </tr>
+      <tr>
+        <td>Name</td>
+        <td><span class="p-ko">이름</span> <span style="font-size:0.72rem;color:var(--ink3)">(i-reum)</span></td>
+        <td><span class="p-ko">성함</span> <span style="font-size:0.72rem;color:var(--ink3)">(seong-ham)</span></td>
+        <td>pangalan → pangalan po</td>
+      </tr>
+      <tr>
+        <td>House</td>
+        <td><span class="p-ko">집</span> <span style="font-size:0.72rem;color:var(--ink3)">(jip)</span></td>
+        <td><span class="p-ko">댁</span> <span style="font-size:0.72rem;color:var(--ink3)">(daek)</span></td>
+        <td>bahay → (bahay po nila)</td>
+      </tr>
+      <tr>
+        <td>Age</td>
+        <td><span class="p-ko">나이</span> <span style="font-size:0.72rem;color:var(--ink3)">(na-i)</span></td>
+        <td><span class="p-ko">연세</span> <span style="font-size:0.72rem;color:var(--ink3)">(yeon-se)</span></td>
+        <td>edad → (ilang taon na po)</td>
+      </tr>
+      <tr>
+        <td>You</td>
+        <td><span class="p-ko">너</span> <span style="font-size:0.72rem;color:var(--ink3)">(neo)</span></td>
+        <td><span class="p-ko">당신 / [name]+씨</span> <span style="font-size:0.72rem;color:var(--ink3)">(dang-sin / -ssi)</span></td>
+        <td>ikaw → kayo (po)</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+</main>
+
+<script>
+function showTab(id) {
+  document.querySelectorAll('.topic').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  event.target.classList.add('active');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+</script>
+</body>
+</html>

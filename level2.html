@@ -1,0 +1,442 @@
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700&family=Nunito:wght@400;600;700;800;900&display=swap');
+*{box-sizing:border-box;margin:0;padding:0;}
+.g{font-family:'Nunito',sans-serif;color:var(--color-text-primary);max-width:800px;margin:0 auto;padding:0 0 2.5rem;font-size:14px;line-height:1.7;}
+.cover{background:#0D2137;border-radius:var(--border-radius-lg);padding:2.2rem 2rem 1.8rem;margin-bottom:2rem;text-align:center;}
+.cover-tag{font-size:11px;font-weight:800;letter-spacing:2px;color:#6AAED6;margin-bottom:.4rem;}
+.cover-title{font-family:'Noto Sans KR',sans-serif;font-size:26px;font-weight:700;color:#fff;margin:.25rem 0 .5rem;}
+.cover-sub{font-size:13px;color:#93C5E8;margin-bottom:1.2rem;}
+.cover-pills{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;}
+.cpill{background:rgba(255,255,255,0.12);color:#C8E4F8;font-size:11px;font-weight:700;padding:4px 12px;border-radius:20px;}
+
+.sec{margin-bottom:2.25rem;}
+.sec-hd{display:flex;align-items:center;gap:10px;margin-bottom:1.1rem;padding-bottom:.5rem;border-bottom:2px solid #0D2137;}
+.sec-num{background:#0D2137;color:#fff;font-size:11px;font-weight:800;border-radius:50%;width:26px;height:26px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.sec-title{font-size:16px;font-weight:800;color:#0D2137;}
+
+.phrase-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px;margin-bottom:1rem;}
+.phrase-card{background:var(--color-background-primary);border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);padding:1rem 1.1rem;}
+.phrase-kor{font-family:'Noto Sans KR',sans-serif;font-size:20px;font-weight:700;color:#0D2137;line-height:1.3;}
+.phrase-rom{font-size:12px;font-weight:700;color:#185FA5;margin:.2rem 0 .15rem;}
+.phrase-eng{font-size:12px;color:var(--color-text-secondary);}
+.phrase-tag{font-size:11px;color:var(--color-text-secondary);margin-top:.25rem;font-style:italic;}
+
+.dialogue-wrap{background:var(--color-background-secondary);border-radius:var(--border-radius-lg);padding:1rem 1.2rem;margin-bottom:1rem;border:0.5px solid var(--color-border-tertiary);}
+.dlg-title{font-size:11px;font-weight:800;letter-spacing:1px;color:var(--color-text-secondary);margin-bottom:.75rem;}
+.dlg-row{display:flex;gap:10px;margin-bottom:.6rem;align-items:flex-start;}
+.dlg-avatar{width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;flex-shrink:0;margin-top:2px;}
+.av-a{background:#E6F1FB;color:#0C447C;}
+.av-b{background:#EAF3DE;color:#27500A;}
+.dlg-bubble{border-radius:0 var(--border-radius-md) var(--border-radius-md) var(--border-radius-md);padding:.5rem .75rem;font-size:13px;flex:1;}
+.bub-a{background:#E6F1FB;}
+.bub-b{background:#EAF3DE;}
+.bub-kor{font-family:'Noto Sans KR',sans-serif;font-weight:700;font-size:14px;color:#0D2137;}
+.bub-rom{font-size:11px;color:#185FA5;font-weight:700;}
+.bub-eng{font-size:11px;color:var(--color-text-secondary);}
+
+.culture-box{background:#FFF8E6;border-left:4px solid #D4860B;border-radius:0 var(--border-radius-md) var(--border-radius-md) 0;padding:1rem 1.2rem;margin-bottom:1rem;}
+.culture-box .lbl{font-size:11px;font-weight:800;letter-spacing:1px;color:#D4860B;margin-bottom:.4rem;}
+.compare-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:.75rem;}
+.compare-cell{border-radius:var(--border-radius-md);padding:.75rem 1rem;text-align:center;}
+.c-ph{background:#EEEDFE;}
+.c-kr{background:#E8F1FB;}
+.compare-head{font-size:11px;font-weight:800;margin-bottom:.4rem;}
+.c-ph .compare-head{color:#534AB7;}
+.c-kr .compare-head{color:#185FA5;}
+.compare-body{font-size:12px;color:var(--color-text-primary);}
+.compare-ex{font-size:11px;color:var(--color-text-secondary);margin-top:.3rem;font-style:italic;}
+
+.intro-table{width:100%;border-collapse:collapse;font-size:13px;margin-bottom:1rem;}
+.intro-table th{background:#0D2137;color:#fff;font-weight:700;padding:8px 10px;font-size:11px;}
+.intro-table td{padding:7px 10px;border-bottom:0.5px solid var(--color-border-tertiary);vertical-align:middle;}
+.intro-table tr:nth-child(even) td{background:var(--color-background-secondary);}
+.k{font-family:'Noto Sans KR',sans-serif;font-weight:700;color:#0D2137;font-size:16px;}
+.r{font-size:11px;font-weight:700;color:#185FA5;}
+
+.bonus-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin-bottom:1rem;}
+.bonus-card{background:var(--color-background-primary);border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);padding:.9rem 1rem;text-align:center;}
+.bonus-kor{font-family:'Noto Sans KR',sans-serif;font-size:22px;font-weight:700;color:#0D2137;line-height:1.2;}
+.bonus-rom{font-size:11px;font-weight:700;color:#185FA5;margin:.2rem 0 .15rem;}
+.bonus-mean{font-size:11px;color:var(--color-text-secondary);}
+.bonus-drama{font-size:10px;color:#993556;font-weight:700;margin-top:.3rem;}
+.drama-tag{background:#FBEAF0;color:#72243E;font-size:10px;font-weight:700;padding:2px 8px;border-radius:20px;display:inline-block;margin-top:.3rem;}
+
+.hl-box{background:var(--color-background-secondary);border-left:4px solid #0D2137;border-radius:0 var(--border-radius-md) var(--border-radius-md) 0;padding:1rem 1.2rem;margin-bottom:1rem;}
+.hl-box .lbl{font-size:11px;font-weight:800;letter-spacing:1px;color:#0D2137;margin-bottom:.4rem;}
+
+.footer{text-align:center;font-size:12px;color:var(--color-text-secondary);padding-top:1rem;border-top:0.5px solid var(--color-border-tertiary);margin-top:2rem;}
+</style>
+
+<div class="g">
+
+<div class="cover">
+  <div class="cover-tag">Level 2 · Survival Korean for Filipinos</div>
+  <div class="cover-title">필수 생존 문구</div>
+  <div class="cover-sub">Essential Phrases You Can Use Today — Kayang-kaya!</div>
+  <div class="cover-pills">
+    <span class="cpill">Greetings</span>
+    <span class="cpill">Self-intro</span>
+    <span class="cpill">Questions</span>
+    <span class="cpill">K-drama bonus</span>
+    <span class="cpill">Culture tips</span>
+  </div>
+</div>
+
+<div class="sec">
+  <div class="sec-hd"><div class="sec-num">1</div><div class="sec-title">Greetings & Politeness — 인사와 예절</div></div>
+
+  <div class="phrase-grid">
+    <div class="phrase-card">
+      <div class="phrase-kor">안녕하세요</div>
+      <div class="phrase-rom">An-nyeong-ha-se-yo</div>
+      <div class="phrase-eng">Hello / Good day (formal)</div>
+      <div class="phrase-tag">Use with anyone you just met</div>
+    </div>
+    <div class="phrase-card">
+      <div class="phrase-kor">감사합니다</div>
+      <div class="phrase-rom">Gam-sa-ham-ni-da</div>
+      <div class="phrase-eng">Thank you (formal)</div>
+      <div class="phrase-tag">Bow slightly as you say this!</div>
+    </div>
+    <div class="phrase-card">
+      <div class="phrase-kor">죄송합니다</div>
+      <div class="phrase-rom">Joe-song-ham-ni-da</div>
+      <div class="phrase-eng">I'm sorry (formal apology)</div>
+      <div class="phrase-tag">Deeper bow = more sincere</div>
+    </div>
+    <div class="phrase-card">
+      <div class="phrase-kor">아니에요</div>
+      <div class="phrase-rom">A-ni-e-yo</div>
+      <div class="phrase-eng">It's nothing / No worries</div>
+      <div class="phrase-tag">Reply when someone thanks you</div>
+    </div>
+    <div class="phrase-card">
+      <div class="phrase-kor">잠깐만요</div>
+      <div class="phrase-rom">Jam-kkan-man-yo</div>
+      <div class="phrase-eng">Just a moment, please</div>
+      <div class="phrase-tag">Raise a finger while saying it</div>
+    </div>
+    <div class="phrase-card">
+      <div class="phrase-kor">괜찮아요</div>
+      <div class="phrase-rom">Gwen-cha-na-yo</div>
+      <div class="phrase-eng">I'm okay / It's fine</div>
+      <div class="phrase-tag">Heard constantly in K-dramas!</div>
+    </div>
+  </div>
+
+  <div class="culture-box">
+    <div class="lbl">Culture tip — 존댓말 vs. Po/Opo</div>
+    <p style="font-size:13px;">Korean has a formal speech system called <strong>존댓말 (jondaemal)</strong> — just like Tagalog uses <em>po</em> and <em>opo</em> to show respect. The difference? In Korean, the entire verb ending changes!</p>
+    <div class="compare-row">
+      <div class="compare-cell c-ph">
+        <div class="compare-head">Filipino (Tagalog)</div>
+        <div class="compare-body">Add <strong>po / opo</strong> to any sentence</div>
+        <div class="compare-ex">"Salamat po" → Thank you (respectful)<br>"Opo" → Yes (respectful to elders)</div>
+      </div>
+      <div class="compare-cell c-kr">
+        <div class="compare-head">Korean (한국어)</div>
+        <div class="compare-body">Change the verb ending: <strong>-요 / -ㅂ니다</strong></div>
+        <div class="compare-ex">"감사해" (casual) →<br>"감사합니다" (formal, with seniors)</div>
+      </div>
+    </div>
+    <p style="font-size:12px;color:var(--color-text-secondary);margin-top:.75rem;">Good news: All phrases in this guide use the polite <strong>-요 / -ㅂ니다</strong> form — so you're already safe with everyone! Just like saying "po" to anyone older or in authority.</p>
+  </div>
+
+  <div class="dialogue-wrap">
+    <div class="dlg-title">DIALOGUE — Meeting someone for the first time</div>
+    <div class="dlg-row">
+      <div class="dlg-avatar av-a">You</div>
+      <div class="dlg-bubble bub-a">
+        <div class="bub-kor">안녕하세요!</div>
+        <div class="bub-rom">An-nyeong-ha-se-yo!</div>
+        <div class="bub-eng">Hello!</div>
+      </div>
+    </div>
+    <div class="dlg-row">
+      <div class="dlg-avatar av-b">KR</div>
+      <div class="dlg-bubble bub-b">
+        <div class="bub-kor">안녕하세요! 반갑습니다.</div>
+        <div class="bub-rom">An-nyeong-ha-se-yo! Ban-gap-seum-ni-da.</div>
+        <div class="bub-eng">Hello! Nice to meet you.</div>
+      </div>
+    </div>
+    <div class="dlg-row">
+      <div class="dlg-avatar av-a">You</div>
+      <div class="dlg-bubble bub-a">
+        <div class="bub-kor">저도 반갑습니다. 감사합니다!</div>
+        <div class="bub-rom">Jeo-do ban-gap-seum-ni-da. Gam-sa-ham-ni-da!</div>
+        <div class="bub-eng">Nice to meet you too. Thank you!</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="sec">
+  <div class="sec-hd"><div class="sec-num">2</div><div class="sec-title">Self-Introduction — 자기소개</div></div>
+
+  <div class="hl-box">
+    <div class="lbl">The magic formula</div>
+    <p style="font-size:13px;"><span style="font-family:'Noto Sans KR',sans-serif;font-size:17px;font-weight:700;color:#0D2137;">저는 ___입니다.</span> &nbsp;<span style="font-size:12px;font-weight:700;color:#185FA5;">Jeo-neun ___ im-ni-da.</span></p>
+    <p style="font-size:12px;color:var(--color-text-secondary);margin-top:.3rem;">Just fill in the blank! "저는" = "I am" (formal). "입니다" = the formal "is/am/are".</p>
+  </div>
+
+  <table class="intro-table">
+    <thead>
+      <tr>
+        <th style="text-align:left;border-radius:var(--border-radius-md) 0 0 0;">What to say</th>
+        <th style="text-align:left;">Korean</th>
+        <th style="text-align:left;">Pronunciation</th>
+        <th style="text-align:left;border-radius:0 var(--border-radius-md) 0 0;">English</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td style="font-size:12px;color:var(--color-text-secondary);">Your name</td>
+        <td><span class="k">저는 마리아입니다</span></td>
+        <td><span class="r">Jeo-neun Ma-ri-a im-ni-da</span></td>
+        <td style="font-size:12px;">I am Maria.</td>
+      </tr>
+      <tr>
+        <td style="font-size:12px;color:var(--color-text-secondary);">Nationality</td>
+        <td><span class="k">저는 필리핀 사람이에요</span></td>
+        <td><span class="r">Jeo-neun Pil-li-pin sa-ram-i-e-yo</span></td>
+        <td style="font-size:12px;">I'm Filipino.</td>
+      </tr>
+      <tr>
+        <td style="font-size:12px;color:var(--color-text-secondary);">Occupation</td>
+        <td><span class="k">저는 간호사예요</span></td>
+        <td><span class="r">Jeo-neun gan-ho-sa-ye-yo</span></td>
+        <td style="font-size:12px;">I'm a nurse.</td>
+      </tr>
+      <tr>
+        <td style="font-size:12px;color:var(--color-text-secondary);">Occupation</td>
+        <td><span class="k">저는 학생이에요</span></td>
+        <td><span class="r">Jeo-neun hak-saeng-i-e-yo</span></td>
+        <td style="font-size:12px;">I'm a student.</td>
+      </tr>
+      <tr>
+        <td style="font-size:12px;color:var(--color-text-secondary);">Learning Korean</td>
+        <td><span class="k">한국어 배우고 있어요</span></td>
+        <td><span class="r">Han-gu-geo bae-u-go i-sseo-yo</span></td>
+        <td style="font-size:12px;">I'm learning Korean.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="dialogue-wrap">
+    <div class="dlg-title">DIALOGUE — Self-introduction at work / school</div>
+    <div class="dlg-row">
+      <div class="dlg-avatar av-b">KR</div>
+      <div class="dlg-bubble bub-b">
+        <div class="bub-kor">이름이 뭐예요?</div>
+        <div class="bub-rom">I-reum-i mwo-ye-yo?</div>
+        <div class="bub-eng">What's your name?</div>
+      </div>
+    </div>
+    <div class="dlg-row">
+      <div class="dlg-avatar av-a">You</div>
+      <div class="dlg-bubble bub-a">
+        <div class="bub-kor">저는 안나입니다. 필리핀 사람이에요.</div>
+        <div class="bub-rom">Jeo-neun An-na-im-ni-da. Pil-li-pin sa-ram-i-e-yo.</div>
+        <div class="bub-eng">I'm Anna. I'm Filipino.</div>
+      </div>
+    </div>
+    <div class="dlg-row">
+      <div class="dlg-avatar av-b">KR</div>
+      <div class="dlg-bubble bub-b">
+        <div class="bub-kor">오, 반갑습니다! 한국어 잘 하시네요!</div>
+        <div class="bub-rom">O, ban-gap-seum-ni-da! Han-gu-geo jal ha-si-ne-yo!</div>
+        <div class="bub-eng">Oh, nice to meet you! Your Korean is great!</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="sec">
+  <div class="sec-hd"><div class="sec-num">3</div><div class="sec-title">Asking Questions — 질문하기</div></div>
+
+  <div class="phrase-grid">
+    <div class="phrase-card">
+      <div class="phrase-kor">이게 뭐예요?</div>
+      <div class="phrase-rom">I-ge mwo-ye-yo?</div>
+      <div class="phrase-eng">What is this?</div>
+      <div class="phrase-tag">Point at anything + say this!</div>
+    </div>
+    <div class="phrase-card">
+      <div class="phrase-kor">화장실이 어디예요?</div>
+      <div class="phrase-rom">Hwa-jang-si-ri eo-di-ye-yo?</div>
+      <div class="phrase-eng">Where is the bathroom?</div>
+      <div class="phrase-tag">Most important survival phrase!</div>
+    </div>
+    <div class="phrase-card">
+      <div class="phrase-kor">도와주세요</div>
+      <div class="phrase-rom">Do-wa-ju-se-yo</div>
+      <div class="phrase-eng">Please help me</div>
+      <div class="phrase-tag">Emergency must-know</div>
+    </div>
+    <div class="phrase-card">
+      <div class="phrase-kor">얼마예요?</div>
+      <div class="phrase-rom">Eol-ma-ye-yo?</div>
+      <div class="phrase-eng">How much is it?</div>
+      <div class="phrase-tag">Shopping essential</div>
+    </div>
+    <div class="phrase-card">
+      <div class="phrase-kor">한국어 못 해요</div>
+      <div class="phrase-rom">Han-gu-geo mot hae-yo</div>
+      <div class="phrase-eng">I can't speak Korean (well)</div>
+      <div class="phrase-tag">It's okay to say this!</div>
+    </div>
+    <div class="phrase-card">
+      <div class="phrase-kor">영어 할 줄 아세요?</div>
+      <div class="phrase-rom">Yeong-eo hal jul a-se-yo?</div>
+      <div class="phrase-eng">Do you speak English?</div>
+      <div class="phrase-tag">Great backup phrase</div>
+    </div>
+  </div>
+
+  <div class="dialogue-wrap">
+    <div class="dlg-title">DIALOGUE — Lost at a subway station</div>
+    <div class="dlg-row">
+      <div class="dlg-avatar av-a">You</div>
+      <div class="dlg-bubble bub-a">
+        <div class="bub-kor">저기요! 도와주세요.</div>
+        <div class="bub-rom">Jeo-gi-yo! Do-wa-ju-se-yo.</div>
+        <div class="bub-eng">Excuse me! Please help me.</div>
+      </div>
+    </div>
+    <div class="dlg-row">
+      <div class="dlg-avatar av-b">KR</div>
+      <div class="dlg-bubble bub-b">
+        <div class="bub-kor">네, 어떻게 도와드릴까요?</div>
+        <div class="bub-rom">Ne, eo-tteo-ke do-wa-deu-ril-kka-yo?</div>
+        <div class="bub-eng">Yes, how can I help you?</div>
+      </div>
+    </div>
+    <div class="dlg-row">
+      <div class="dlg-avatar av-a">You</div>
+      <div class="dlg-bubble bub-a">
+        <div class="bub-kor">화장실이 어디예요?</div>
+        <div class="bub-rom">Hwa-jang-si-ri eo-di-ye-yo?</div>
+        <div class="bub-eng">Where is the bathroom?</div>
+      </div>
+    </div>
+    <div class="dlg-row">
+      <div class="dlg-avatar av-b">KR</div>
+      <div class="dlg-bubble bub-b">
+        <div class="bub-kor">저기 있어요! (points)</div>
+        <div class="bub-rom">Jeo-gi i-sseo-yo!</div>
+        <div class="bub-eng">It's over there!</div>
+      </div>
+    </div>
+    <div class="dlg-row">
+      <div class="dlg-avatar av-a">You</div>
+      <div class="dlg-bubble bub-a">
+        <div class="bub-kor">감사합니다!</div>
+        <div class="bub-rom">Gam-sa-ham-ni-da!</div>
+        <div class="bub-eng">Thank you!</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="sec">
+  <div class="sec-hd"><div class="sec-num">4</div><div class="sec-title">K-Drama Bonus — 드라마에서 배운 표현!</div></div>
+  <p style="font-size:13px;color:var(--color-text-secondary);margin-bottom:1rem;">You've probably heard these already. Now you can say them too! These are casual/informal — use with close friends only.</p>
+
+  <div class="bonus-grid">
+    <div class="bonus-card">
+      <div class="bonus-kor">진짜요?</div>
+      <div class="bonus-rom">Jin-jja-yo?</div>
+      <div class="bonus-mean">Really? / Seriously?</div>
+      <div class="drama-tag">K-drama classic</div>
+    </div>
+    <div class="bonus-card">
+      <div class="bonus-kor">대박!</div>
+      <div class="bonus-rom">Dae-bak!</div>
+      <div class="bonus-mean">Awesome! / No way!</div>
+      <div class="drama-tag">K-drama classic</div>
+    </div>
+    <div class="bonus-card">
+      <div class="bonus-kor">안녕</div>
+      <div class="bonus-rom">An-nyeong</div>
+      <div class="bonus-mean">Hi / Bye (casual)</div>
+      <div class="drama-tag">Informal only</div>
+    </div>
+    <div class="bonus-card">
+      <div class="bonus-kor">어머!</div>
+      <div class="bonus-rom">Eo-meo!</div>
+      <div class="bonus-mean">Oh my! / Goodness!</div>
+      <div class="drama-tag">K-drama classic</div>
+    </div>
+    <div class="bonus-card">
+      <div class="bonus-kor">맞아!</div>
+      <div class="bonus-rom">Ma-ja!</div>
+      <div class="bonus-mean">That's right! / Exactly!</div>
+      <div class="drama-tag">Very common</div>
+    </div>
+    <div class="bonus-card">
+      <div class="bonus-kor">화이팅!</div>
+      <div class="bonus-rom">Hwa-i-ting!</div>
+      <div class="bonus-mean">You can do it! / Fighting!</div>
+      <div class="drama-tag">K-drama classic</div>
+    </div>
+    <div class="bonus-card">
+      <div class="bonus-kor">아이고!</div>
+      <div class="bonus-rom">A-i-go!</div>
+      <div class="bonus-mean">Oh no! / Goodness!</div>
+      <div class="drama-tag">Very Korean!</div>
+    </div>
+    <div class="bonus-card">
+      <div class="bonus-kor">잠깐!</div>
+      <div class="bonus-rom">Jam-kkan!</div>
+      <div class="bonus-mean">Wait a second!</div>
+      <div class="drama-tag">K-drama classic</div>
+    </div>
+  </div>
+
+  <div class="dialogue-wrap">
+    <div class="dlg-title">DIALOGUE — Chatting with a Korean friend (casual)</div>
+    <div class="dlg-row">
+      <div class="dlg-avatar av-b">KR</div>
+      <div class="dlg-bubble bub-b">
+        <div class="bub-kor">야, 나 오늘 시험 100점 맞았어!</div>
+        <div class="bub-rom">Ya, na o-neul si-heom 100jeom ma-ja-sseo!</div>
+        <div class="bub-eng">Hey, I got 100 on my exam today!</div>
+      </div>
+    </div>
+    <div class="dlg-row">
+      <div class="dlg-avatar av-a">You</div>
+      <div class="dlg-bubble bub-a">
+        <div class="bub-kor">진짜요?! 대박!</div>
+        <div class="bub-rom">Jin-jja-yo?! Dae-bak!</div>
+        <div class="bub-eng">Really?! That's awesome!</div>
+      </div>
+    </div>
+    <div class="dlg-row">
+      <div class="dlg-avatar av-b">KR</div>
+      <div class="dlg-bubble bub-b">
+        <div class="bub-kor">맞아, 화이팅 했더니!</div>
+        <div class="bub-rom">Ma-ja, hwa-i-ting haet-deo-ni!</div>
+        <div class="bub-eng">Right! I kept at it!</div>
+      </div>
+    </div>
+    <div class="dlg-row">
+      <div class="dlg-avatar av-a">You</div>
+      <div class="dlg-bubble bub-a">
+        <div class="bub-kor">어머! 대단해! 화이팅!</div>
+        <div class="bub-rom">Eo-meo! Dae-dan-hae! Hwa-i-ting!</div>
+        <div class="bub-eng">Oh wow! That's amazing! Keep going!</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div style="background:#0D2137;border-radius:var(--border-radius-lg);padding:1.5rem 2rem;text-align:center;color:#fff;">
+  <div style="font-size:16px;font-weight:800;margin-bottom:.5rem;">You've got this! 할 수 있어요!</div>
+  <div style="font-size:13px;color:#93C5E8;line-height:1.7;">Every K-drama you watch is Korean listening practice. Every phrase you learn here is one step closer to a real conversation. Don't be afraid to make mistakes — Koreans will love that you're trying. <br><strong style="color:#fff;">화이팅! (Hwa-i-ting!)</strong></div>
+</div>
+
+<div class="footer">Korean Survival Phrases · Level 2 of 3 &nbsp;·&nbsp; For Filipino learners &nbsp;·&nbsp; 대박 할 수 있어요!</div>
+
+</div>

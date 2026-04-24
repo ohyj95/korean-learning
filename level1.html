@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Level 1 · 한글 Hangul Basics</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@300;400;700&family=Bebas+Neue&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #F5F1E8;
+    --surface: #EDEAE0;
+    --ink: #1A1714;
+    --ink2: #5A5248;
+    --ink3: #9A9088;
+    --border: #D8D2C4;
+    --red: #C4523A;
+    --gold: #C8A84B;
+    --teal: #2D7A5A;
+    --red-bg: #FBF0ED;
+    --red-border: #EAC4BB;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--bg); color: var(--ink); font-family: 'DM Sans', sans-serif; min-height: 100vh; }
+
+  nav {
+    position: sticky; top: 0; z-index: 100;
+    background: var(--bg); border-bottom: 1px solid var(--border);
+    padding: 0 2rem; display: flex; align-items: center; justify-content: space-between; height: 52px;
+  }
+  .nav-logo { font-family: 'Bebas Neue', sans-serif; font-size: 1.2rem; letter-spacing: 0.06em; color: var(--ink); text-decoration: none; }
+  .nav-logo span { color: var(--red); }
+  .nav-links { display: flex; gap: 1.5rem; align-items: center; }
+  .nav-links a { font-size: 0.75rem; letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink3); text-decoration: none; transition: color 0.15s; }
+  .nav-links a:hover { color: var(--ink); }
+  .nav-links a.active { color: var(--red); }
+
+  .hero {
+    max-width: 900px; margin: 0 auto; padding: 5rem 2rem 3rem;
+    border-bottom: 1px solid var(--border);
+    display: grid; grid-template-columns: 1fr auto; gap: 2rem; align-items: end;
+  }
+  .eyebrow { font-size: 0.68rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--ink3); margin-bottom: 1rem; display: flex; align-items: center; gap: 10px; }
+  .eyebrow::before { content: ''; width: 24px; height: 1px; background: var(--ink3); }
+  h1 { font-family: 'Bebas Neue', sans-serif; font-size: clamp(3rem, 7vw, 5.5rem); line-height: 0.9; letter-spacing: 0.02em; }
+  h1 em { font-style: normal; color: var(--red); font-family: 'Noto Serif KR', serif; font-weight: 700; font-size: 0.7em; display: block; }
+  .hero-desc { margin-top: 1.5rem; font-size: 0.88rem; line-height: 1.8; color: var(--ink2); max-width: 520px; }
+  .hero-stat { text-align: right; }
+  .stat-num { font-family: 'Bebas Neue', sans-serif; font-size: 4rem; color: var(--red); line-height: 1; }
+  .stat-label { font-size: 0.68rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink3); }
+
+  .tab-nav { max-width: 900px; margin: 2rem auto 0; padding: 0 2rem; display: flex; gap: 0; overflow-x: auto; scrollbar-width: none; }
+  .tab-nav::-webkit-scrollbar { display: none; }
+  .tab-btn { padding: 10px 20px; border: none; background: none; font-family: 'DM Sans', sans-serif; font-size: 0.8rem; letter-spacing: 0.04em; color: var(--ink3); cursor: pointer; border-bottom: 2px solid transparent; transition: all 0.15s; white-space: nowrap; }
+  .tab-btn:hover { color: var(--ink); }
+  .tab-btn.active { color: var(--red); border-bottom-color: var(--red); font-weight: 500; }
+
+  main { max-width: 900px; margin: 0 auto; padding: 3rem 2rem 6rem; }
+  .topic { display: none; }
+  .topic.active { display: block; }
+
+  .intro-box { background: var(--surface); border: 1px solid var(--border); border-radius: 4px; padding: 1.5rem 2rem; margin-bottom: 2.5rem; font-size: 0.85rem; line-height: 1.8; color: var(--ink2); }
+  .intro-box strong { color: var(--ink); }
+
+  .section-label { font-size: 0.65rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--ink3); margin: 2.5rem 0 1.5rem; display: flex; align-items: center; gap: 12px; }
+  .section-label::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+
+  /* CHAR GRID */
+  .char-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(90px, 1fr)); gap: 8px; margin-bottom: 2rem; }
+  .char-card {
+    background: white; border: 1px solid var(--border); border-radius: 4px;
+    padding: 1rem 0.5rem 0.8rem; text-align: center; cursor: pointer;
+    transition: all 0.15s; position: relative;
+  }
+  .char-card:hover { border-color: var(--red); background: var(--red-bg); transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.08); }
+  .char-card.active-card { border-color: var(--red); background: var(--red-bg); }
+  .char-glyph { font-family: 'Noto Serif KR', serif; font-size: 2rem; font-weight: 700; color: var(--ink); display: block; line-height: 1; margin-bottom: 6px; }
+  .char-rom { font-family: 'DM Mono', monospace; font-size: 0.65rem; color: var(--red); letter-spacing: 0.08em; display: block; margin-bottom: 2px; }
+  .char-type { font-size: 0.58rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink3); }
+
+  /* DETAIL PANEL */
+  .detail-panel {
+    background: var(--ink); color: var(--bg); border-radius: 4px;
+    padding: 2rem; margin-bottom: 2rem; display: none;
+    grid-template-columns: auto 1fr; gap: 2rem; align-items: start;
+  }
+  .detail-panel.show { display: grid; }
+  .detail-big { font-family: 'Noto Serif KR', serif; font-size: 6rem; font-weight: 700; line-height: 1; color: white; }
+  .detail-rom { font-family: 'Bebas Neue', sans-serif; font-size: 2rem; color: var(--red); letter-spacing: 0.06em; margin-bottom: 0.5rem; }
+  .detail-name { font-size: 0.7rem; letter-spacing: 0.12em; text-transform: uppercase; color: #A09880; margin-bottom: 1rem; }
+  .detail-tip { font-size: 0.82rem; line-height: 1.7; color: #C8C0B0; }
+  .detail-tip strong { color: white; }
+  .detail-examples { margin-top: 1rem; display: flex; flex-wrap: wrap; gap: 8px; }
+  .detail-ex { background: #2A2520; padding: 4px 12px; border-radius: 3px; font-family: 'DM Mono', monospace; font-size: 0.75rem; color: #A09880; }
+  .detail-ex span { color: var(--red); }
+
+  /* SYLLABLE BLOCK */
+  .block-demo { background: white; border: 1px solid var(--border); border-radius: 4px; overflow: hidden; margin-bottom: 2rem; }
+  .block-header { background: var(--ink); color: var(--bg); padding: 1rem 1.5rem; font-family: 'Bebas Neue', sans-serif; font-size: 1.3rem; letter-spacing: 0.06em; display: flex; justify-content: space-between; align-items: center; }
+  .block-header span { font-family: 'DM Mono', monospace; font-size: 0.72rem; color: #A09880; font-weight: 400; letter-spacing: 0.04em; }
+  .block-body { padding: 2rem; }
+  .block-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; }
+  .block-item { text-align: center; }
+  .block-ko { font-family: 'Noto Serif KR', serif; font-size: 3.5rem; font-weight: 700; line-height: 1; margin-bottom: 0.5rem; }
+  .block-breakdown { font-family: 'DM Mono', monospace; font-size: 0.72rem; color: var(--ink3); line-height: 1.8; }
+  .block-breakdown b { color: var(--red); }
+  .block-label { font-size: 0.65rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink3); margin-top: 0.5rem; }
+
+  .tip { background: #FFFBF0; border: 1px solid #E8D88A; border-left: 3px solid var(--gold); border-radius: 3px; padding: 1rem 1.5rem; margin: 1.5rem 0; font-size: 0.82rem; line-height: 1.7; color: #5A4A10; }
+  .tip::before { content: '💡 Filipino Learner Tip'; display: block; font-size: 0.68rem; letter-spacing: 0.1em; text-transform: uppercase; color: #8A6A10; margin-bottom: 6px; font-weight: 500; }
+
+  /* STROKE ORDER */
+  .stroke-note { background: var(--surface); border: 1px solid var(--border); border-radius: 4px; padding: 1.5rem; margin-bottom: 1.5rem; }
+  .stroke-rule { display: flex; align-items: flex-start; gap: 1rem; padding: 0.8rem 0; border-bottom: 1px solid var(--border); }
+  .stroke-rule:last-child { border-bottom: none; padding-bottom: 0; }
+  .stroke-num { font-family: 'Bebas Neue', sans-serif; font-size: 1.5rem; color: var(--red); width: 28px; flex-shrink: 0; line-height: 1; }
+  .stroke-text { font-size: 0.82rem; line-height: 1.7; color: var(--ink2); }
+  .stroke-text strong { color: var(--ink); }
+
+  @media (max-width: 640px) {
+    .hero { grid-template-columns: 1fr; }
+    .char-grid { grid-template-columns: repeat(auto-fill, minmax(72px, 1fr)); }
+    .block-grid { grid-template-columns: 1fr; gap: 1.5rem; }
+    .detail-panel.show { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <a class="nav-logo" href="index.html">LEARN <span>한국어</span></a>
+  <div class="nav-links">
+    <a href="level1.html" class="active">Hangul</a>
+    <a href="level2.html">Phrases</a>
+    <a href="vocab.html">Vocab</a>
+    <a href="level3.html">Grammar</a>
+  </div>
+</nav>
+
+<div class="hero">
+  <div>
+    <div class="eyebrow">Level 1 · Hangul</div>
+    <h1><em>한글</em>THE<br>ALPHABET</h1>
+    <p class="hero-desc">
+      Hangul was invented in 1443 by King Sejong. It's one of the most logical writing systems in the world —
+      most people can learn to read it in a few hours. Let's start from zero.
+    </p>
+  </div>
+  <div class="hero-stat">
+    <div class="stat-num">40</div>
+    <div class="stat-label">Letters to<br>learn</div>
+  </div>
+</div>
+
+<div class="tab-nav">
+  <button class="tab-btn active" onclick="showTab('consonants')">자음 Consonants</button>
+  <button class="tab-btn" onclick="showTab('vowels')">모음 Vowels</button>
+  <button class="tab-btn" onclick="showTab('final')">받침 Final Consonants</button>
+  <button class="tab-btn" onclick="showTab('blocks')">음절 Syllable Blocks</button>
+  <button class="tab-btn" onclick="showTab('writing')">쓰기 Writing Rules</button>
+</div>
+
+<main>
+
+<!-- CONSONANTS -->
+<div id="consonants" class="topic active">
+  <div class="intro-box">
+    Korean has <strong>19 consonants</strong>. They come in three types: basic (평음), aspirated (격음 — extra breath), and tense (경음 — tensed throat).
+    Each consonant has a name and a position in the syllable block.
+  </div>
+
+  <div class="section-label">Basic Consonants 평음</div>
+  <div class="char-grid" id="basic-cons"></div>
+
+  <div class="section-label">Aspirated Consonants 격음 — with a puff of air</div>
+  <div class="char-grid" id="asp-cons"></div>
+
+  <div class="section-label">Tense Consonants 경음 — tensed, no air</div>
+  <div class="char-grid" id="tense-cons"></div>
+
+  <div id="cons-detail" class="detail-panel"></div>
+
+  <div class="tip">
+    The <strong>tense consonants</strong> (ㄲ ㄸ ㅃ ㅆ ㅉ) might sound like the basic ones at first, but they're produced with a tightened throat and no breath.
+    Think of the difference between "p" in "spin" (no puff) vs "p" in "pin" (with puff) — Korean distinguishes these systematically.
+  </div>
+</div>
+
+<!-- VOWELS -->
+<div id="vowels" class="topic">
+  <div class="intro-box">
+    Korean has <strong>21 vowels</strong> — 10 basic and 11 compound vowels formed by combining basics.
+    Vowels always pair with a consonant in a syllable block. When a vowel starts a syllable, <strong>ㅇ</strong> acts as a silent placeholder.
+  </div>
+
+  <div class="section-label">Basic Vowels 기본 모음</div>
+  <div class="char-grid" id="basic-vow"></div>
+
+  <div class="section-label">Compound Vowels 이중 모음 — combinations</div>
+  <div class="char-grid" id="compound-vow"></div>
+
+  <div id="vow-detail" class="detail-panel"></div>
+
+  <div class="tip">
+    The vowel <strong>ㅡ (eu)</strong> has no equivalent in English or Filipino — it's pronounced with the mouth flat and unrounded,
+    like the sound you make when someone pokes you in the stomach. Practice this one separately!
+  </div>
+</div>
+
+<!-- FINAL CONSONANTS -->
+<div id="final" class="topic">
+  <div class="intro-box">
+    A <strong>받침 (batchim)</strong> is a consonant placed at the bottom of a syllable block.
+    Not all syllables have one — it's optional. But when present, it changes the sound of the syllable.
+    There are 27 possible batchim, but only <strong>7 actual sounds</strong> they make.
+  </div>
+
+  <div class="tip">
+    Even though there are 27 batchim spellings, they all collapse into just 7 sounds: ㄱ ㄴ ㄷ ㄹ ㅁ ㅂ ㅇ.
+    For example ㅋ, ㄲ, ㄱ all sound like "k" at the end of a syllable. This makes it much easier than it looks!
+  </div>
+
+  <div class="section-label">Single Final Consonants</div>
+  <div class="char-grid" id="single-final"></div>
+
+  <div class="section-label">Double Final Consonants 겹받침</div>
+  <div class="char-grid" id="double-final"></div>
+
+  <div id="final-detail" class="detail-panel"></div>
+
+  <div class="section-label">The 7 Final Sounds</div>
+  <div class="block-demo">
+    <div class="block-header">All batchim reduce to 7 sounds <span>규칙 · Rule</span></div>
+    <div class="block-body">
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(110px,1fr));gap:12px;">
+        <div style="background:var(--surface);border:1px solid var(--border);border-radius:4px;padding:0.8rem;text-align:center;">
+          <div style="font-family:'Noto Serif KR',serif;font-size:1.6rem;font-weight:700;color:var(--red);margin-bottom:4px;">ㄱ</div>
+          <div style="font-size:0.6rem;color:var(--ink3);letter-spacing:0.06em;text-transform:uppercase;margin-bottom:6px;">ㄱ sound</div>
+          <div style="font-family:'DM Mono',monospace;font-size:0.65rem;color:var(--ink2);line-height:1.6;">ㄱ ㄲ ㅋ ㄱㅅ ㄹㄱ</div>
+          <div style="font-size:0.7rem;color:var(--teal);margin-top:6px;">국 (guk)</div>
+        </div>
+        <div style="background:var(--surface);border:1px solid var(--border);border-radius:4px;padding:0.8rem;text-align:center;">
+          <div style="font-family:'Noto Serif KR',serif;font-size:1.6rem;font-weight:700;color:var(--red);margin-bottom:4px;">ㄴ</div>
+          <div style="font-size:0.6rem;color:var(--ink3);letter-spacing:0.06em;text-transform:uppercase;margin-bottom:6px;">ㄴ sound</div>
+          <div style="font-family:'DM Mono',monospace;font-size:0.65rem;color:var(--ink2);line-height:1.6;">ㄴ ㄴㅈ ㄴㅎ</div>
+          <div style="font-size:0.7rem;color:var(--teal);margin-top:6px;">산 (san)</div>
+        </div>
+        <div style="background:var(--surface);border:1px solid var(--border);border-radius:4px;padding:0.8rem;text-align:center;">
+          <div style="font-family:'Noto Serif KR',serif;font-size:1.6rem;font-weight:700;color:var(--red);margin-bottom:4px;">ㄷ</div>
+          <div style="font-size:0.6rem;color:var(--ink3);letter-spacing:0.06em;text-transform:uppercase;margin-bottom:6px;">ㄷ sound</div>
+          <div style="font-family:'DM Mono',monospace;font-size:0.65rem;color:var(--ink2);line-height:1.6;">ㄷ ㅅ ㅆ ㅈ ㅊ ㅌ ㅎ</div>
+          <div style="font-size:0.7rem;color:var(--teal);margin-top:6px;">밭 (bat)</div>
+        </div>
+        <div style="background:var(--surface);border:1px solid var(--border);border-radius:4px;padding:0.8rem;text-align:center;">
+          <div style="font-family:'Noto Serif KR',serif;font-size:1.6rem;font-weight:700;color:var(--red);margin-bottom:4px;">ㄹ</div>
+          <div style="font-size:0.6rem;color:var(--ink3);letter-spacing:0.06em;text-transform:uppercase;margin-bottom:6px;">ㄹ sound</div>
+          <div style="font-family:'DM Mono',monospace;font-size:0.65rem;color:var(--ink2);line-height:1.6;">ㄹ ㄺ ㄻ ㄼ ㄽ ㄾ ㄿ ㅀ</div>
+          <div style="font-size:0.7rem;color:var(--teal);margin-top:6px;">말 (mal)</div>
+        </div>
+        <div style="background:var(--surface);border:1px solid var(--border);border-radius:4px;padding:0.8rem;text-align:center;">
+          <div style="font-family:'Noto Serif KR',serif;font-size:1.6rem;font-weight:700;color:var(--red);margin-bottom:4px;">ㅁ</div>
+          <div style="font-size:0.6rem;color:var(--ink3);letter-spacing:0.06em;text-transform:uppercase;margin-bottom:6px;">ㅁ sound</div>
+          <div style="font-family:'DM Mono',monospace;font-size:0.65rem;color:var(--ink2);line-height:1.6;">ㅁ ㄻ</div>
+          <div style="font-size:0.7rem;color:var(--teal);margin-top:6px;">봄 (bom)</div>
+        </div>
+        <div style="background:var(--surface);border:1px solid var(--border);border-radius:4px;padding:0.8rem;text-align:center;">
+          <div style="font-family:'Noto Serif KR',serif;font-size:1.6rem;font-weight:700;color:var(--red);margin-bottom:4px;">ㅂ</div>
+          <div style="font-size:0.6rem;color:var(--ink3);letter-spacing:0.06em;text-transform:uppercase;margin-bottom:6px;">ㅂ sound</div>
+          <div style="font-family:'DM Mono',monospace;font-size:0.65rem;color:var(--ink2);line-height:1.6;">ㅂ ㅍ ㄼ ㄿ ㅄ</div>
+          <div style="font-size:0.7rem;color:var(--teal);margin-top:6px;">입 (ip)</div>
+        </div>
+        <div style="background:var(--surface);border:1px solid var(--border);border-radius:4px;padding:0.8rem;text-align:center;">
+          <div style="font-family:'Noto Serif KR',serif;font-size:1.6rem;font-weight:700;color:var(--red);margin-bottom:4px;">ㅇ</div>
+          <div style="font-size:0.6rem;color:var(--ink3);letter-spacing:0.06em;text-transform:uppercase;margin-bottom:6px;">ㅇ sound</div>
+          <div style="font-family:'DM Mono',monospace;font-size:0.65rem;color:var(--ink2);line-height:1.6;">ㅇ</div>
+          <div style="font-size:0.7rem;color:var(--teal);margin-top:6px;">강 (gang)</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+<!-- SYLLABLE BLOCKS -->
+<div id="blocks" class="topic">
+  <div class="intro-box">
+    Korean doesn't write letters in a line — it groups them into <strong>syllable blocks</strong>.
+    Each block is one syllable and contains 2–4 letters arranged in a square shape.
+    This is what makes Korean text look so different from romanized writing.
+  </div>
+
+  <div class="block-demo">
+    <div class="block-header">Block Patterns <span>4 main shapes</span></div>
+    <div class="block-body">
+      <div class="block-grid">
+        <div class="block-item">
+          <div class="block-ko">아</div>
+          <div class="block-breakdown"><b>ㅇ</b> (silent) + <b>ㅏ</b> (a)<br>= a</div>
+          <div class="block-label">Consonant + vertical vowel</div>
+        </div>
+        <div class="block-item">
+          <div class="block-ko">오</div>
+          <div class="block-breakdown"><b>ㅇ</b> (silent) + <b>ㅗ</b> (o)<br>= o</div>
+          <div class="block-label">Consonant + horizontal vowel</div>
+        </div>
+        <div class="block-item">
+          <div class="block-ko">안</div>
+          <div class="block-breakdown"><b>ㅇ</b> + <b>ㅏ</b> + <b>ㄴ</b><br>= an</div>
+          <div class="block-label">Consonant + vowel + batchim</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="block-demo">
+    <div class="block-header">Real Examples <span>practice words</span></div>
+    <div class="block-body">
+      <div class="block-grid">
+        <div class="block-item">
+          <div class="block-ko" style="font-size:4rem;">한</div>
+          <div class="block-breakdown"><b>ㅎ</b> (h) + <b>ㅏ</b> (a) + <b>ㄴ</b> (n)<br>= han</div>
+          <div class="block-label">한국어's first syllable</div>
+        </div>
+        <div class="block-item">
+          <div class="block-ko" style="font-size:4rem;">국</div>
+          <div class="block-breakdown"><b>ㄱ</b> (g) + <b>ㅜ</b> (u) + <b>ㄱ</b> (k)<br>= guk</div>
+          <div class="block-label">한국어's second syllable</div>
+        </div>
+        <div class="block-item">
+          <div class="block-ko" style="font-size:4rem;">어</div>
+          <div class="block-breakdown"><b>ㅇ</b> (silent) + <b>ㅓ</b> (eo)<br>= eo</div>
+          <div class="block-label">한국어's third syllable</div>
+        </div>
+      </div>
+      <div style="text-align:center;margin-top:1.5rem;padding-top:1.5rem;border-top:1px solid var(--border);">
+        <span style="font-family:'Noto Serif KR',serif;font-size:2.5rem;font-weight:700;">한국어</span>
+        <span style="font-family:'DM Mono',monospace;font-size:0.9rem;color:var(--red);margin-left:1rem;">han · guk · eo</span>
+        <span style="font-size:0.85rem;color:var(--ink3);margin-left:0.5rem;">= Korean language</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="tip">
+    At first, Korean blocks might look like a single complex character, but they're always made of the same letters you already know!
+    Train your eye to spot the individual pieces: top-left = initial consonant, right or bottom = vowel, bottom = batchim (if any).
+  </div>
+</div>
+
+<!-- WRITING RULES -->
+<div id="writing" class="topic">
+  <div class="intro-box">
+    Korean is written <strong>left to right, top to bottom</strong> — same as English and Filipino.
+    But within each syllable block, the stroke order follows specific rules. Learning them from the start builds good habits.
+  </div>
+
+  <div class="section-label">Stroke Order Rules</div>
+  <div class="stroke-note">
+    <div class="stroke-rule">
+      <div class="stroke-num">1</div>
+      <div class="stroke-text"><strong>Top to bottom</strong> — Always write higher strokes before lower ones. ㅏ: write the vertical line first, then the horizontal tick.</div>
+    </div>
+    <div class="stroke-rule">
+      <div class="stroke-num">2</div>
+      <div class="stroke-text"><strong>Left to right</strong> — When strokes are side by side, write the left one first. ㄱ: horizontal stroke first (left→right), then vertical stroke down.</div>
+    </div>
+    <div class="stroke-rule">
+      <div class="stroke-num">3</div>
+      <div class="stroke-text"><strong>Horizontal before vertical</strong> — When strokes cross, write the horizontal line first. ㅗ: horizontal line first, then the vertical tick up.</div>
+    </div>
+    <div class="stroke-rule">
+      <div class="stroke-num">4</div>
+      <div class="stroke-text"><strong>Center before sides</strong> — For symmetric characters like ㅁ, draw the outer frame then fill in. ㅂ: two verticals first, then horizontals.</div>
+    </div>
+    <div class="stroke-rule">
+      <div class="stroke-num">5</div>
+      <div class="stroke-text"><strong>Inside before closing</strong> — For enclosed shapes, write the inside strokes before the closing stroke. ㅎ: top hat → circle → cross stroke.</div>
+    </div>
+  </div>
+
+  <div class="section-label">Linking Sounds (연음)</div>
+  <div class="block-demo">
+    <div class="block-header">When batchim meets a vowel <span>연음법칙 · Linking Rule</span></div>
+    <div class="block-body" style="font-size:0.85rem;line-height:1.8;color:var(--ink2);">
+      <p>When a syllable ends in a batchim and the next syllable <strong>starts with ㅇ (silent)</strong>, the batchim sound moves to the next syllable.</p>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;margin-top:1.5rem;">
+        <div style="background:var(--surface);border:1px solid var(--border);border-radius:4px;padding:1.2rem;text-align:center;">
+          <div style="font-size:0.65rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--ink3);margin-bottom:8px;">Written</div>
+          <div style="font-family:'Noto Serif KR',serif;font-size:2rem;font-weight:700;">먹어요</div>
+          <div style="font-family:'DM Mono',monospace;font-size:0.75rem;color:var(--ink3);margin-top:4px;">meok + eo + yo</div>
+        </div>
+        <div style="background:var(--surface);border:1px solid var(--border);border-radius:4px;padding:1.2rem;text-align:center;">
+          <div style="font-size:0.65rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--ink3);margin-bottom:8px;">Pronounced</div>
+          <div style="font-family:'DM Mono',monospace;font-size:1.8rem;color:var(--red);font-weight:500;">meo·geo·yo</div>
+          <div style="font-size:0.75rem;color:var(--ink3);margin-top:4px;">ㄱ slides to next syllable</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="tip">
+    This linking rule is why romanization can look different from how a word is spelled in Hangul.
+    <strong>먹어요</strong> is spelled with ㄱ at the end of 먹, but pronounced "meo·geo·yo" because the ㄱ links forward.
+    Focus on listening carefully — your ear will catch it faster than your eyes!
+  </div>
+</div>
+
+</main>
+
+<script>
+const consonants = {
+  basic: [
+    { g:'ㄱ', rom:'g/k', name:'기역 (giyeok)', tip:'Like <strong>g</strong> in "go" at the start, like <strong>k</strong> at the end. Similar to Tagalog <em>g</em>.', ex:['가 (ga)','국 (guk)','고기 (go-gi)'] },
+    { g:'ㄴ', rom:'n',   name:'니은 (nieun)',  tip:'Like <strong>n</strong> in "nice". Easy — same in English, Filipino, and Korean!', ex:['나 (na)','눈 (nun)','노래 (no-rae)'] },
+    { g:'ㄷ', rom:'d/t', name:'디귿 (digeut)', tip:'Like <strong>d</strong> in "do" at start, <strong>t</strong> at end. The tongue position is slightly further forward than English.', ex:['다 (da)','닭 (dak)','도대체 (do-dae-che)'] },
+    { g:'ㄹ', rom:'r/l', name:'리을 (rieul)',  tip:'Between English <strong>r</strong> and <strong>l</strong> — a flap of the tongue. Like the Filipino <em>d/r</em> in fast Tagalog speech. This is unique to Korean!', ex:['라면 (ra-myeon)','말 (mal)','서울 (seo-ul)'] },
+    { g:'ㅁ', rom:'m',   name:'미음 (mieum)',  tip:'Like <strong>m</strong> in "more". Identical to English and Filipino.', ex:['마 (ma)','밥 (bap)','엄마 (eom-ma)'] },
+    { g:'ㅂ', rom:'b/p', name:'비읍 (bieup)',  tip:'Like <strong>b</strong> in "be" at start, <strong>p</strong> at end. Less aspirated than English b.', ex:['바 (ba)','밥 (bap)','바보 (ba-bo)'] },
+    { g:'ㅅ', rom:'s/t', name:'시옷 (siot)',   tip:'Like <strong>s</strong> in "see". Becomes <strong>sh</strong> before ㅣ. At end of syllable sounds like t.', ex:['사 (sa)','사랑 (sa-rang)','시작 (si-jak)'] },
+    { g:'ㅇ', rom:'ng/–',name:'이응 (ieung)',  tip:'<strong>Silent</strong> at the start of a syllable (placeholder for vowels). Sounds like <strong>ng</strong> at the end.', ex:['아 (a)','영어 (yeong-eo)','강 (gang)'] },
+    { g:'ㅈ', rom:'j',   name:'지읒 (jieut)',  tip:'Like <strong>j</strong> in "joy". Similar to Filipino <em>dy</em> sound.', ex:['자 (ja)','지금 (ji-geum)','조금 (jo-geum)'] },
+  ],
+  aspirated: [
+    { g:'ㅊ', rom:'ch',  name:'치읓 (chieut)', tip:'Like <strong>ch</strong> in "cheese" with a puff of air. Same as Filipino <em>ch</em>.', ex:['차 (cha)','친구 (chin-gu)','처음 (cheo-eum)'] },
+    { g:'ㅋ', rom:'k',   name:'키읔 (kieuk)',  tip:'Like <strong>k</strong> in "key" — strongly aspirated. The puff of air is stronger than English k.', ex:['카 (ka)','커피 (keo-pi)','코 (ko)'] },
+    { g:'ㅌ', rom:'t',   name:'티읕 (tieut)',  tip:'Like <strong>t</strong> in "top" with a strong puff. More aspirated than English t.', ex:['타 (ta)','토마토 (to-ma-to)','태양 (tae-yang)'] },
+    { g:'ㅍ', rom:'p',   name:'피읖 (pieup)',  tip:'Like <strong>p</strong> in "pot" — strongly aspirated. More breath than ㅂ.', ex:['파 (pa)','피자 (pi-ja)','피부 (pi-bu)'] },
+    { g:'ㅎ', rom:'h',   name:'히읗 (hieut)',  tip:'Like <strong>h</strong> in "hot". Can soften surrounding consonants. Same as English h.', ex:['하 (ha)','한국 (han-guk)','화장실 (hwa-jang-sil)'] },
+  ],
+  tense: [
+    { g:'ㄲ', rom:'kk',  name:'쌍기역 (ssang-giyeok)', tip:'Like <strong>k</strong> with a tensed throat and NO puff of air. Think of "ski" — the k in ski has no puff.', ex:['까 (kka)','꽃 (kkot)','꿈 (kkum)'] },
+    { g:'ㄸ', rom:'tt',  name:'쌍디귿 (ssang-digeut)', tip:'Like <strong>t</strong> without breath. Think of the t in "stop".', ex:['따 (tta)','딸 (ttal)','때문 (ttae-mun)'] },
+    { g:'ㅃ', rom:'pp',  name:'쌍비읍 (ssang-bieup)',  tip:'Like <strong>p</strong> without breath — the p in "spa".', ex:['빠 (ppa)','빠르다 (ppa-reu-da)','뺨 (ppaem)'] },
+    { g:'ㅆ', rom:'ss',  name:'쌍시옷 (ssang-siot)',   tip:'Like <strong>s</strong> but very tense and sharp. Crisper than ㅅ.', ex:['싸다 (ssa-da)','쌀 (ssal)','씨 (ssi)'] },
+    { g:'ㅉ', rom:'jj',  name:'쌍지읒 (ssang-jieut)',  tip:'Like <strong>j</strong> but tense with no breath. Sharper than ㅈ.', ex:['짜 (jja)','찌개 (jji-gae)','짧다 (jjalb-da)'] },
+  ]
+};
+
+const vowels = {
+  basic: [
+    { g:'ㅏ', rom:'a',   tip:'Like <strong>a</strong> in "father". Open mouth, tongue flat. Same as Filipino <em>a</em>.', ex:['아 (a)','아빠 (ap-pa)','나 (na)'] },
+    { g:'ㅐ', rom:'ae',  tip:'Like <strong>e</strong> in "bed". Mouth slightly open. Similar to Filipino <em>e</em>.', ex:['개 (gae)','애기 (ae-gi)','새 (sae)'] },
+    { g:'ㅑ', rom:'ya',  tip:'Like <strong>ya</strong> in "yard". Just ㅏ with a y in front. Same as Filipino <em>ya</em>.', ex:['야 (ya)','야채 (ya-chae)','얘 (yae)'] },
+    { g:'ㅒ', rom:'yae', tip:'Like <strong>ye</strong> — ㅐ with a y in front. Often sounds same as ㅖ in modern Korean.', ex:['얘 (yae)','예뻐 (ye-ppeo)'] },
+    { g:'ㅓ', rom:'eo',  tip:'Like <strong>u</strong> in "but" or "uh". Open, back of mouth. No direct Filipino equivalent — practice!', ex:['어 (eo)','버스 (beo-seu)','언니 (eon-ni)'] },
+    { g:'ㅔ', rom:'e',   tip:'Like <strong>e</strong> in "bed". In modern Korean, ㅔ and ㅐ sound almost identical.', ex:['에 (e)','세상 (se-sang)','메뉴 (me-nyu)'] },
+    { g:'ㅕ', rom:'yeo', tip:'Like <strong>yo</strong> in "young". ㅓ with a y in front.', ex:['여 (yeo)','여기 (yeo-gi)','여동생 (yeo-dong-saeng)'] },
+    { g:'ㅖ', rom:'ye',  tip:'Like <strong>ye</strong> in "yes". ㅔ with a y in front.', ex:['예 (ye)','예쁘다 (ye-ppeu-da)','예약 (ye-yak)'] },
+    { g:'ㅗ', rom:'o',   tip:'Like <strong>o</strong> in "boat" but shorter. Lips rounded. Same as Filipino <em>o</em>.', ex:['오 (o)','오빠 (op-pa)','고마워 (go-ma-wo)'] },
+    { g:'ㅛ', rom:'yo',  tip:'Like <strong>yo</strong>. ㅗ with a y in front. Same as Filipino <em>yo</em>.', ex:['요 (yo)','요리 (yo-ri)','교실 (gyo-sil)'] },
+    { g:'ㅜ', rom:'u',   tip:'Like <strong>oo</strong> in "moon". Lips rounded and forward. Same as Filipino <em>u</em>.', ex:['우 (u)','우리 (u-ri)','구두 (gu-du)'] },
+    { g:'ㅠ', rom:'yu',  tip:'Like <strong>yu</strong> in "you". ㅜ with a y in front.', ex:['유 (yu)','유리 (yu-ri)','규칙 (gyu-chik)'] },
+    { g:'ㅡ', rom:'eu',  tip:'<strong>No English equivalent!</strong> Mouth flat and unrounded, tongue pulled back. Like the sound you make when surprised ("ugh" without the g). Practice this one a lot!', ex:['으 (eu)','크다 (keu-da)','음악 (eu-mak)'] },
+    { g:'ㅣ', rom:'i',   tip:'Like <strong>ee</strong> in "see". Mouth spread wide. Same as Filipino <em>i</em>.', ex:['이 (i)','이름 (i-reum)','기분 (gi-bun)'] },
+  ],
+  compound: [
+    { g:'ㅘ', rom:'wa',  tip:'ㅗ + ㅏ = <strong>wa</strong>. Like "wa" in "watch". Same as Filipino <em>wa</em>.', ex:['봐 (bwa)','과자 (gwa-ja)','화 (hwa)'] },
+    { g:'ㅙ', rom:'wae', tip:'ㅗ + ㅐ = <strong>wae</strong>. Like "we" in "wet". Sounds same as ㅚ in modern Korean.', ex:['봬 (bwae)','돼요 (dwae-yo)'] },
+    { g:'ㅚ', rom:'oe',  tip:'ㅗ + ㅣ = <strong>oe</strong>. In modern speech sounds like <strong>we</strong>. Originally a pure rounded vowel.', ex:['외 (oe)','외국 (oe-guk)','최고 (choe-go)'] },
+    { g:'ㅝ', rom:'weo', tip:'ㅜ + ㅓ = <strong>weo</strong>. Like "wo" in "wonder".', ex:['뭐 (mwo)','줘 (jwo)','원 (won)'] },
+    { g:'ㅞ', rom:'we',  tip:'ㅜ + ㅔ = <strong>we</strong>. Like "we". Very similar to ㅙ and ㅚ.', ex:['웨 (we)','웰빙 (wel-bing)'] },
+    { g:'ㅟ', rom:'wi',  tip:'ㅜ + ㅣ = <strong>wi</strong>. Like "we" in "week".', ex:['위 (wi)','귀 (gwi)','뒤 (dwi)'] },
+    { g:'ㅢ', rom:'yi/ui', tip:'ㅡ + ㅣ = <strong>ui/yi</strong>. Tricky! At start of word: "ui". As possessive particle: sounds like "e". In other positions: "i".', ex:['의 (ui/e)','의사 (ui-sa)'] },
+  ]
+};
+
+const finals = {
+  single: [
+    { g:'ㄱ', rom:'k',  tip:'Sounds like k — unreleased. Tongue touches back of mouth and stops.', ex:['국 (guk)','학교 (hak-gyo)'] },
+    { g:'ㄴ', rom:'n',  tip:'Sounds like n. Tongue touches roof of mouth.', ex:['산 (san)','안 (an)'] },
+    { g:'ㄷ', rom:'t',  tip:'Sounds like t — unreleased. Tongue behind top teeth, no air.', ex:['밭 (bat)','곧 (got)'] },
+    { g:'ㄹ', rom:'l',  tip:'Sounds like l — tongue touches roof of mouth and holds.', ex:['말 (mal)','일 (il)'] },
+    { g:'ㅁ', rom:'m',  tip:'Sounds like m — lips closed, hum through nose.', ex:['봄 (bom)','밤 (bam)'] },
+    { g:'ㅂ', rom:'p',  tip:'Sounds like p — unreleased. Lips close but no pop.', ex:['입 (ip)','밥 (bap)'] },
+    { g:'ㅅ', rom:'t',  tip:'At end of syllable, sounds like t (same as ㄷ).', ex:['옷 (ot)','맛 (mat)'] },
+    { g:'ㅇ', rom:'ng', tip:'Sounds like ng in "sing". Open throat, nasal resonance.', ex:['강 (gang)','방 (bang)'] },
+    { g:'ㅈ', rom:'t',  tip:'At end of syllable, sounds like t.', ex:['낮 (nat)','꽃 (kkot)'] },
+    { g:'ㅊ', rom:'t',  tip:'At end of syllable, sounds like t.', ex:['꽃 (kkot)','빛 (bit)'] },
+    { g:'ㅋ', rom:'k',  tip:'At end of syllable, sounds like k.', ex:['부엌 (bu-eok)'] },
+    { g:'ㅌ', rom:'t',  tip:'At end of syllable, sounds like t.', ex:['밭 (bat)','끝 (kkeut)'] },
+    { g:'ㅍ', rom:'p',  tip:'At end of syllable, sounds like p.', ex:['앞 (ap)','잎 (ip)'] },
+    { g:'ㅎ', rom:'t',  tip:'At end of syllable sounds like t, but often causes aspiration of next consonant.', ex:['좋다 → 조타 (jo-ta)'] },
+  ],
+  double: [
+    { g:'ㄳ', rom:'k',  tip:'ㄱ+ㅅ: Usually pronounced as k. The ㅅ is silent at end, but links forward.', ex:['넋 (neok)'] },
+    { g:'ㄵ', rom:'n',  tip:'ㄴ+ㅈ: Pronounced as n.', ex:['앉다 (an-da)'] },
+    { g:'ㄶ', rom:'n',  tip:'ㄴ+ㅎ: Pronounced as n.', ex:['않다 (an-ta)'] },
+    { g:'ㄺ', rom:'k/l',tip:'ㄹ+ㄱ: Usually k before consonant, l before vowel.', ex:['읽다 (ik-da)','읽어 (il-geo)'] },
+    { g:'ㄻ', rom:'m',  tip:'ㄹ+ㅁ: Pronounced as m.', ex:['삶 (sam)'] },
+    { g:'ㄼ', rom:'l/p',tip:'ㄹ+ㅂ: Usually l, sometimes p.', ex:['밟다 (bap-da)'] },
+    { g:'ㄽ', rom:'l',  tip:'ㄹ+ㅅ: Pronounced as l.', ex:['외곬 (oe-gol)'] },
+    { g:'ㄾ', rom:'l',  tip:'ㄹ+ㅌ: Pronounced as l.', ex:['핥다 (hal-da)'] },
+    { g:'ㄿ', rom:'p',  tip:'ㄹ+ㅍ: Pronounced as p.', ex:['읊다 (eup-da)'] },
+    { g:'ㅀ', rom:'l',  tip:'ㄹ+ㅎ: Pronounced as l.', ex:['끓다 (kkeul-da)'] },
+    { g:'ㅄ', rom:'p',  tip:'ㅂ+ㅅ: Pronounced as p.', ex:['없다 (eop-da)'] },
+  ]
+};
+
+// Global lookup so onclick can find data by key
+const cardRegistry = {};
+
+function makeCards(list, containerId, detailId) {
+  const container = document.getElementById(containerId);
+  if (!container) return;
+  container.innerHTML = list.map((c, i) => {
+    const key = containerId + '_' + i;
+    cardRegistry[key] = c;
+    return `
+      <div class="char-card" onclick="showDetail('${detailId}', '${key}', this)">
+        <span class="char-glyph">${c.g}</span>
+        <span class="char-rom">${c.rom}</span>
+      </div>
+    `;
+  }).join('');
+}
+
+function showDetail(panelId, key, el) {
+  const c = cardRegistry[key];
+  const panel = document.getElementById(panelId);
+  document.querySelectorAll('.char-card').forEach(card => card.classList.remove('active-card'));
+  if (panel.dataset.last === key) {
+    panel.classList.remove('show');
+    panel.dataset.last = '';
+    return;
+  }
+  el.classList.add('active-card');
+  panel.dataset.last = key;
+  panel.innerHTML = `
+    <div class="detail-big">${c.g}</div>
+    <div>
+      <div class="detail-rom">${c.rom}</div>
+      <div class="detail-name">${c.name || ''}</div>
+      <div class="detail-tip">${c.tip}</div>
+      ${c.ex ? `<div class="detail-examples">${c.ex.map(e=>`<div class="detail-ex">${e}</div>`).join('')}</div>` : ''}
+    </div>
+  `;
+  panel.classList.add('show');
+}
+
+function showTab(id) {
+  document.querySelectorAll('.topic').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  event.target.classList.add('active');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+makeCards(consonants.basic,     'basic-cons',   'cons-detail');
+makeCards(consonants.aspirated, 'asp-cons',     'cons-detail');
+makeCards(consonants.tense,     'tense-cons',   'cons-detail');
+makeCards(vowels.basic,         'basic-vow',    'vow-detail');
+makeCards(vowels.compound,      'compound-vow', 'vow-detail');
+makeCards(finals.single,        'single-final', 'final-detail');
+makeCards(finals.double,        'double-final', 'final-detail');
+</script>
+</body>
+</html>

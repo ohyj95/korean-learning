@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Level 2 · 생존 한국어 Survival Korean</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@300;400;700&family=Bebas+Neue&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0F0E0C;
+    --surface: #1A1916;
+    --surface2: #222018;
+    --ink: #F2EDE4;
+    --ink2: #A09880;
+    --ink3: #5A5248;
+    --border: #2E2A24;
+    --red: #C4523A;
+    --gold: #C8A84B;
+    --teal: #3D8C7A;
+    --red-bg: #2A1510;
+    --gold-bg: #2A220A;
+    --teal-bg: #0A2018;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--bg); color: var(--ink); font-family: 'DM Sans', sans-serif; min-height: 100vh; }
+
+  nav {
+    position: sticky; top: 0; z-index: 100;
+    background: var(--bg); border-bottom: 1px solid var(--border);
+    padding: 0 2rem; display: flex; align-items: center; justify-content: space-between; height: 52px;
+  }
+  .nav-logo { font-family: 'Bebas Neue', sans-serif; font-size: 1.2rem; letter-spacing: 0.06em; color: var(--ink); text-decoration: none; }
+  .nav-logo span { color: var(--red); }
+  .nav-links { display: flex; gap: 1.5rem; }
+  .nav-links a { font-size: 0.75rem; letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink3); text-decoration: none; transition: color 0.15s; }
+  .nav-links a:hover { color: var(--ink); }
+  .nav-links a.active { color: var(--red); }
+
+  .hero {
+    max-width: 900px; margin: 0 auto; padding: 5rem 2rem 3rem;
+    border-bottom: 1px solid var(--border);
+    display: grid; grid-template-columns: 1fr auto; gap: 2rem; align-items: end;
+  }
+  .eyebrow { font-size: 0.68rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--ink3); margin-bottom: 1rem; display: flex; align-items: center; gap: 10px; }
+  .eyebrow::before { content: ''; width: 24px; height: 1px; background: var(--ink3); }
+  h1 { font-family: 'Bebas Neue', sans-serif; font-size: clamp(3rem, 7vw, 5.5rem); line-height: 0.9; letter-spacing: 0.02em; }
+  h1 em { font-style: normal; color: var(--gold); font-family: 'Noto Serif KR', serif; font-weight: 700; font-size: 0.7em; display: block; }
+  .hero-desc { margin-top: 1.5rem; font-size: 0.88rem; line-height: 1.8; color: var(--ink2); max-width: 520px; }
+  .hero-stat { text-align: right; }
+  .stat-num { font-family: 'Bebas Neue', sans-serif; font-size: 4rem; color: var(--gold); line-height: 1; }
+  .stat-label { font-size: 0.68rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink3); }
+
+  .tab-nav { max-width: 900px; margin: 2rem auto 0; padding: 0 2rem; display: flex; gap: 0; overflow-x: auto; scrollbar-width: none; }
+  .tab-nav::-webkit-scrollbar { display: none; }
+  .tab-btn { padding: 10px 20px; border: none; background: none; font-family: 'DM Sans', sans-serif; font-size: 0.8rem; letter-spacing: 0.04em; color: var(--ink3); cursor: pointer; border-bottom: 2px solid transparent; transition: all 0.15s; white-space: nowrap; }
+  .tab-btn:hover { color: var(--ink); }
+  .tab-btn.active { color: var(--gold); border-bottom-color: var(--gold); font-weight: 500; }
+
+  main { max-width: 900px; margin: 0 auto; padding: 3rem 2rem 6rem; }
+  .topic { display: none; }
+  .topic.active { display: block; }
+
+  .intro-box { background: var(--surface); border: 1px solid var(--border); border-radius: 4px; padding: 1.5rem 2rem; margin-bottom: 2.5rem; font-size: 0.85rem; line-height: 1.8; color: var(--ink2); }
+  .intro-box strong { color: var(--ink); }
+
+  .section-label { font-size: 0.65rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--ink3); margin: 2.5rem 0 1.2rem; display: flex; align-items: center; gap: 12px; }
+  .section-label::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+
+  /* PHRASE CARD */
+  .phrase-list { display: flex; flex-direction: column; gap: 10px; margin-bottom: 2rem; }
+  .phrase-card {
+    background: var(--surface); border: 1px solid var(--border); border-radius: 4px;
+    padding: 1.2rem 1.5rem; display: grid;
+    grid-template-columns: 1fr 1fr 1fr auto; gap: 1rem; align-items: center;
+    transition: background 0.15s, border-color 0.15s; cursor: pointer;
+  }
+  .phrase-card:hover { background: var(--surface2); border-color: var(--border); }
+  .phrase-card.expanded { border-color: var(--gold); }
+  .p-korean { font-family: 'Noto Serif KR', serif; font-size: 1.1rem; font-weight: 700; color: var(--ink); }
+  .p-rom { font-family: 'DM Mono', monospace; font-size: 0.75rem; color: var(--red); line-height: 1.5; }
+  .p-en { font-size: 0.82rem; color: var(--ink2); }
+  .p-fil { font-size: 0.82rem; color: var(--teal); }
+  .p-expand { width: 28px; height: 28px; border: 1px solid var(--border); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.8rem; color: var(--ink3); transition: all 0.2s; flex-shrink: 0; }
+  .phrase-card.expanded .p-expand { border-color: var(--gold); color: var(--gold); transform: rotate(45deg); }
+
+  .phrase-detail {
+    display: none; background: var(--surface2); border: 1px solid var(--border);
+    border-top: none; border-radius: 0 0 4px 4px;
+    padding: 1.2rem 1.5rem 1.5rem; margin-top: -10px; margin-bottom: 0;
+  }
+  .phrase-detail.show { display: block; }
+  .detail-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
+  .detail-block { font-size: 0.8rem; line-height: 1.7; }
+  .detail-block h4 { font-size: 0.62rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink3); margin-bottom: 6px; }
+  .detail-block p { color: var(--ink2); }
+  .detail-block strong { color: var(--ink); }
+  .breakdown { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
+  .bk-word { background: var(--bg); border: 1px solid var(--border); border-radius: 3px; padding: 4px 10px; }
+  .bk-ko { font-family: 'Noto Serif KR', serif; font-size: 0.9rem; font-weight: 700; display: block; }
+  .bk-rom { font-family: 'DM Mono', monospace; font-size: 0.6rem; color: var(--red); display: block; }
+  .bk-en { font-size: 0.6rem; color: var(--ink3); display: block; }
+
+  /* COLUMN HEADERS */
+  .phrase-headers {
+    display: grid; grid-template-columns: 1fr 1fr 1fr auto;
+    gap: 1rem; padding: 0 1.5rem; margin-bottom: 6px;
+  }
+  .phrase-headers span { font-size: 0.62rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink3); }
+
+  .tip { background: var(--gold-bg); border: 1px solid #3A3010; border-left: 3px solid var(--gold); border-radius: 3px; padding: 1rem 1.5rem; margin: 1.5rem 0; font-size: 0.82rem; line-height: 1.7; color: #C8B870; }
+  .tip::before { content: '💡 Filipino Learner Tip'; display: block; font-size: 0.68rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--gold); margin-bottom: 6px; font-weight: 500; }
+
+  /* FORMALITY BADGE */
+  .badge { display: inline-block; padding: 2px 8px; border-radius: 999px; font-size: 0.6rem; letter-spacing: 0.08em; text-transform: uppercase; margin-left: 8px; vertical-align: middle; }
+  .badge-formal { background: #1A2840; color: #6A9FD0; }
+  .badge-casual { background: #1A2A1A; color: #6AB06A; }
+  .badge-polite { background: #2A2010; color: #C0A050; }
+
+  /* SCENARIO CARD */
+  .scenario { background: var(--surface); border: 1px solid var(--border); border-radius: 4px; overflow: hidden; margin-bottom: 1.5rem; }
+  .scenario-header { background: var(--surface2); padding: 1rem 1.5rem; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 1rem; }
+  .scenario-icon { font-size: 1.5rem; }
+  .scenario-title { font-family: 'Bebas Neue', sans-serif; font-size: 1.1rem; letter-spacing: 0.06em; color: var(--ink); }
+  .scenario-sub { font-size: 0.7rem; color: var(--ink3); }
+  .scenario-body { padding: 1.5rem; }
+  .dialogue { display: flex; flex-direction: column; gap: 12px; }
+  .line { display: flex; gap: 12px; align-items: flex-start; }
+  .line.right { flex-direction: row-reverse; }
+  .speaker { font-size: 0.65rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink3); flex-shrink: 0; padding-top: 4px; min-width: 50px; text-align: right; }
+  .line.right .speaker { text-align: left; }
+  .bubble { background: var(--bg); border: 1px solid var(--border); border-radius: 4px; padding: 0.8rem 1rem; max-width: 380px; }
+  .line.right .bubble { background: var(--red-bg); border-color: #3A1A10; }
+  .bubble-ko { font-family: 'Noto Serif KR', serif; font-size: 0.95rem; font-weight: 700; color: var(--ink); display: block; margin-bottom: 2px; }
+  .bubble-rom { font-family: 'DM Mono', monospace; font-size: 0.65rem; color: var(--red); display: block; margin-bottom: 2px; }
+  .bubble-en { font-size: 0.72rem; color: var(--ink3); }
+
+  @media (max-width: 640px) {
+    .hero { grid-template-columns: 1fr; }
+    .phrase-card { grid-template-columns: 1fr; gap: 4px; }
+    .phrase-headers { display: none; }
+    .detail-grid { grid-template-columns: 1fr; }
+    .p-expand { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <a class="nav-logo" href="index.html">LEARN <span>한국어</span></a>
+  <div class="nav-links">
+    <a href="level1.html">Hangul</a>
+    <a href="level2.html" class="active">Phrases</a>
+    <a href="vocab.html">Vocab</a>
+    <a href="level3.html">Grammar</a>
+  </div>
+</nav>
+
+<div class="hero">
+  <div>
+    <div class="eyebrow">Level 2 · Survival Korean</div>
+    <h1><em>생존 한국어</em>SURVIVE<br>ANYWHERE</h1>
+    <p class="hero-desc">
+      The phrases you need from day one — greetings, shopping, directions, emergencies.
+      Click any phrase to see a word-by-word breakdown and pronunciation tips.
+    </p>
+  </div>
+  <div class="hero-stat">
+    <div class="stat-num">35</div>
+    <div class="stat-label">Essential<br>phrases</div>
+  </div>
+</div>
+
+<div class="tab-nav">
+  <button class="tab-btn active" onclick="showTab('greetings')">인사 Greetings</button>
+  <button class="tab-btn" onclick="showTab('basics')">기본 Basics</button>
+  <button class="tab-btn" onclick="showTab('shopping')">쇼핑 Shopping</button>
+  <button class="tab-btn" onclick="showTab('directions')">길 Directions</button>
+  <button class="tab-btn" onclick="showTab('emergency')">응급 Emergency</button>
+  <button class="tab-btn" onclick="showTab('scenarios')">대화 Dialogues</button>
+</div>
+
+<main>
+
+<!-- GREETINGS -->
+<div id="greetings" class="topic active">
+  <div class="intro-box">
+    Korean greetings change based on <strong>who you're talking to</strong> and <strong>what time of day it is</strong>.
+    The safest bet for a beginner: use <strong>-요</strong> endings with everyone except close friends.
+  </div>
+
+  <div class="phrase-headers">
+    <span>한국어 Korean</span><span>Romanization</span><span>English · Filipino</span><span></span>
+  </div>
+  <div class="phrase-list" id="greetings-list"></div>
+</div>
+
+<!-- BASICS -->
+<div id="basics" class="topic">
+  <div class="intro-box">
+    These phrases will get you out of almost any awkward situation. Learn <strong>모르겠어요</strong> (I don't know) and <strong>다시 말해 주세요</strong> (please say that again) on day one.
+  </div>
+  <div class="phrase-headers">
+    <span>한국어 Korean</span><span>Romanization</span><span>English · Filipino</span><span></span>
+  </div>
+  <div class="phrase-list" id="basics-list"></div>
+
+  <div class="tip">
+    Koreans appreciate ANY attempt to speak Korean — even broken Korean with a big smile goes a long way.
+    Don't be afraid to say <strong>한국어 조금 해요</strong> (han-guk-eo jo-geum hae-yo) — "I speak a little Korean". It opens doors!
+  </div>
+</div>
+
+<!-- SHOPPING -->
+<div id="shopping" class="topic">
+  <div class="intro-box">
+    Shopping in Korea is an experience — from convenience stores to traditional markets (시장). These phrases cover price-checking, buying, and politely declining.
+  </div>
+  <div class="phrase-headers">
+    <span>한국어 Korean</span><span>Romanization</span><span>English · Filipino</span><span></span>
+  </div>
+  <div class="phrase-list" id="shopping-list"></div>
+</div>
+
+<!-- DIRECTIONS -->
+<div id="directions" class="topic">
+  <div class="intro-box">
+    Getting around Korea is easy with public transit — but knowing how to ask for help makes it stress-free.
+    Koreans are generally very happy to help lost tourists.
+  </div>
+  <div class="phrase-headers">
+    <span>한국어 Korean</span><span>Romanization</span><span>English · Filipino</span><span></span>
+  </div>
+  <div class="phrase-list" id="directions-list"></div>
+</div>
+
+<!-- EMERGENCY -->
+<div id="emergency" class="topic">
+  <div class="intro-box">
+    Hopefully you won't need these — but knowing them gives peace of mind.
+    Emergency number in Korea: <strong>119</strong> (fire/medical), <strong>112</strong> (police).
+  </div>
+  <div class="phrase-headers">
+    <span>한국어 Korean</span><span>Romanization</span><span>English · Filipino</span><span></span>
+  </div>
+  <div class="phrase-list" id="emergency-list"></div>
+</div>
+
+<!-- DIALOGUES -->
+<div id="scenarios" class="topic">
+  <div class="intro-box">
+    See these phrases in action — real conversational exchanges you might have in Korea.
+  </div>
+
+  <div class="scenario">
+    <div class="scenario-header">
+      <div class="scenario-icon">☕</div>
+      <div>
+        <div class="scenario-title">At a Café</div>
+        <div class="scenario-sub">카페에서 · Ordering coffee</div>
+      </div>
+    </div>
+    <div class="scenario-body">
+      <div class="dialogue">
+        <div class="line">
+          <div class="speaker">Staff</div>
+          <div class="bubble">
+            <span class="bubble-ko">어서 오세요! 주문하시겠어요?</span>
+            <span class="bubble-rom">Eo-seo o-se-yo! Ju-mun-ha-si-ge-sseo-yo?</span>
+            <span class="bubble-en">Welcome! Are you ready to order?</span>
+          </div>
+        </div>
+        <div class="line right">
+          <div class="speaker">You</div>
+          <div class="bubble">
+            <span class="bubble-ko">아메리카노 한 잔 주세요.</span>
+            <span class="bubble-rom">A-me-ri-ka-no han jan ju-se-yo.</span>
+            <span class="bubble-en">One americano please.</span>
+          </div>
+        </div>
+        <div class="line">
+          <div class="speaker">Staff</div>
+          <div class="bubble">
+            <span class="bubble-ko">따뜻하게요, 아이스요?</span>
+            <span class="bubble-rom">Tta-tteu-ta-ge-yo, a-i-seu-yo?</span>
+            <span class="bubble-en">Hot or iced?</span>
+          </div>
+        </div>
+        <div class="line right">
+          <div class="speaker">You</div>
+          <div class="bubble">
+            <span class="bubble-ko">아이스로 주세요. 얼마예요?</span>
+            <span class="bubble-rom">A-i-seu-ro ju-se-yo. Eol-ma-ye-yo?</span>
+            <span class="bubble-en">Iced please. How much?</span>
+          </div>
+        </div>
+        <div class="line">
+          <div class="speaker">Staff</div>
+          <div class="bubble">
+            <span class="bubble-ko">사천오백원이에요.</span>
+            <span class="bubble-rom">Sa-cheon-o-baek-won-i-e-yo.</span>
+            <span class="bubble-en">It's 4,500 won.</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="scenario">
+    <div class="scenario-header">
+      <div class="scenario-icon">🗺️</div>
+      <div>
+        <div class="scenario-title">Asking for Directions</div>
+        <div class="scenario-sub">길 묻기 · Finding your way</div>
+      </div>
+    </div>
+    <div class="scenario-body">
+      <div class="dialogue">
+        <div class="line right">
+          <div class="speaker">You</div>
+          <div class="bubble">
+            <span class="bubble-ko">저기요! 지하철역이 어디예요?</span>
+            <span class="bubble-rom">Jeo-gi-yo! Ji-ha-cheol-yeok-i eo-di-ye-yo?</span>
+            <span class="bubble-en">Excuse me! Where is the subway station?</span>
+          </div>
+        </div>
+        <div class="line">
+          <div class="speaker">Stranger</div>
+          <div class="bubble">
+            <span class="bubble-ko">저쪽으로 쭉 가세요.</span>
+            <span class="bubble-rom">Jeo-jjok-eu-ro jjuk ga-se-yo.</span>
+            <span class="bubble-en">Go straight that way.</span>
+          </div>
+        </div>
+        <div class="line right">
+          <div class="speaker">You</div>
+          <div class="bubble">
+            <span class="bubble-ko">감사합니다!</span>
+            <span class="bubble-rom">Gam-sa-ham-ni-da!</span>
+            <span class="bubble-en">Thank you!</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="scenario">
+    <div class="scenario-header">
+      <div class="scenario-icon">🤝</div>
+      <div>
+        <div class="scenario-title">Meeting Someone New</div>
+        <div class="scenario-sub">처음 만날 때 · First meeting</div>
+      </div>
+    </div>
+    <div class="scenario-body">
+      <div class="dialogue">
+        <div class="line">
+          <div class="speaker">Korean</div>
+          <div class="bubble">
+            <span class="bubble-ko">안녕하세요! 처음 뵙겠습니다.</span>
+            <span class="bubble-rom">An-nyeong-ha-se-yo! Cheo-eum boep-get-seum-ni-da.</span>
+            <span class="bubble-en">Hello! Nice to meet you for the first time.</span>
+          </div>
+        </div>
+        <div class="line right">
+          <div class="speaker">You</div>
+          <div class="bubble">
+            <span class="bubble-ko">안녕하세요! 저는 [이름]이에요.</span>
+            <span class="bubble-rom">An-nyeong-ha-se-yo! Jeo-neun [name]-i-e-yo.</span>
+            <span class="bubble-en">Hello! I'm [name].</span>
+          </div>
+        </div>
+        <div class="line">
+          <div class="speaker">Korean</div>
+          <div class="bubble">
+            <span class="bubble-ko">어느 나라에서 왔어요?</span>
+            <span class="bubble-rom">Eo-neu na-ra-e-seo wa-sseo-yo?</span>
+            <span class="bubble-en">What country are you from?</span>
+          </div>
+        </div>
+        <div class="line right">
+          <div class="speaker">You</div>
+          <div class="bubble">
+            <span class="bubble-ko">필리핀에서 왔어요.</span>
+            <span class="bubble-rom">Pil-li-pin-e-seo wa-sseo-yo.</span>
+            <span class="bubble-en">I'm from the Philippines.</span>
+          </div>
+        </div>
+        <div class="line">
+          <div class="speaker">Korean</div>
+          <div class="bubble">
+            <span class="bubble-ko">한국어 잘 하시네요!</span>
+            <span class="bubble-rom">Han-guk-eo jal ha-si-ne-yo!</span>
+            <span class="bubble-en">Your Korean is great!</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</main>
+
+<script>
+const data = {
+  greetings: [
+    { ko:'안녕하세요', rom:'An-nyeong-ha-se-yo', en:'Hello (formal)', fil:'Kumusta po', level:'polite',
+      tip:'The most universal greeting. Use with anyone you don\'t know well.',
+      breakdown:[{ko:'안녕',rom:'an-nyeong',en:'peace/well-being'},{ko:'하세요',rom:'ha-se-yo',en:'(polite verb ending)'}] },
+    { ko:'안녕', rom:'An-nyeong', en:'Hi / Bye (casual)', fil:'Hi / Paalam', level:'casual',
+      tip:'Use only with close friends or people younger than you.',
+      breakdown:[{ko:'안녕',rom:'an-nyeong',en:'peace — used for hello AND goodbye casually'}] },
+    { ko:'잘 지냈어요?', rom:'Jal ji-naeo-sseo-yo?', en:'How have you been?', fil:'Kumusta ka na?', level:'polite',
+      tip:'Literally "Did you live well?" — use when meeting someone again after some time.',
+      breakdown:[{ko:'잘',rom:'jal',en:'well'},{ko:'지냈어요',rom:'ji-naeo-sseo-yo',en:'have you been (past polite)'}] },
+    { ko:'오랜만이에요', rom:'O-raen-man-i-e-yo', en:'Long time no see', fil:'Matagal na tayong hindi nagkita', level:'polite',
+      tip:'Use when you haven\'t seen someone in a while.',
+      breakdown:[{ko:'오랜만',rom:'o-raen-man',en:'long time'},{ko:'이에요',rom:'i-e-yo',en:'it is (polite)'}] },
+    { ko:'반갑습니다', rom:'Ban-gap-seum-ni-da', en:'Nice to meet you (formal)', fil:'Ikinagagalak kong makilala kayo', level:'formal',
+      tip:'Used in formal first meetings — job interviews, business, meeting elders.',
+      breakdown:[{ko:'반갑',rom:'ban-gap',en:'glad/pleased'},{ko:'습니다',rom:'seum-ni-da',en:'(formal verb ending)'}] },
+    { ko:'잘 가요', rom:'Jal ga-yo', en:'Goodbye (to the one leaving)', fil:'Ingat sa daan', level:'polite',
+      tip:'Say this when the OTHER person is leaving.',
+      breakdown:[{ko:'잘',rom:'jal',en:'well/safely'},{ko:'가요',rom:'ga-yo',en:'go (polite)'}] },
+    { ko:'잘 있어요', rom:'Jal i-sseo-yo', en:'Goodbye (to the one staying)', fil:'Mag-ingat kayo', level:'polite',
+      tip:'Say this when YOU are the one leaving.',
+      breakdown:[{ko:'잘',rom:'jal',en:'well'},{ko:'있어요',rom:'i-sseo-yo',en:'stay/be (polite)'}] },
+    { ko:'내일 봐요', rom:'Nae-il bwa-yo', en:'See you tomorrow', fil:'Magkita tayo bukas', level:'polite',
+      tip:'A friendly, casual parting phrase.',
+      breakdown:[{ko:'내일',rom:'nae-il',en:'tomorrow'},{ko:'봐요',rom:'bwa-yo',en:'see (polite)'}] },
+  ],
+  basics: [
+    { ko:'감사합니다', rom:'Gam-sa-ham-ni-da', en:'Thank you (formal)', fil:'Maraming salamat po', level:'formal',
+      tip:'Use in formal situations. For casual: 고마워 (go-ma-wo).',
+      breakdown:[{ko:'감사',rom:'gam-sa',en:'gratitude'},{ko:'합니다',rom:'ham-ni-da',en:'(formal verb ending)'}] },
+    { ko:'죄송합니다', rom:'Joe-song-ham-ni-da', en:'I\'m sorry (formal)', fil:'Humihingi po ako ng paumanhin', level:'formal',
+      tip:'For casual sorry use 미안해 (mi-an-hae). 죄송 is deeper and more sincere.',
+      breakdown:[{ko:'죄송',rom:'joe-song',en:'apologetic/sorry'},{ko:'합니다',rom:'ham-ni-da',en:'(formal ending)'}] },
+    { ko:'괜찮아요', rom:'Gwaen-chan-a-yo', en:'It\'s okay / I\'m fine', fil:'Okay lang / Ayos lang', level:'polite',
+      tip:'Use this to accept an apology OR to say you\'re doing fine.',
+      breakdown:[{ko:'괜찮',rom:'gwaen-chan',en:'okay/fine'},{ko:'아요',rom:'a-yo',en:'(polite verb ending)'}] },
+    { ko:'모르겠어요', rom:'Mo-reu-get-sseo-yo', en:'I don\'t know', fil:'Hindi ko alam', level:'polite',
+      tip:'Very useful! More humble than 몰라요.',
+      breakdown:[{ko:'모르',rom:'mo-reu',en:'don\'t know'},{ko:'겠어요',rom:'get-sseo-yo',en:'(polite uncertain ending)'}] },
+    { ko:'한국어 못 해요', rom:'Han-guk-eo mot hae-yo', en:'I can\'t speak Korean', fil:'Hindi ako marunong mag-Korean', level:'polite',
+      tip:'A lifesaver! Say this to signal you need simpler language.',
+      breakdown:[{ko:'한국어',rom:'han-guk-eo',en:'Korean language'},{ko:'못',rom:'mot',en:'can\'t'},{ko:'해요',rom:'hae-yo',en:'do (polite)'}] },
+    { ko:'천천히 말해 주세요', rom:'Cheon-cheon-hi mal-hae ju-se-yo', en:'Please speak slowly', fil:'Magsalita ka nang mabagal', level:'polite',
+      tip:'Memorize this! You\'ll use it all the time at first.',
+      breakdown:[{ko:'천천히',rom:'cheon-cheon-hi',en:'slowly'},{ko:'말해',rom:'mal-hae',en:'speak'},{ko:'주세요',rom:'ju-se-yo',en:'please (give me)'}] },
+    { ko:'다시 말해 주세요', rom:'Da-si mal-hae ju-se-yo', en:'Please say that again', fil:'Pakiulit nga', level:'polite',
+      tip:'Different from the above — use this when you heard but didn\'t catch it.',
+      breakdown:[{ko:'다시',rom:'da-si',en:'again'},{ko:'말해',rom:'mal-hae',en:'say/speak'},{ko:'주세요',rom:'ju-se-yo',en:'please'}] },
+    { ko:'네 / 아니요', rom:'Ne / A-ni-yo', en:'Yes / No', fil:'Oo/Opo / Hindi/Hindi po', level:'polite',
+      tip:'네 is yes, 아니요 is no. In casual speech: 응 (eung) / 아니 (a-ni).',
+      breakdown:[{ko:'네',rom:'ne',en:'yes'},{ko:'아니요',rom:'a-ni-yo',en:'no (polite)'}] },
+  ],
+  shopping: [
+    { ko:'얼마예요?', rom:'Eol-ma-ye-yo?', en:'How much is it?', fil:'Magkano ito?', level:'polite',
+      tip:'The single most useful shopping phrase.',
+      breakdown:[{ko:'얼마',rom:'eol-ma',en:'how much'},{ko:'예요',rom:'ye-yo',en:'is it (polite)'}] },
+    { ko:'이거 주세요', rom:'I-geo ju-se-yo', en:'I\'ll take this / Give me this', fil:'Ito nga po', level:'polite',
+      tip:'Point at the item and say this. Works everywhere.',
+      breakdown:[{ko:'이거',rom:'i-geo',en:'this (thing)'},{ko:'주세요',rom:'ju-se-yo',en:'please give'}] },
+    { ko:'좀 더 싸게 해 주세요', rom:'Jom deo ssa-ge hae ju-se-yo', en:'Can you make it cheaper?', fil:'Pwede po bang mas magpababa?', level:'polite',
+      tip:'Works in traditional markets (시장). Don\'t use in convenience stores!',
+      breakdown:[{ko:'좀 더',rom:'jom deo',en:'a bit more'},{ko:'싸게',rom:'ssa-ge',en:'cheap(er)'},{ko:'해 주세요',rom:'hae ju-se-yo',en:'please do'}] },
+    { ko:'영수증 주세요', rom:'Yeong-su-jeung ju-se-yo', en:'Receipt please', fil:'Resibo po', level:'polite',
+      tip:'영수증 = receipt. Always useful to know.',
+      breakdown:[{ko:'영수증',rom:'yeong-su-jeung',en:'receipt'},{ko:'주세요',rom:'ju-se-yo',en:'please give me'}] },
+    { ko:'봉투 주세요', rom:'Bong-tu ju-se-yo', en:'Bag please', fil:'Bag po sana', level:'polite',
+      tip:'Korea charges for plastic bags — you\'ll need to ask.',
+      breakdown:[{ko:'봉투',rom:'bong-tu',en:'bag/envelope'},{ko:'주세요',rom:'ju-se-yo',en:'please give'}] },
+    { ko:'카드 돼요?', rom:'Ka-deu dwae-yo?', en:'Can I pay by card?', fil:'Pwede bang mag-card?', level:'polite',
+      tip:'Most places accept cards, but good to check at small restaurants.',
+      breakdown:[{ko:'카드',rom:'ka-deu',en:'card'},{ko:'돼요',rom:'dwae-yo',en:'is it okay/does it work'}] },
+    { ko:'그냥 볼게요', rom:'Geu-nyang bol-ge-yo', en:'Just looking, thanks', fil:'Titingnan ko lang', level:'polite',
+      tip:'When shop staff approaches and you just want to browse.',
+      breakdown:[{ko:'그냥',rom:'geu-nyang',en:'just/only'},{ko:'볼게요',rom:'bol-ge-yo',en:'will look (polite intention)'}] },
+  ],
+  directions: [
+    { ko:'어디예요?', rom:'Eo-di-ye-yo?', en:'Where is it?', fil:'Nasaan ito?', level:'polite',
+      tip:'Add the place name before: 화장실 어디예요? (Where is the bathroom?)',
+      breakdown:[{ko:'어디',rom:'eo-di',en:'where'},{ko:'예요',rom:'ye-yo',en:'is it (polite)'}] },
+    { ko:'저기요!', rom:'Jeo-gi-yo!', en:'Excuse me! (to get attention)', fil:'Sandali lang po!', level:'polite',
+      tip:'Use this to get a stranger\'s attention. Much more common than 실례합니다.',
+      breakdown:[{ko:'저기',rom:'jeo-gi',en:'over there/that place'},{ko:'요',rom:'yo',en:'(polite particle)'}] },
+    { ko:'지하철역이 어디예요?', rom:'Ji-ha-cheol-yeok-i eo-di-ye-yo?', en:'Where is the subway station?', fil:'Nasaan ang subway station?', level:'polite',
+      tip:'지하철 = subway. 역 = station. Replace with any destination.',
+      breakdown:[{ko:'지하철역',rom:'ji-ha-cheol-yeok',en:'subway station'},{ko:'어디예요',rom:'eo-di-ye-yo',en:'where is it'}] },
+    { ko:'걸어서 갈 수 있어요?', rom:'Geo-reo-seo gal su i-sseo-yo?', en:'Can I walk there?', fil:'Kaya ba lakarin?', level:'polite',
+      tip:'Useful when estimating distance.',
+      breakdown:[{ko:'걸어서',rom:'geo-reo-seo',en:'by walking'},{ko:'갈 수 있어요',rom:'gal su i-sseo-yo',en:'can (I) go'}] },
+    { ko:'버스 정류장이 어디예요?', rom:'Beo-seu jeong-nyu-jang-i eo-di-ye-yo?', en:'Where is the bus stop?', fil:'Nasaan ang bus stop?', level:'polite',
+      tip:'버스 = bus, 정류장 = stop/station.',
+      breakdown:[{ko:'버스 정류장',rom:'beo-seu jeong-nyu-jang',en:'bus stop'},{ko:'어디예요',rom:'eo-di-ye-yo',en:'where is'}] },
+    { ko:'택시 타고 싶어요', rom:'Taek-si ta-go si-peo-yo', en:'I want to take a taxi', fil:'Gusto ko sumakay ng taxi', level:'polite',
+      tip:'Kakao T app is the easiest way to call taxis in Korea.',
+      breakdown:[{ko:'택시',rom:'taek-si',en:'taxi'},{ko:'타고 싶어요',rom:'ta-go si-peo-yo',en:'want to ride (polite)'}] },
+  ],
+  emergency: [
+    { ko:'도와주세요!', rom:'Do-wa-ju-se-yo!', en:'Help me!', fil:'Tulungan ninyo ako!', level:'polite',
+      tip:'Shout this loudly if you need help.',
+      breakdown:[{ko:'도와',rom:'do-wa',en:'help (verb stem)'},{ko:'주세요',rom:'ju-se-yo',en:'please (give/do)'}] },
+    { ko:'119에 전화해 주세요', rom:'Il-il-gu-e jeon-hwa-hae ju-se-yo', en:'Please call 119 (fire/ambulance)', fil:'Tumawag po ng 119', level:'polite',
+      tip:'119 = fire/ambulance. 112 = police.',
+      breakdown:[{ko:'119',rom:'il-il-gu',en:'one-one-nine'},{ko:'전화해 주세요',rom:'jeon-hwa-hae ju-se-yo',en:'please call'}] },
+    { ko:'병원이 어디예요?', rom:'Byeong-won-i eo-di-ye-yo?', en:'Where is the hospital?', fil:'Nasaan ang ospital?', level:'polite',
+      tip:'병원 = hospital/clinic.',
+      breakdown:[{ko:'병원',rom:'byeong-won',en:'hospital'},{ko:'어디예요',rom:'eo-di-ye-yo',en:'where is'}] },
+    { ko:'아파요', rom:'A-pa-yo', en:'I\'m in pain / It hurts', fil:'Masakit', level:'polite',
+      tip:'Point to where it hurts. 머리 아파요 = my head hurts. 배 아파요 = my stomach hurts.',
+      breakdown:[{ko:'아파요',rom:'a-pa-yo',en:'hurts / am in pain (polite)'}] },
+    { ko:'약이 필요해요', rom:'Ya-gi pil-yo-hae-yo', en:'I need medicine', fil:'Kailangan ko ng gamot', level:'polite',
+      tip:'약 = medicine/drugs. 약국 = pharmacy.',
+      breakdown:[{ko:'약',rom:'yak',en:'medicine'},{ko:'필요해요',rom:'pil-yo-hae-yo',en:'need (polite)'}] },
+    { ko:'여권을 잃어버렸어요', rom:'Yeo-gwon-eul i-reo-beo-ryeo-sseo-yo', en:'I lost my passport', fil:'Nawala ang aking pasaporte', level:'polite',
+      tip:'여권 = passport. Go to the nearest police station (경찰서) if this happens.',
+      breakdown:[{ko:'여권',rom:'yeo-gwon',en:'passport'},{ko:'잃어버렸어요',rom:'i-reo-beo-ryeo-sseo-yo',en:'lost (polite past)'}] },
+  ]
+};
+
+const levelMap = { formal:'badge-formal', polite:'badge-polite', casual:'badge-casual' };
+
+function renderList(list, containerId) {
+  const container = document.getElementById(containerId);
+  if (!container) return;
+  container.innerHTML = list.map((p, i) => `
+    <div>
+      <div class="phrase-card ${i === 0 ? '' : ''}" onclick="toggleDetail('detail-${containerId}-${i}', this)">
+        <div>
+          <div class="p-korean">${p.ko} <span class="badge ${levelMap[p.level]}">${p.level}</span></div>
+        </div>
+        <div class="p-rom">${p.rom}</div>
+        <div>
+          <div class="p-en">${p.en}</div>
+          <div class="p-fil">${p.fil}</div>
+        </div>
+        <div class="p-expand">+</div>
+      </div>
+      <div class="phrase-detail" id="detail-${containerId}-${i}">
+        <div class="detail-grid">
+          <div class="detail-block">
+            <h4>Pronunciation tip</h4>
+            <p>${p.tip}</p>
+          </div>
+          <div class="detail-block">
+            <h4>Word breakdown</h4>
+            <div class="breakdown">
+              ${p.breakdown.map(b=>`
+                <div class="bk-word">
+                  <span class="bk-ko">${b.ko}</span>
+                  <span class="bk-rom">${b.rom}</span>
+                  <span class="bk-en">${b.en}</span>
+                </div>
+              `).join('')}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  `).join('');
+}
+
+function toggleDetail(id, card) {
+  const detail = document.getElementById(id);
+  const isOpen = detail.classList.contains('show');
+  document.querySelectorAll('.phrase-detail').forEach(d => d.classList.remove('show'));
+  document.querySelectorAll('.phrase-card').forEach(c => c.classList.remove('expanded'));
+  if (!isOpen) {
+    detail.classList.add('show');
+    card.classList.add('expanded');
+  }
+}
+
+function showTab(id) {
+  document.querySelectorAll('.topic').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  event.target.classList.add('active');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+renderList(data.greetings,  'greetings-list');
+renderList(data.basics,     'basics-list');
+renderList(data.shopping,   'shopping-list');
+renderList(data.directions, 'directions-list');
+renderList(data.emergency,  'emergency-list');
+</script>
+</body>
+</html>

@@ -177,9 +177,33 @@
     flex-wrap: wrap;
     gap: 0.5rem;
   }
+
+  nav {
+    max-width: 860px; margin: 0 auto 2rem; padding-bottom: 1rem;
+    border-bottom: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 0.8rem;
+  }
+  .nav-logo { font-family: 'Fraunces', serif; font-size: 1.1rem; font-weight: 600; color: var(--ink); text-decoration: none; letter-spacing: -0.01em; }
+  .nav-logo span { color: var(--accent); font-style: italic; }
+  .nav-links { display: flex; gap: 1.2rem; flex-wrap: wrap; }
+  .nav-links a { font-size: 0.68rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink3); text-decoration: none; transition: color 0.15s; }
+  .nav-links a:hover { color: var(--ink); }
+  .nav-links a.active { color: var(--accent); }
 </style>
 </head>
 <body>
+<nav>
+  <a class="nav-logo" href="index.html">LEARN <span>한국어</span></a>
+  <div class="nav-links">
+    <a href="level1.html">Hangul</a>
+    <a href="level2.html">Phrases</a>
+    <a href="vocab.html" class="active">Vocab</a>
+    <a href="level3.html">Grammar</a>
+    <a href="level4.html">Numbers</a>
+    <a href="level5.html">Conversations</a>
+  </div>
+</nav>
+
 
 <header>
   <div class="title-block">

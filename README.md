@@ -2,7 +2,7 @@
 
 A step-by-step Korean learning site built for **Filipino (Tagalog) and English speakers** — from zero to real conversations.
 
-🌐 **Live site:** [ohyj95.github.io/korean-learning](https://ohyj95.github.io/korean-learning/)
+🌐 **Live site:** [ohyj95.github.io/korean-learning](https://oyunj.github.io/korean-learning/)
 
 ---
 

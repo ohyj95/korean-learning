@@ -118,6 +118,46 @@
     text-transform: uppercase;
   }
 
+  .hero-cta {
+    display: flex;
+    gap: 12px;
+    margin-top: 2rem;
+    opacity: 0;
+    animation: fadeUp 0.7s 0.55s forwards;
+    flex-wrap: wrap;
+  }
+  .cta-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 22px;
+    border-radius: 3px;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1rem;
+    letter-spacing: 0.08em;
+    text-decoration: none;
+    transition: all 0.2s;
+  }
+  .cta-btn.primary {
+    background: var(--red);
+    color: #fff;
+    border: 1px solid var(--red);
+  }
+  .cta-btn.primary:hover {
+    background: #E8603A;
+    transform: translateY(-1px);
+    box-shadow: 0 6px 20px rgba(217,79,53,0.35);
+  }
+  .cta-btn.secondary {
+    background: transparent;
+    color: var(--ink2);
+    border: 1px solid var(--border);
+  }
+  .cta-btn.secondary:hover {
+    border-color: var(--ink3);
+    color: var(--ink);
+  }
+
   /* big Korean char decoration */
   .hero-right {
     position: relative;
@@ -353,6 +393,10 @@
       <span class="tag">Romanization</span>
       <span class="tag">Free</span>
     </div>
+    <div class="hero-cta">
+      <a class="cta-btn primary" href="quiz.html">🎯 Start Quiz →</a>
+      <a class="cta-btn secondary" href="#lessons">Browse Lessons</a>
+    </div>
   </div>
   <div class="hero-right">
     <div class="level-ring"></div>
@@ -360,7 +404,7 @@
   </div>
 </section>
 
-<div class="divider">Lessons</div>
+<div class="divider" id="lessons">Lessons</div>
 
 <section class="lessons">
 
